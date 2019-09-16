@@ -4,33 +4,37 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 # Create your models here.
 
 class cUserManager(BaseUserManager):
-	def create_user(self, identifier, email, password=None):
+	def create_user(self, username, email, first_name, last_name, password=None):
 		"""
 		Creates and saves a user with given username, email, and password.
 		"""
-		if not identifier:
+		if not username:
 			raise ValueError('Users must have a User Name.')
 		
 		if not email:
 			raise ValueError('Users must have a valid email address.')
 			
 		user = self.model(
-			identifier = identifier,
+			username = username,
 			email = self.normalize_email(email),
+			first_name = first_name,
+			last_name = last_name
 		)
 		
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 	
-	def create_superuser(self, identifier, email, password):
+	def create_superuser(self, username, first_name, last_name, email, password):
 		"""
 		Creates and saves a superuser.
 		"""
 		user = self.create_user(
-			identifier=identifier,
-			email=email,
-			password=password
+			username = username,
+			email = email,
+			password = password,
+			first_name = first_name,
+			last_name = last_name
 		)
 		user.is_admin = True
 		user.save(using=self._db)
@@ -38,22 +42,24 @@ class cUserManager(BaseUserManager):
 
 
 class cUser(AbstractBaseUser):
-	identifier = models.CharField(max_length=255, unique=True)
+	username = models.CharField(max_length=32, unique=True)
 	email = models.EmailField(
 		verbose_name='email address',
 		max_length=255,
 		unique=True,
 	)
+	first_name = models.CharField(max_length=32, default="")
+	last_name = models.CharField(max_length=32, default = "")
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	
 	objects = cUserManager()
 	
-	REQUIRED_FIELDS = ['email']
-	USERNAME_FIELD = 'identifier'
+	REQUIRED_FIELDS = ['first_name', 'last_name','email']
+	USERNAME_FIELD = 'username'
 	
 	def __str__(self):
-		return self.identifier + ", " + self.email
+		return self.username + ", " + self.email
 	
 	def has_perm(self, perm, obj=None):
 		"Does the user have a specific permission?"

@@ -30,3 +30,7 @@ urlpatterns = [
 	path('', RedirectView.as_view(url='/kpbt/', permanent=True)),	
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
  #Use static() to add url mappings to serve static files during development
+ 
+#Add Django site authentication URLs
+urlpatterns += [path('accounts/', include('django.contrib.auth.urls')),
+] 
