@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+	
+	#Use include() to add paths from the kpbt application
+	path('kpbt/', include('kpbt.urls')),
+	
+	#Redirect base URL to our appen
+	path('', RedirectView.as_view(url='/kpbt/', permanent=True)),	
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+ #Use static() to add url mappings to serve static files during development
