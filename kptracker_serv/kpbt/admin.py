@@ -5,12 +5,12 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from kpbt.models import cUser
-
+from .forms import cUserCreationForm, cUserChangeForm
 # Register your models here.
 
-
+"""
 class UserCreationForm(forms.ModelForm):
-	"""Form for creating new users"""
+	#Form for creating new users#
 	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
 	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 	
@@ -35,7 +35,7 @@ class UserCreationForm(forms.ModelForm):
 			return user
 			
 class UserChangeForm(forms.ModelForm):
-	"""form for updating users"""
+	$form for updating users$
 	
 	password = ReadOnlyPasswordHashField()
 	
@@ -47,12 +47,12 @@ class UserChangeForm(forms.ModelForm):
 	
 		return self.initial["password"]
 		
-
+"""
 
 class UserAdmin(BaseUserAdmin):
 	#the forms to add and change Users
-	form = UserChangeForm
-	add_form = UserCreationForm
+	form = cUserChangeForm
+	add_form = cUserCreationForm
 
 	list_display = ('username', 'email', 'is_admin')
 	list_filter = ('is_admin',)
@@ -64,7 +64,7 @@ class UserAdmin(BaseUserAdmin):
 	add_fieldsets = (
 		(None, {
 			'classes': ('wide',),
-			'fields': ('username', 'email', 'password1', 'password2')}
+			'fields': ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')}
 		),
 	)
 	search_fields= ('username', 'email',)

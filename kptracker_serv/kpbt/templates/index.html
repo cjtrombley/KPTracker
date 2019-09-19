@@ -5,10 +5,11 @@
 	<h1>KPBT Home</h1>
 	
 	
-	{% if user.is_authenticated %}
+	{% if request.user.is_authenticated %}
 		<p>You are currently logged in as {{ user.get_username }}</p>
 	{% else %}
 		 <a href="{% url 'login' %}">Please log in to continue.</a>
+		 <a href="{% url 'register' %}">Register</a>
 	{% endif %}
 	
 {% endblock %}
