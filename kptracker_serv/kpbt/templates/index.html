@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{%block content%}
+
+	<h1>KPBT Home</h1>
+	
+	
+	{% if request.user.is_authenticated %}
+		<p>You are currently logged in as {{ user.get_username }}</p>
+		<a href="{% url 'logout' %}">Log out.</a>
+	{% else %}
+		 <a href="{% url 'login' %}">Please log in to continue.</a>
+		 <br>
+		 <a href="{% url 'register' %}">Register</a>
+	{% endif %}
+	
+{% endblock %}
