@@ -1,9 +1,15 @@
-{% extends "base_generic.html" %}
+{% extends "base.html" %} {%block content%}
 
-{%block content%}
-
-	<h1>KPBT Home</h1>
-	
+<body>
+	<div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+          
+      <h1>KPBT Home</h1>
+        <ul class="sidebar-nav">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="">Sidebar1</a></li>
+          <li><a href="">Sidebar2</a></li>
 	
 	{% if request.user.is_authenticated %}
 		<p>You are currently logged in as {{ user.get_username }}</p>
@@ -13,5 +19,27 @@
 		 <br>
 		 <a href="{% url 'register' %}">Register</a>
 	{% endif %}
+            
+		{% if request.user.is_authenticated %}
+		  {% if request.user.is_admin %}
 	
+			<li><a href="{% url 'admin:index' %}">Administrator Page</a></li>
+		</ul>
+		{% endif %}
+	{% endif %}
+	
+      </div>
+      <div class="col-sm-10 "></div>
+    </div>
+  </div>
+  {% load static %}
+  <!-- jQuery -->    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper.js-->    
+  <script src="{% static 'js/Popper.js' %}"></script>
+   <!-- Bootstrap minified JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <!-- app.js -->    
+  <script src="{% static 'js/app.js' %}"></script>    
+</body>
 {% endblock %}
