@@ -3,7 +3,17 @@
 {% block title %}<title>Kingpin Bowling Tracker - Login</title>{% endblock %}
 
 {% block content %}
-
+<body>
+<div class="container-fluid" align="center">
+  <div class="row">
+    <div class="col-md-12">
+        <header>
+            <h1 class="mainhead font-weight-bolder margin-botm">Kingpin</h1>
+            <!-- Image Here !!! -->
+    </header>
+    <div class="card">  
+        <h2>Login:</h2>
+        <hr>
 {% if form.errors %}
 	<p class="lead">Your username and password did not match. Please try again.</p>
 {% endif %}
@@ -19,22 +29,31 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 
-<table>
+<table class="margin-botm">
+    <div class="form-group">
 	<tr>
-		<td>{{ form.username.label_tab }}</td>
+		<td class="font-weight-bolder">{{ form.username.label_tag }}</td>
 		<td>{{ form.username }}</td>
 	</tr>
-	
+     </div>    
+    
+	<div class="form-group">
 	<tr>
-		<td>{{ form.password.label_tag }}</td>
+		<td class="font-weight-bolder">{{ form.password.label_tag }}</td>
 		<td>{{ form.password }}</td>
 	</tr>
+    </div>    
 </table>
 
-<input type="submit" value="Login" class="btn btn-info" />
+<input type="submit" value="Login" class="btn btn-info margin-botm" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p><a href="{% url 'password_reset' %}">Forgot password</a></p>
-
+<p><a href="{% url 'password_reset' %}">Forgot password&#63;</a></p>
+<p><a href="{% url 'register' %}">Register&#33;</a></p>        
+        </div>
+        </div>     
+       </div>      
+      </div>        
+</body>
 {% endblock %}

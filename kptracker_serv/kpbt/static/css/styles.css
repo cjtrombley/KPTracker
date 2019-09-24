@@ -27,3 +27,12 @@ body {
 	padding: 0;
 	list-style: none;
 }
+
+.mainhead {
+    font-family: 'Abril Fatface', cursive;
+}
+
+.margin-botm {
+    margin-bottom: 25px;
+}
+
