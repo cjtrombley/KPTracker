@@ -14,11 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import url
+from rest_framework import routers
+from rest_framework.authtoken import views as authviews
+from kpbt import views
+
+router = routers.DefaultRouter()
+router.register(r'users', views.cUserViewSet)
+router.register(r'groups', views.GroupViewSet)
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,3 +44,11 @@ urlpatterns = [
 #Add Django site authentication URLs
 urlpatterns += [path('accounts/', include('django.contrib.auth.urls')),
 ] 
+
+
+
+urlpatterns += [
+	path('', include(router.urls)),
+	path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+	url(r'^api-token-auth/', authviews.obtain_auth_token)
+]

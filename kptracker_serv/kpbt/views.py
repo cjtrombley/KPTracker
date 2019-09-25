@@ -5,6 +5,10 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.template import loader
 
+from django.contrib.auth.models import Group
+from rest_framework import viewsets
+from .serializers import cUserSerializer, GroupSerializer
+
 from .forms import cUserCreationForm
 
 # Create your views here.
@@ -25,3 +29,13 @@ def index(request):
 	context = { }
 	
 	return render(request, 'index.html', context=context)
+	
+	
+	
+class cUserViewSet(viewsets.ModelViewSet):
+	queryset = cUser.objects.all().order_by('-username')
+	serializer_class = cUserSerializer
+
+class GroupViewSet(viewsets.ModelViewSet):
+	queryset = Group.objects.all()
+	serializer_class = GroupSerializer

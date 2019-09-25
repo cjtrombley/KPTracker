@@ -1,5 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
+from django.contrib.auth.models import PermissionsMixin
+
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+import datetime
 
 # Create your models here.
 
@@ -23,6 +30,14 @@ class cUserManager(BaseUserManager):
 		
 		user.set_password(password)
 		user.save(using=self._db)
+		
+		
+		@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+		def create_auth_token(sender, instance=None, created=False, **kwargs):
+			if created:
+				Token.objects.create(user=instance)
+
+		
 		return user
 	
 	def create_superuser(self, username, first_name, last_name, email, password):
@@ -36,12 +51,15 @@ class cUserManager(BaseUserManager):
 			first_name = first_name,
 			last_name = last_name
 		)
+		
 		user.is_admin = True
 		user.save(using=self._db)
 		return user
 
 
-class cUser(AbstractBaseUser):
+
+
+class cUser(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length=32, unique=True)
 	email = models.EmailField(
 		verbose_name='email address',
@@ -73,3 +91,34 @@ class cUser(AbstractBaseUser):
 	def is_staff(self):
 		"Is the user a member of the staff?"
 		return self.is_admin
+		
+class Bowler(cUser):
+	HAND = (
+		('R', 'Right'),
+		('L', 'Left'),
+	)
+	
+	GENDER = (
+		('M', 'Male'), 
+		('F', 'Female'),
+		('B', 'Boy'),
+		('G', 'Girl'),
+	)
+	
+	DESIGNATION = (
+		('A', 'Adult'),
+		('S', 'Senior'),
+		('J', 'Junior'),
+	)
+	
+	date_of_birth = models.DateField(default=datetime.date(1900,1,1))
+	is_sanctioned = models.BooleanField(default=False)
+	hand = models.CharField(max_length=1, choices=HAND)
+	team = models.ForeignKey(
+		'Team',
+		null=True,
+		on_delete=models.SET_NULL)
+	
+class Team(models.Model):
+	team_number = models.IntegerField()
+	team_name = models.CharField(max_length=32, default=team_number)
