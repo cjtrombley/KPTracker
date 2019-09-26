@@ -10,8 +10,11 @@ import datetime
 
 # Create your models here.
 
+# Manager class for custom user
 class cUserManager(BaseUserManager):
-	def create_user(self, username, email, first_name, last_name, password=None):
+	use_in_migrations=True
+
+	def _create_user(self, username, email, first_name, last_name, password=None):
 		"""
 		Creates and saves a user with given username, email, and password.
 		"""
@@ -56,9 +59,7 @@ class cUserManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-
-
-
+# Defines a custom user class
 class cUser(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length=32, unique=True)
 	email = models.EmailField(
@@ -91,8 +92,9 @@ class cUser(AbstractBaseUser, PermissionsMixin):
 	def is_staff(self):
 		"Is the user a member of the staff?"
 		return self.is_admin
-		
-class Bowler(cUser):
+
+# Defines the Bowler class
+class Bowler(models.Model):
 	HAND = (
 		('R', 'Right'),
 		('L', 'Left'),
@@ -111,6 +113,8 @@ class Bowler(cUser):
 		('J', 'Junior'),
 	)
 	
+	cUser = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	
 	date_of_birth = models.DateField(default=datetime.date(1900,1,1))
 	is_sanctioned = models.BooleanField(default=False)
 	hand = models.CharField(max_length=1, choices=HAND)
@@ -119,6 +123,18 @@ class Bowler(cUser):
 		null=True,
 		on_delete=models.SET_NULL)
 	
+	def __str__(self):
+		return self.first_name + " " + self.last_name
+		
+	@receiver(post_save, sender=cUser)
+	def create_user_bowler(sender, instance, created, **kwargs):
+		if created:
+			Bowler.objects.create(settings.AUTH_USER_MODEL.instance)
+	
+	@receiver(post_save, sender=cUser)
+	def save_user_bowler(sender, instance, **kwargs):
+		instance.profile.save()
+		
 class Team(models.Model):
-	team_number = models.IntegerField()
-	team_name = models.CharField(max_length=32, default=team_number)
+	team_number = models.IntegerField(default=id)
+	team_name = models.CharField(max_length=32, default="")

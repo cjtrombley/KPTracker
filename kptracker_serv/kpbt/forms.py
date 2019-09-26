@@ -1,8 +1,10 @@
+from django.db import models
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import cUser
+from .models import *
 
 class cUserCreationForm(forms.ModelForm):
 	"""Form for creating new users"""
@@ -43,3 +45,9 @@ class cUserChangeForm(forms.ModelForm):
 	def clean_password(self):
 	
 		return self.initial["password"]
+		
+
+class BowlerCreationForm(forms.ModelForm):
+	class Meta:
+		fields = ('date_of_birth', 'is_sanctioned', 'hand', 'team')
+		model = Bowler

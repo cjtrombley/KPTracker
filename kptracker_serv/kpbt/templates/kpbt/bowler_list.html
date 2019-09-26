@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1>Bowlers List</h1>
+	<ul>
+		{% for bowler in object.list %}
+			<li>{{ bowler }} </li>
+		{% endfor %}
+	</ul>
+{% endblock %}
