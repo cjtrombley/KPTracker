@@ -1,8 +1,15 @@
+/* styles.css file */
+
 body {
     font-family: 'Arimo', sans-serif;
     margin: 0;
     padding: 0;
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    background: url("../images/bowling-bg.jpg") 25% 25% no-repeat;
+}
+
+#bg-bowl {
+    background: url("../images/bowling_wallpaper.jpg") 20% 30% no-repeat;
 }
 
 /* Source: https://codepen.io/ibrahimjabbari/pen/ozinB */
@@ -36,3 +43,25 @@ body {
     margin-bottom: 25px;
 }
 
+.hr-style {
+    border-top: 4px double #101010;
+}
+
+.link-login {
+    color: #000000;
+}
+
+.link-login:hover {
+    color: ghostwhite;
+}
+
+.text-bluegrey {
+    color: #607d8b !important;
+}
+
+/* Source: https://css-tricks.com/snippets/css/css-box-shadow/ */
+.one-edge-box-shadow {
+	-webkit-box-shadow: 0 8px 6px -6px black;
+	   -moz-box-shadow: 0 8px 6px -6px black;
+	        box-shadow: 0 8px 6px -6px black;
+}

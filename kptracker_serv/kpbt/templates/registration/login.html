@@ -3,7 +3,7 @@
 {% block title %}<title>Kingpin Bowling Tracker - Login</title>{% endblock %}
 
 {% block content %}
-<body>
+<body id="bg-bowl">
 <div class="container-fluid" align="center">
   <div class="row">
     <div class="col-md-12">
@@ -11,9 +11,9 @@
             <h1 class="mainhead font-weight-bolder margin-botm">Kingpin</h1>
             <!-- Image Here !!! -->
     </header>
-    <div class="card">  
+    <div class="card bg-danger text-white">
         <h2>Login:</h2>
-        <hr>
+        <hr class="hr-style">
 {% if form.errors %}
 	<p class="lead">Your username and password did not match. Please try again.</p>
 {% endif %}
@@ -30,27 +30,28 @@
 {% csrf_token %}
 
 <table class="margin-botm">
-    <div class="form-group">
+    <div class="form-group one-edge-box-shadow">
 	<tr>
-		<td class="font-weight-bolder">{{ form.username.label_tag }}</td>
+		<td class="font-weight-bolder text-bluegrey">{{ form.username.label_tag }}</td>
 		<td>{{ form.username }}</td>
 	</tr>
      </div>    
     
-	<div class="form-group">
+	<div class="form-group one-edge-box-shadow">
 	<tr>
-		<td class="font-weight-bolder">{{ form.password.label_tag }}</td>
+		<td class="font-weight-bolder text-bluegrey">{{ form.password.label_tag }}</td>
 		<td>{{ form.password }}</td>
 	</tr>
     </div>    
 </table>
 
-<input type="submit" value="Login" class="btn btn-info margin-botm" />
+<input type="submit" value="Login" class="btn btn-secondary margin-botm" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p><a href="{% url 'password_reset' %}">Forgot password&#63;</a></p>
-<p><a href="{% url 'register' %}">Register&#33;</a></p>        
+<p><a href="{% url 'password_reset' %}" class="link-login">Forgot password&#63;</a></p>
+<p><a href="{% url 'register' %}" class="link-login">Register&#33;</a></p>
+         <div class="card-footer"><footer><span class="text-center">&copy; 2019 Kingpin</span></footer></div>
         </div>
         </div>     
        </div>      
