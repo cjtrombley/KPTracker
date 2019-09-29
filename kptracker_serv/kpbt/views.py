@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from .serializers import cUserSerializer, GroupSerializer
 
-from .forms import cUserCreationForm
+from .forms import *
 
 from django.views import generic
 
@@ -32,13 +32,27 @@ def index(request):
 	
 	return render(request, 'index.html', context=context)
 
-"""
-@login_required
+
+
 def update_profile(request):
 	if request.method == 'POST':
 		user_form = cUserCreationForm(request.POST, instance=request.user)
-		profile_form = Bowler(request.POST, instance=request.user.bowler)
-"""
+		profile_form = BowlerCreationForm(request.POST, instance=request.user.bowler)
+		if user_form.is_valid() and profile_form.is_valid():
+			user_form.save()
+			profile_form.save()
+			messages.success(request, _('Profile successfully updated.'))
+			return redirect('settings:profile')
+		else:
+			messages.error(request, _('Error.'))
+	else:
+		user_form = cUserCreationForm(instance=request.user)
+		profile_form = BowlerCreationForm()
+	return render(request, 'kpbt/bowler_profile.html', {
+		'user_form': cUserCreationForm,
+		'profile_form' : profile_form
+	})
+
 	
 class BowlerList(generic.ListView):
 		model = Bowler

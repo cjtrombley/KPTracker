@@ -14,7 +14,7 @@ import datetime
 class cUserManager(BaseUserManager):
 	use_in_migrations=True
 
-	def _create_user(self, username, email, first_name, last_name, password=None):
+	def create_user(self, username, email, first_name, last_name, password=None):
 		"""
 		Creates and saves a user with given username, email, and password.
 		"""
