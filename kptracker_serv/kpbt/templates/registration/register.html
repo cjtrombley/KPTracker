@@ -4,7 +4,11 @@
 
 {% block content %}
 	<h1 class="mainhead">Register</h1>
-    <hr class="style15">
+    <hr class="style15"> <br>
+     <ul class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'login' %}">Login</a></li>
+      <li class="breadcrumb-item active">Register</li>
+     </ul>
 	<form method="post">
 		{% csrf_token %}
 		{{ form.as_p }}

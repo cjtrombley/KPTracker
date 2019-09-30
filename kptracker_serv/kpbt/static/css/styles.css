@@ -8,8 +8,87 @@ body {
     background: url("../images/bowling-bg.jpg") 25% 25% no-repeat;
 }
 
+body, html{
+   height: 100%;
+}
+
 #bg-bowl {
     background: url("../images/bowling_wallpaper.jpg") 20% 30% no-repeat;
+}
+
+header, section, footer, aside, nav, main, article, figure {
+    display: block; 
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #BF1722;
+    color: white;
+    padding: 8px;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+.container-fluid, .container {
+    padding: 10px 15px;
+}
+
+.logo {
+   width:600px; 
+   margin-left: auto; 
+   margin-right: auto; 
+}
+
+.nav-link {
+    font-weight: bolder;
+    font-size: 1.15rem; /* 18px */
+}
+
+.nav-marg {
+    margin-bottom: 20px;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+.nav-bg, .foot-bg {
+    background-color: #4078a5; /* shade of steelblue */
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #000000; /* black */
+    font-weight: bolder;
+}
+
+.dropdown-item {
+    background-color: #DCDCDC; /* moccasin */
+}
+
+.dropdown-item:hover {
+    background-color: #ff4d4d; /* shade of red */
+}
+
+.fa-sign-in-alt {
+  color: #FFA500; /* shade of yellow */
+}
+
+.fa-bowling-ball {
+    color: #000000; /* black */
+}
+
+*:focus {
+    outline-color: #191970; /* midnightblue */
+}
+
+main {
+height: auto;
+min-height: 100%;
 }
 
 /* Source: https://codepen.io/ibrahimjabbari/pen/ozinB */
@@ -29,12 +108,6 @@ body {
 	font-size: 25px;
 }
 
-.sidebar-nav {
-	margin-top: 20px;
-	padding: 0;
-	list-style: none;
-}
-
 .mainhead {
     font-family: 'Abril Fatface', cursive;
 }
@@ -45,6 +118,10 @@ body {
 
 .hr-style {
     border-top: 4px double #101010;
+}
+
+.underline {
+    text-decoration: underline;
 }
 
 .link-login {
@@ -59,9 +136,38 @@ body {
     color: #607d8b !important;
 }
 
+label {
+    font-weight: bolder;
+}
+
+.buttonDrop {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background: #e6e600;
+}
+
 /* Source: https://css-tricks.com/snippets/css/css-box-shadow/ */
 .one-edge-box-shadow {
 	-webkit-box-shadow: 0 8px 6px -6px black;
 	   -moz-box-shadow: 0 8px 6px -6px black;
 	        box-shadow: 0 8px 6px -6px black;
+}
+
+.breadcrumb {
+    background: none;
+    margin-bottom: 20px;
+}
+
+.breadcrumb a {
+    text-decoration: underline;
+}
+
+#footer {
+   position: absolute;
+/*   bottom: 0;*/
+/*   left: 0px;    */
+   width: 100%;
+   height: auto;
+   clear: both;
 }

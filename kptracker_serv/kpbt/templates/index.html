@@ -1,37 +1,116 @@
 {% extends "base.html" %} {%block content%}
+{% load static %}
 
 <body>
+    
+    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content">Skip to main content</a>
+    <nav class="navbar navbar-expand-md nav-bg nav-marg navbar-light" aria-label="Navigation">
+  <a class="navbar-brand" href="{% url 'index' %}" aria-label="Kingpin Bowling Tracker">
+   <img src="{% static 'images/Kingpin.png' %}" alt="Kingpin's logo" class="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Navbar toggle">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navbardrop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Link
+        </a>
+      <div class="dropdown-menu" aria-labelledby="navbardrop">
+        <a class="dropdown-item" href="">link 1</a>
+        <a class="dropdown-item" href="">link 2</a>
+        <a class="dropdown-item" href="">link 3</a>  
+      </div>    
+      </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="" id="navbardrop2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Link 2
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbardrop2">
+        <a class="dropdown-item" href="">link 1</a>
+        <a class="dropdown-item" href="">link 2</a>
+        <a class="dropdown-item" href="" >link 3</a>
+      </div>    
+    </li>
+   <li class="nav-item">
+        <a class="nav-link" href="">Link 3</a>
+   </li>    
+    <li class="nav-item">
+        <a class="nav-link" href="">Link 4</a>
+    </li> 
+   <li class="nav-item">
+        <a class="nav-link" href="">Link 5</a>
+   </li>
+   <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Link 6
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbardrop3">
+        <a class="dropdown-item" href="">link 1</a>
+        <a class="dropdown-item" href="">link 2</a>
+        <a class="dropdown-item" href="">link 3</a>
+      </div>    
+    </li>
+    </ul>
+       <ul class="nav navbar-nav ml-auto">
+        <li><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
+        <li><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>           
+      </ul>
+      
+  </div>  
+</nav>
+    
+<main id="mainContent" tabindex="-1">
 	<div class="container-fluid">
     <div class="row">
-      <div class="col-sm-2">
+      <div class="col-md-12">
           
-      <h1>KPBT Home</h1>
-        <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="">Sidebar1</a></li>
-          <li><a href="">Sidebar2</a></li>
-	
-	{% if request.user.is_authenticated %}
-		<p>You are currently logged in as {{ user.get_username }}</p>
-		<a href="{% url 'logout' %}">Log out.</a>
-	{% else %}
-		 <a href="{% url 'login' %}">Please log in to continue.</a>
-		 <br>
-		 <a href="{% url 'register' %}">Register</a>
-	{% endif %}
-            
-		{% if request.user.is_authenticated %}
-		  {% if request.user.is_admin %}
-	
-			<li><a href="{% url 'admin:index' %}">Administrator Page</a></li>
-		</ul>
-		{% endif %}
-	{% endif %}
+      <h1 class="text-center mainhead font-weight-bolder">Kingpin Bowling Tracker</h1>
+          <hr class="style15">
+          <div class="dropdown" align="right">
+            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
+                <i class="far fa-user fa-2x mx-auto d-block"></i>
+            </button>
+            <div class="dropdown-menu">
+              <h5 class="dropdown-header text-center underline">Account info</h5>
+                {% if request.user.is_authenticated %}
+                <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
+                {% if request.user.is_authenticated %}
+                {% if request.user.is_admin %}
+                <a href="{% url 'admin:index' %}"><i class="fad fa-user-crown"></i> Admin page</a>
+                {% endif %}
+                {% endif %}
+                <br>
+                <a href="{% url 'logout' %}?next={% url 'login' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Please login to continue.</a>
+                {% endif %}
+            </div>
+          </div>
 	
       </div>
-      <div class="col-sm-10 "></div>
     </div>
-  </div>
+  </div>    
+    </main>
+    
+    
+      <footer class="foot-bg" id="footer">
+        
+            <div class="container-fluid">
+            <div class="row">
+
+            <div class="col-md-12">
+                <div class="text-center font-weight-bolder">&copy; 2019 Kingpin</div>
+            </div>
+
+      </div>
+      </div>
+      </footer>
+    
   {% load static %}
   <!-- jQuery -->    
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -40,6 +119,7 @@
    <!-- Bootstrap minified JS -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <!-- app.js -->    
-  <script src="{% static 'js/app.js' %}"></script>    
+  <script src="{% static 'js/app.js' %}"></script>
+    
 </body>
 {% endblock %}
