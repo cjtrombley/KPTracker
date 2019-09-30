@@ -73,5 +73,6 @@ class UserAdmin(BaseUserAdmin):
 	
 
 admin.site.register(cUser, UserAdmin)
+admin.site.login_template = 'kpbt/registration/login.html'
 
 

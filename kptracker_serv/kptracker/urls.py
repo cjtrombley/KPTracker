@@ -42,7 +42,8 @@ urlpatterns = [
  #Use static() to add url mappings to serve static files during development
  
 #Add Django site authentication URLs
-urlpatterns += [path('accounts/', include('django.contrib.auth.urls')),
+urlpatterns += [
+	path('accounts/', include('django.contrib.auth.urls')),
 ] 
 
 

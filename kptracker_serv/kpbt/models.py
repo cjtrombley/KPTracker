@@ -80,6 +80,7 @@ class cUser(AbstractBaseUser, PermissionsMixin):
 	def __str__(self):
 		return self.username + ", " + self.email
 	
+	
 	def has_perm(self, perm, obj=None):
 		"Does the user have a specific permission?"
 		return True
@@ -116,6 +117,7 @@ class Bowler(models.Model):
 	cUser = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	
 	date_of_birth = models.DateField(default=datetime.date(1900,1,1))
+	designation = models.CharField(max_length=1, choices=DESIGNATION)
 	is_sanctioned = models.BooleanField(default=False)
 	hand = models.CharField(max_length=1, choices=HAND)
 	team = models.ForeignKey(

@@ -46,8 +46,18 @@ class cUserChangeForm(forms.ModelForm):
 	
 		return self.initial["password"]
 		
+class cUserProfile(forms.ModelForm):
+	class Meta:
+		model = cUser
+		fields = ('username', 'email', 'first_name', 'last_name')
+
+class BowlerProfile(forms.ModelForm):
+	class Meta:
+		fields = ('date_of_birth', 
+				'designation', 'is_sanctioned', 'hand', 'team')
+		model = Bowler
 
 class BowlerCreationForm(forms.ModelForm):
 	class Meta:
-		fields = ('date_of_birth', 'is_sanctioned', 'hand', 'team')
+		fields = ('date_of_birth', 'is_sanctioned', 'hand')
 		model = Bowler

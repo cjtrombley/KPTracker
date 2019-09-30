@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from kpbt.models import *
 
 from django.urls import reverse_lazy
@@ -12,17 +12,18 @@ from .serializers import cUserSerializer, GroupSerializer
 from .forms import *
 
 from django.views import generic
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
 class SignUp(CreateView):
 	form_class = cUserCreationForm
 	success_url = reverse_lazy('login')
-	template_name = 'registration/register.html'
+	template_name = 'kpbt/registration/register.html'
 	
 def login(request):
 	context = { }
-	return render(request, 'registration/login.html', context)
+	return render(request, 'kpbt/registration/login.html', context)
 	
 
 def index(request):
@@ -30,10 +31,23 @@ def index(request):
 	
 	context = { }
 	
-	return render(request, 'index.html', context=context)
+	return render(request, 'kpbt/index.html', context)
 
 
+def view_user_profile(request):
+	if request.user.is_authenticated:
+		if request.method == 'POST':
+			profile_form = BowlerCreationForm(request.POST, instance=request.user)
+			if profile_form.is_valid():
+				profile_form.save()
+				return redirect('/')
+			else:
+				pass
+		else:
+			context = {'form': BowlerCreationForm }
+			return render(request, 'kpbt/user_profile.html', context)
 
+		
 def update_profile(request):
 	if request.method == 'POST':
 		user_form = cUserCreationForm(request.POST, instance=request.user)

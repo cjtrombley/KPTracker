@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "kpbt/base_generic.html" %}
 
 {%block content%}
 
@@ -7,6 +7,12 @@
 	
 	{% if request.user.is_authenticated %}
 		<p>You are currently logged in as {{ user.get_username }}</p>
+		
+		
+		{% if not request.user.bowler %}
+			<p>No bowler data to be found.</p>
+		{% endif %}
+		
 		<a href="{% url 'logout' %}">Log out.</a>
 	{% else %}
 		 <a href="{% url 'login' %}">Please log in to continue.</a>
