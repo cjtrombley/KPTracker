@@ -39,14 +39,9 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .logo {
-   width:100px; 
+   width:600px; 
    margin-left: auto; 
    margin-right: auto; 
-}
-
-.logo-foot {
-    float: left;
-    padding: 5px;
 }
 
 .nav-link {
@@ -63,19 +58,28 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .nav-bg, .foot-bg {
-    background-color: #17ABC9;
+    background-color: #4078a5; /* shade of steelblue */
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: #000000;
+    color: #000000; /* black */
+    font-weight: bolder;
 }
 
 .dropdown-item {
-    background-color: #FFE4B5; /* moccasin */
+    background-color: #DCDCDC; /* moccasin */
 }
 
 .dropdown-item:hover {
-    background-color: #4682B4; /* steelblue */
+    background-color: #ff4d4d; /* shade of red */
+}
+
+.fa-sign-in-alt {
+  color: #FFA500; /* shade of yellow */
+}
+
+.fa-bowling-ball {
+    color: #000000; /* black */
 }
 
 *:focus {
@@ -102,12 +106,6 @@ min-height: 100%;
 	background: #f0f0f0;
 	color: #8c8b8b;
 	font-size: 25px;
-}
-
-.sidebar-nav {
-	margin-top: 20px;
-	padding: 0;
-	list-style: none;
 }
 
 .mainhead {
@@ -146,6 +144,7 @@ label {
     border-radius: 50%;
     width: 60px;
     height: 60px;
+    background: #e6e600;
 }
 
 /* Source: https://css-tricks.com/snippets/css/css-box-shadow/ */
@@ -162,4 +161,13 @@ label {
 
 .breadcrumb a {
     text-decoration: underline;
+}
+
+#footer {
+   position: absolute;
+/*   bottom: 0;*/
+/*   left: 0px;    */
+   width: 100%;
+   height: auto;
+   clear: both;
 }

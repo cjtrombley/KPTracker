@@ -3,10 +3,10 @@
 
 <body>
     
-    <a href="#mainContent" class="skip-link sr-only sr-only-focusable" title="Skip to main content">Skip to main content</a>
+    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content">Skip to main content</a>
     <nav class="navbar navbar-expand-md nav-bg nav-marg navbar-light" aria-label="Navigation">
   <a class="navbar-brand" href="{% url 'index' %}" aria-label="Kingpin Bowling Tracker">
-   <img src="{% static 'images/Kingpin.jpeg' %}" alt="Kingpin's logo" class="logo">
+   <img src="{% static 'images/Kingpin.png' %}" alt="Kingpin's logo" class="logo">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Navbar toggle">
     <span class="navbar-toggler-icon"></span>
@@ -72,7 +72,7 @@
       <h1 class="text-center mainhead font-weight-bolder">Kingpin Bowling Tracker</h1>
           <hr class="style15">
           <div class="dropdown" align="right">
-            <button type="button" class="btn btn-success dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
+            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
                 <i class="far fa-user fa-2x mx-auto d-block"></i>
             </button>
             <div class="dropdown-menu">
@@ -81,11 +81,11 @@
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                <a href="{% url 'admin:index' %}">Admin page</a>
+                <a href="{% url 'admin:index' %}"><i class="fad fa-user-crown"></i> Admin page</a>
                 {% endif %}
                 {% endif %}
                 <br>
-                <a href="{% url 'logout' %}?next={% url 'login' %}">Logout</a>
+                <a href="{% url 'logout' %}?next={% url 'login' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 {% else %}
                 <a href="{% url 'login' %}">Please login to continue.</a>
                 {% endif %}
@@ -94,7 +94,23 @@
 	
       </div>
     </div>
-  </div>
+  </div>    
+    </main>
+    
+    
+      <footer class="foot-bg" id="footer">
+        
+            <div class="container-fluid">
+            <div class="row">
+
+            <div class="col-md-12">
+                <div class="text-center font-weight-bolder">&copy; 2019 Kingpin</div>
+            </div>
+
+      </div>
+      </div>
+      </footer>
+    
   {% load static %}
   <!-- jQuery -->    
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -105,6 +121,5 @@
   <!-- app.js -->    
   <script src="{% static 'js/app.js' %}"></script>
     
-    </main>
 </body>
 {% endblock %}
