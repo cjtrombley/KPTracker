@@ -58,6 +58,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
 			os.path.join(BASE_DIR,'templates/kpbt/'),
+			os.path.join(BASE_DIR,'kpbt/accounts/templates/'),
 			os.path.join(BASE_DIR,'kpbt/bowling_centers/templates/'),
 			os.path.join(BASE_DIR,'kpbt/leagues/templates/'),
 			],

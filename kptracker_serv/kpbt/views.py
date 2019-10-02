@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import authenticate, login
-from .forms import CreateUserProfileForm, CreateBowlerProfileForm
+from kpbt.accounts.forms import CreateUserProfileForm, CreateBowlerProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.core.exceptions import ObjectDoesNotExist

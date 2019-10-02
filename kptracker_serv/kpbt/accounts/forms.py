@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from kpbt.accounts.models import UserProfile, BowlerProfile
 
 class CreateUserProfileForm(forms.ModelForm):
 	class Meta:
