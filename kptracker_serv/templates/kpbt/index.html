@@ -1,6 +1,6 @@
-{% extends "kpbt/base_generic.html" %}
+{% extends "base_generic.html" %}
 
-{%block content%}
+{% block content %}
 
 	<h1>KPBT Home</h1>
 	
@@ -9,15 +9,13 @@
 		<p>You are currently logged in as {{ user.get_username }}</p>
 		
 		
-		{% if not request.user.bowler %}
-			<p>No bowler data to be found.</p>
-		{% endif %}
-		
+		<a href="{% url 'view_profile' %}">View Profile</a>
+		<br>
 		<a href="{% url 'logout' %}">Log out.</a>
 	{% else %}
 		 <a href="{% url 'login' %}">Please log in to continue.</a>
 		 <br>
-		 <a href="{% url 'register' %}">Register</a>
+		 <a href="{% url 'signup' %}">Sign Up</a>
 	{% endif %}
 	
 {% endblock %}

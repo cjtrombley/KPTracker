@@ -21,7 +21,7 @@
         
 		
 		{% if request.user.is_authenticated %}
-		  {% if request.user.is_admin %}
+		  {% if request.user.is_superuser %}
 	
 			<li><a href="{% url 'admin:index' %}">Administrator Page</a></li>
 		</ul>

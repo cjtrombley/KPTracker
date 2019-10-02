@@ -1,0 +1,39 @@
+{% extends 'base_generic.html' %}
+
+{%block content %}
+	<table>
+		{% for field in up_form %}
+			<tr>
+				<td> {{ field.label }} </td>
+				<td> {{ field.value|default_if_none:'' }} </td>
+			</tr>
+		{% endfor %}
+		{% for field in bp_form %}
+			<tr>
+				<td> {{ field.label }} </td>
+				<td> {{ field.value|default_if_none:'' }} </td>
+			</tr>
+		{% endfor %}
+	</table>
+	<br>
+	<table>
+		<thead>
+			{% for field in up_form %}
+				<th>{{ field.label }} </th>
+			{% endfor %}
+			{% for field in bp_form %}
+				<th> {{ field.label }} </th>
+			{% endfor %}
+		</thead>
+		<tbody>
+			<tr>
+				{% for field in up_form %}
+					<td>{{ field.value|default_if_none:'' }}</td>
+				{% endfor %}
+				{% for field in bp_form %}
+					<td> {{field.value|default_if_none:'' }}</td>
+				{% endfor %}
+			</tr>
+		</tbody>
+	</table>
+{% endblock %}

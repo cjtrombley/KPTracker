@@ -1,80 +1,79 @@
 from django.shortcuts import render, redirect
-from kpbt.models import *
-
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.template import loader
-
-from django.contrib.auth.models import Group
-from rest_framework import viewsets
-from .serializers import cUserSerializer, GroupSerializer
-
-from .forms import *
-
-from django.views import generic
+from django.views.generic.base import TemplateView, RedirectView
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.contrib.auth import authenticate, login
+from .forms import CreateUserProfileForm, CreateBowlerProfileForm
+from django.contrib.auth.decorators import login_required
+from .models import *
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
-class SignUp(CreateView):
-	form_class = cUserCreationForm
-	success_url = reverse_lazy('login')
-	template_name = 'kpbt/registration/register.html'
-	
-def login(request):
-	context = { }
-	return render(request, 'kpbt/registration/login.html', context)
-	
+class IndexView(TemplateView):
 
-def index(request):
-	"""View function for home page of site."""
-	
-	context = { }
-	
-	return render(request, 'kpbt/index.html', context)
+	template_name = 'index.html'
 
 
-def view_user_profile(request):
-	if request.user.is_authenticated:
-		if request.method == 'POST':
-			profile_form = BowlerCreationForm(request.POST, instance=request.user)
-			if profile_form.is_valid():
-				profile_form.save()
-				return redirect('/')
-			else:
-				pass
-		else:
-			context = {'form': BowlerCreationForm }
-			return render(request, 'kpbt/user_profile.html', context)
-
-		
-def update_profile(request):
+def signup(request):
 	if request.method == 'POST':
-		user_form = cUserCreationForm(request.POST, instance=request.user)
-		profile_form = BowlerCreationForm(request.POST, instance=request.user.bowler)
-		if user_form.is_valid() and profile_form.is_valid():
-			user_form.save()
-			profile_form.save()
-			messages.success(request, _('Profile successfully updated.'))
-			return redirect('settings:profile')
-		else:
-			messages.error(request, _('Error.'))
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get('username')
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+			return redirect('create_profile')
 	else:
-		user_form = cUserCreationForm(instance=request.user)
-		profile_form = BowlerCreationForm()
-	return render(request, 'kpbt/bowler_profile.html', {
-		'user_form': cUserCreationForm,
-		'profile_form' : profile_form
-	})
+		form = UserCreationForm()
+	return render(request, 'registration/signup.html', {'form': form})
 
-	
-class BowlerList(generic.ListView):
-		model = Bowler
-	
-class cUserViewSet(viewsets.ModelViewSet):
-	queryset = cUser.objects.all().order_by('-username')
-	serializer_class = cUserSerializer
+@login_required
+def create_profile(request):
+	try:
+		has_profile = request.user.userprofile
+	except ObjectDoesNotExist:
+		if request.method == 'POST':
+		
+			userprofile_form = CreateUserProfileForm(request.POST)
+			bowlerprofile_form = CreateBowlerProfileForm(request.POST)
+			if userprofile_form.is_valid() and bowlerprofile_form.is_valid():
+				up = userprofile_form.save(commit=False)
+				bp = bowlerprofile_form.save(commit=False)
+			
+				#up.void_default()
+				request.user.userprofile = up
+				request.user.bowlerprofile = bp
+			
+				request.user.userprofile.save()
+				request.user.bowlerprofile.save()
+			
+				return redirect('index')
+		else:
+			userprofile_form = CreateUserProfileForm()
+			bowlerprofile_form = CreateBowlerProfileForm()
+		return render(request, 'registration/create_profile.html', {
+		'userprofile': userprofile_form, 'bowlerprofile': bowlerprofile_form})
+	else:
+		return redirect('view_profile')
 
-class GroupViewSet(viewsets.ModelViewSet):
-	queryset = Group.objects.all()
-	serializer_class = GroupSerializer
+@login_required			
+def view_profile(request):
+	if request.method == 'POST':
+		pass
+	else:
+		try: 
+			userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
+			bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
+		except ObjectDoesNotExist:
+			return redirect('create_profile')
+		else:
+			up_form = CreateUserProfileForm(instance=userprofile)
+			bp_form = CreateBowlerProfileForm(instance=bowlerprofile)
+		return render(
+			request, 'registration/view_profile.html', {
+			'up_form': up_form,
+			'bp_form': bp_form,
+		})
+		return render(request, 'registration/profile', context={})

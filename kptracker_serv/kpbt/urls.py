@@ -1,15 +1,16 @@
-from django.urls import path
-from .views import SignUp as SignUpView
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views 
 from .views import *
 
 urlpatterns = [ 
-
-	#Paths that map to login and register functions
-	path('', views.index, name="index"),
-	path('login/', auth_views.LoginView.as_view(template_name='kpbt/registration/login.html'), name='login'),
-	path('register/', SignUpView.as_view(), name='register'),
-	path('bowlers/', BowlerList.as_view(), name='bowlers'),
-	path('bowlers/profile', views.view_user_profile, name='user_profile'),
+	
+	#Path that maps to site root
+	path('', views.IndexView.as_view(), name="index"),
+	
+	#Paths that map to user account functions
+	path('signup/', views.signup, name="signup"),
+	path('create_profile/', views.create_profile, name='create_profile'),
+	path('view_profile/', views.view_profile, name='view_profile'),
 ]
+	
