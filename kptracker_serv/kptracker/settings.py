@@ -59,7 +59,7 @@ TEMPLATES = [
         'DIRS': [
 			os.path.join(BASE_DIR,'templates/kpbt/'),
 			os.path.join(BASE_DIR,'kpbt/accounts/templates/'),
-			os.path.join(BASE_DIR,'kpbt/bowling_centers/templates/'),
+			os.path.join(BASE_DIR,'kpbt/centers/templates/'),
 			os.path.join(BASE_DIR,'kpbt/leagues/templates/'),
 			],
         'APP_DIRS': True,

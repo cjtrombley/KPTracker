@@ -1,5 +1,5 @@
 from django import forms
-from kpbt.bowling_centers.models import BowlingCenter
+from kpbt.centers.models import BowlingCenter
 
 class BowlingCenterForm(forms.ModelForm):
 	class Meta:

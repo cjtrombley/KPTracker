@@ -1,6 +1,5 @@
 from django.db import models
-from kpbt.models import *
-from kpbt.bowling_centers.models import BowlingCenter
+from kpbt.centers.models import BowlingCenter
 
 
 class League(models.Model):
