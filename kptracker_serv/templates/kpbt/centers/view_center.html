@@ -1,10 +1,10 @@
-{% extends 'base_generic.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
 	<h2>Bowling Center Info</h2>
 	<table>
-		{% for field in form %}
+		{% for field in %}
 			<tr>
 				<td> {{ field.label }} </td>
 				<td> {{ field.value }} </td>
