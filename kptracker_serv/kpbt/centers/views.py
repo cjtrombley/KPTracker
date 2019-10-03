@@ -6,6 +6,7 @@ from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import UserProfile
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
+from django.core.exceptions import ObjectDoesNotExist
 
 @permission_required('kpbt.add_bowlingcenter')
 def create_bowling_center(request):
@@ -20,11 +21,11 @@ def create_bowling_center(request):
 	
 @permission_required('kpbt.view_bowlingcenter')
 def view_center_home(request):
-	center = request.user.centers_managed.first()
-	if center:
+	try:
+		center = request.user.center_managed
 		form = BowlingCenterForm(instance=center)
 		return render(request, 'centers/view_center.html', {'form' : form})
-	else:
-		return render(request, 'centers/create_center.html', {})
+	except ObjectDoesNotExist:
+		return render(request, 'centers/create_center.html', {'form' : BowlingCenterForm()})
 		
 	
