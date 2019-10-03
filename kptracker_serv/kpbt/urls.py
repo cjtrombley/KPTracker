@@ -1,12 +1,16 @@
-from django.urls import path
-from .views import SignUp as SignUpView
-from . import views
+from django.urls import path, include
+from kpbt import views
 
-urlpatterns = [ 
 
-	#Paths that map to login and register functions
-	path('', views.index, name="index"),
-	path('login', views.login, name='login'),
-	path('register/', SignUpView.as_view(), name='register'),
+urlpatterns=[
 	
+	#Path that maps to site root
+	path('', views.IndexView.as_view(), name="index"),
+	
+	#Paths that map to user account functions
+	path('accounts/', include('kpbt.accounts.urls')),
+	
+	
+	#Paths that map to bowling center functions
+	path('centers/', include('kpbt.centers.urls')),
 ]

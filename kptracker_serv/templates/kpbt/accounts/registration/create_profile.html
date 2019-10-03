@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<p>Enter information below to create your profile.</p>
+	<form method="post">
+		{% csrf_token %}
+		{{ userprofile.as_p }}
+		{{ bowlerprofile.as_p }}
+		<button type="submit"> Create Profile </button>
+	</form>
+
+{% endblock %}

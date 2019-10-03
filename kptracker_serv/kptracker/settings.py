@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b(=)(88+_^^zn(eu#*l@!px3_c)j&o3r@42x6=5hy2=9ipr$+0'
+SECRET_KEY = 's-zq+zfxr8dbn#rj21+puh-evs2z*0wk*8f3pl7pmyhw*q%2)9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'kpbt',
+	'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -56,8 +57,11 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-			os.path.join(BASE_DIR,'templates/'),
-		],
+			os.path.join(BASE_DIR,'templates/kpbt/'),
+			os.path.join(BASE_DIR,'templates/kpbt/accounts/'),
+			#os.path.join(BASE_DIR,'kpbt/centers/templates/'),
+			#os.path.join(BASE_DIR,'kpbt/leagues/templates/'),
+			],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,9 +90,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
-
-AUTH_USER_MODEL = 'kpbt.cUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,7 +127,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-
 	os.path.join(BASE_DIR, 'static'),
 )
 

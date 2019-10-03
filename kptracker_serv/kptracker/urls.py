@@ -1,4 +1,4 @@
-"""kptracker URL Configuration
+"""kptracker_serv URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,15 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
-from django.conf import settings
 from django.conf.urls.static import static
+from django.conf import settings
+from kpbt import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	
 	#Use include() to add paths from the kpbt application
 	path('kpbt/', include('kpbt.urls')),
 	
@@ -32,5 +32,7 @@ urlpatterns = [
  #Use static() to add url mappings to serve static files during development
  
 #Add Django site authentication URLs
-urlpatterns += [path('accounts/', include('django.contrib.auth.urls')),
+urlpatterns += [
+	path('users/', include('django.contrib.auth.urls')),
 ] 
+
