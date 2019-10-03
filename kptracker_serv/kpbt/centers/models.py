@@ -6,7 +6,7 @@ class BowlingCenter(models.Model):
 	num_lanes = models.IntegerField(default=0)
 	
 	manager= models.ForeignKey(User, on_delete=models.CASCADE, null=True,
-		verbose_name=('manager'))
+		related_name= 'centers_managed', verbose_name=('managed by'))
 	
 	def set_manager(self, user):
 		self.manager = user

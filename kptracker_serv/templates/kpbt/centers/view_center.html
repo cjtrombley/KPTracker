@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+	<h2>Bowling Center Info</h2>
+	<table>
+		{% for field in form %}
+			<tr>
+				<td> {{ field.label }} </td>
+				<td> {{ field.value }} </td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

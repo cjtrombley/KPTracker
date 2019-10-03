@@ -1,38 +1,63 @@
-{% extends 'base_generic.html' %}
+{% extends "base.html" %}
 
-{% block title %} Login {% endblock %}
+{% block title %}<title>Kingpin Bowling Tracker - Login</title>{% endblock %}
 
 {% block content %}
-
+<body id="bg-bowl">
+<div class="container-fluid" align="center">
+  <div class="row">
+    <div class="col-md-12">
+        <header>
+            <h1 class="mainhead font-weight-bolder margin-botm">Kingpin</h1>
+            <!-- Image Here !!! -->
+    </header>
+    <div class="card bg-danger text-white">
+        <h2>Login:</h2>
+        <hr class="hr-style">
 {% if form.errors %}
-	<p>Your username nad password did not match</p>
+	<p class="lead">Your username and password did not match. Please try again.</p>
 {% endif %}
 
 {% if next %}
 	{% if user.is_authenticated %}
-		<p>Authorization not granted for this page.</p>
+		<p class="lead">Access permission for this page denied.</p>
 	{% else %}
-		<p>Please log in to view this page.</p>
+		<p class="lead">Please log in to view this page.</p>
 	{% endif %}
 {% endif %}
 
 <form method="post" action="{% url 'login' %}">
-	{% csrf_token %}
-	<table>
-		<tr>
-			<td> {{ form.username.label_tab }} </td>
-			<td> {{ form.username }} </td>
-		</tr>
-		
-		<tr>
-			<td> {{ form.password.label_tab }} </td>
-			<td> {{ form.password }} </td>
-		</tr>
-	</table>
-	
-	<input type="submit" value="login" />
-	<input type="hidden" name="next" value="{{ next }}" />
+{% csrf_token %}
+
+<table class="margin-botm">
+    <div class="form-group one-edge-box-shadow">
+	<tr>
+		<td class="font-weight-bolder text-bluegrey">{{ form.username.label_tag }}</td>
+		<td>{{ form.username }}</td>
+	</tr>
+     </div>    
+    
+	<div class="form-group one-edge-box-shadow">
+	<tr>
+		<td class="font-weight-bolder text-bluegrey">{{ form.password.label_tag }}</td>
+		<td>{{ form.password }}</td>
+	</tr>
+    </div>    
+</table>
+
+<input type="submit" value="Login" class="btn btn-secondary margin-botm" />
+<input type="hidden" name="next" value="{{ next }}" />
 </form>
 
+<p><a href="{% url 'password_reset' %}" class="link-login">Forgot password&#63;</a></p>
+<p><a href="{% url 'register' %}" class="link-login">Register&#33;</a></p>
+         <div class="card-footer"><footer><span class="text-center">&copy; 2019 Kingpin</span></footer></div>
+        </div>
+        </div>     
+       </div>      
+      </div>        
+</body>
 {% endblock %}
-	
+
+
+

@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 
-def signup(request):
+def register(request):
 	if request.method == 'POST':
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
@@ -20,7 +20,7 @@ def signup(request):
 			return redirect('create_profile')
 	else:
 		form = UserCreationForm()
-	return render(request, 'registration/signup.html', {'form': form})
+	return render(request, 'registration/register.html', {'form': form})
 
 
 

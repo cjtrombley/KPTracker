@@ -1,25 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from kpbt.teams.models import Team
-
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 import datetime
 
-
-"""
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-	if created:
-		UserProfile.objects.create(user=instance)
-		BowlerProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_profile(sender, instance, **kwargs):
-	instance.userprofile.save()
-	instance.bowlerprofile.save()
-"""
-
 class UserProfile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='userprofile')
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(
@@ -29,10 +16,16 @@ class UserProfile(models.Model):
 	)
 	
 	is_league_secretary = models.BooleanField(default=False)
-	is_bowlingcenter_manager = models.BooleanField(default=False)
+	is_center_manager = models.BooleanField(default=False)
 	
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name
+		
+	
+	def set_is_center_manager(self):
+		return
+	
+	
 	"""
 	USER_TYPE_CHOICES = (
 		(1, 'bowler'),
@@ -40,6 +33,7 @@ class UserProfile(models.Model):
 		(3, 'bowlingcenter_manager'),
 		(4, 'admin'),
 	)
+	
 	
 	user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, default=1)
 	
@@ -74,3 +68,11 @@ class BowlerProfile(models.Model):
 		
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name
+
+
+
+@receiver(post_save, sender=UserProfile)
+def perms_update(sender, instance, **kwargs):
+	if instance.is_center_manager:
+		user = instance.user
+		user.user_permissions.add('kpbt.add_bowlingcenter')

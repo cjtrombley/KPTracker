@@ -12,5 +12,5 @@ urlpatterns=[
 	
 	
 	#Paths that map to bowling center functions
-	path('bowling_centers/', include('kpbt.centers.urls')),
+	path('centers/', include('kpbt.centers.urls')),
 ]
