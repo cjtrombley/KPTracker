@@ -13,4 +13,7 @@ urlpatterns=[
 	
 	#Paths that map to bowling center functions
 	path('centers/', include('kpbt.centers.urls')),
+	
+	#Paths that map to league functions
+	path('leagues/', include('kpbt.leagues.urls')),
 ]

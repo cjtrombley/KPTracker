@@ -16,10 +16,10 @@ class League(models.Model):
 	)
 
 	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.CASCADE,
-		related_name='leagues', verbose_name=('leagues'))
+		related_name='leagues', verbose_name=('bowling center'))
 	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
-	name = models.CharField(max_length=32, default=id)
+	name = models.CharField(max_length=32)
 	num_teams = models.PositiveSmallIntegerField()
 	designation = models.CharField(max_length=1, choices=DESIGNATION)
 	gender = models.CharField(max_length=1, choices=GENDER)

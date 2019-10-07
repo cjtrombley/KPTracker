@@ -6,7 +6,11 @@ class BowlingCenter(models.Model):
 	num_lanes = models.IntegerField(default=0)
 	
 	manager= models.OneToOneField(User, on_delete=models.SET_NULL, null=True,
-		related_name='center_managed', verbose_name=('managed by'))
+		related_name='center_managed', verbose_name=('manager'))
 	
+	
+	def __str__(self):
+		return self.center_name
+		
 	def set_manager(self, user):
 		self.manager = user

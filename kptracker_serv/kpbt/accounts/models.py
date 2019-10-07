@@ -67,7 +67,7 @@ class BowlerProfile(models.Model):
 	last_date_sanctioned = models.DateField(default=datetime.date(1900,1,1), blank=True)
 		
 	def __str__(self):
-		return self.first_name + ' ' + self.last_name
+		return self.user.first_name + ' ' + self.user.last_name
 
 
 

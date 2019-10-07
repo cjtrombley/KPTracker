@@ -55,21 +55,18 @@ def create_profile(request):
 
 @login_required			
 def view_profile(request, identifier=""):
-	if request.method == 'POST':
-		pass
+	try: 
+		userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
+		bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
+	except ObjectDoesNotExist:
+		return redirect('create_profile')
 	else:
-		try: 
-			userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
-			bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
-		except ObjectDoesNotExist:
-			return redirect('create_profile')
-		else:
-			up_form = CreateUserProfileForm(instance=userprofile)
-			bp_form = CreateBowlerProfileForm(instance=bowlerprofile)
-		return render(
-			request, 'registration/view_profile.html', {
-			'up_form': up_form,
-			'bp_form': bp_form,
-		})
-		return render(request, 'registration/profile', context={})
+		up_form = CreateUserProfileForm(instance=userprofile)
+		bp_form = CreateBowlerProfileForm(instance=bowlerprofile)
+	return render(
+		request, 'registration/view_profile.html', {
+		'up_form': up_form,
+		'bp_form': bp_form,
+	})
+	return render(request, 'registration/profile', context={})
 		

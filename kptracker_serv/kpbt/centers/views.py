@@ -14,7 +14,7 @@ def create_bowling_center(request):
 		form = BowlingCenterForm(request.POST)
 		if form.is_valid():
 			form.save()
-			return redirect('index')
+			return redirect('center-home')
 	else:
 		form = BowlingCenterForm()
 	return render(request, 'centers/create_center.html', {'form': form})
