@@ -2,6 +2,24 @@
 
 {% block content %}
 
-{{ form.as_p }}
+
+<table>
+	<tr>
+		<td> League </td>
+		<td> {{ league.name }} </td>
+	<tr>
+	
+	<tr>
+		<td> Bowling Center </td>
+		<td> {{ league.bowling_center.name }} </td>
+	</tr>
+	
+	{% for team in teams %}
+	<tr>
+		<td> Team Name </td>
+		<td> {{ team.name }} </td>
+	</tr>	
+	{% endfor %}
+</table>
 
 {% endblock %}

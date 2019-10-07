@@ -33,6 +33,9 @@ class League(models.Model):
 	game_point_value = models.PositiveSmallIntegerField()
 	series_point_value = models.PositiveSmallIntegerField()
 	
+	def __str__(self):
+		return self.bowling_center.center_name + ", " + self.name
+	
 
 class LeagueBowler(models.Model):
 	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE)

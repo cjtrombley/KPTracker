@@ -19,6 +19,7 @@ def view_league(request, identifier=""):
 	except:
 		return redirect('create-league')
 	else:
-		l_form = LeagueCreationForm(instance=league)
-	return render(request, 'leagues/view_league.html', {'form' : l_form })
+		teams = league.teams.all()
+		
+	return render(request, 'leagues/view_league.html', {'league' : league, 'teams' : teams})
 	

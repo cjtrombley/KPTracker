@@ -16,4 +16,7 @@ urlpatterns=[
 	
 	#Paths that map to league functions
 	path('leagues/', include('kpbt.leagues.urls')),
+	
+	#Paths that map to team functions
+	path('teams/', include('kpbt.teams.urls')),
 ]
