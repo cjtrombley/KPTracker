@@ -12,6 +12,12 @@
 		<td> League </td>
 		<td> {{ team.league.name }} </td>
 	</tr>
+	
+	{% for bowler in teams.bowlers %}
+	<tr>	
+		<td> {{ bowler }} </td>
+	</tr>
+	{% endfor %}
 </table>
 
 {% endblock %}
