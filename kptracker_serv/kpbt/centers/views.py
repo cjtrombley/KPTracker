@@ -20,11 +20,11 @@ def create_bowling_center(request):
 	return render(request, 'centers/create_center.html', {'form': form})
 	
 @permission_required('kpbt.view_bowlingcenter')
-def view_center_home(request):
+def view_center_home(request, identifier=""):
 	try:
 		center = request.user.center_managed
-		form = BowlingCenterForm(instance=center)
-		return render(request, 'centers/view_center.html', {'form' : form})
+		manager = request.user
+		return render(request, 'centers/view_center.html', {'center' : center, 'manager' : manager})
 	except ObjectDoesNotExist:
 		return render(request, 'centers/create_center.html', {'form' : BowlingCenterForm()})
 		

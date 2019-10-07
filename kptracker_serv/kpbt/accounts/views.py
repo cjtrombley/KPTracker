@@ -54,7 +54,7 @@ def create_profile(request):
 		return redirect('view_profile')
 
 @login_required			
-def view_profile(request):
+def view_profile(request, identifier=""):
 	if request.method == 'POST':
 		pass
 	else:
