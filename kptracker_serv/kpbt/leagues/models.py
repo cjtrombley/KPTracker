@@ -34,7 +34,7 @@ class League(models.Model):
 	series_point_value = models.PositiveSmallIntegerField()
 	
 	def __str__(self):
-		return self.bowling_center.center_name + ", " + self.name
+		return self.bowling_center.name + ", " + self.name
 	
 
 class LeagueBowler(models.Model):

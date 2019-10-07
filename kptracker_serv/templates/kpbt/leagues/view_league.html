@@ -17,7 +17,7 @@
 	{% for team in teams %}
 	<tr>
 		<td> Team Name </td>
-		<td> {{ team.name }} </td>
+		<td> <a href="{% url 'view-team' team.name %}"> {{ team.name }} </td>
 	</tr>	
 	{% endfor %}
 </table>

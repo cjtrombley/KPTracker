@@ -58,7 +58,7 @@ class BowlerProfile(models.Model):
 	
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 	team = models.ForeignKey('Team', null=True, on_delete=models.SET_NULL,
-		related_name='teams', verbose_name='teams')
+		related_name='teams', verbose_name='profile')
 	
 	date_of_birth = models.DateField(default=datetime.date(1900,1,1), blank=True)
 	hand = models.CharField(max_length=1, choices=HAND)
