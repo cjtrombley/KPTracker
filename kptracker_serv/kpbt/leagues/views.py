@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from kpbt.leagues.forms import LeagueCreationForm
 from kpbt.leagues.models import League
 
-def create_league(request):
+def create_league(request, center_name=""):
 	if request.method == 'POST':
 		league_form = LeagueCreationForm(request.POST)
 		if league_form.is_valid():
@@ -13,7 +13,7 @@ def create_league(request):
 		league_form = LeagueCreationForm()
 	return render(request, 'leagues/create_league.html', {'form' : league_form })
 
-def view_league(request, identifier=""):
+def view_league(request, center_name = "", identifier=""):
 	try:
 		league = League.objects.get(name=identifier)
 	except:
