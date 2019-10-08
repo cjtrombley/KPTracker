@@ -27,7 +27,7 @@ class TeamRoster(models.Model):
 	games_with_team = models.PositiveSmallIntegerField(default=0)
 	is_substitute = models.BooleanField(default=False)
 	
-	#def __str__(self):
-	#	return self.bowler.first_name + " " + self.bowler.last_name + ", " + self.team.name
+	def __str__(self):
+		return self.bowler.first_name + " " + self.bowler.last_name + ", " + self.team.name
 		
 	

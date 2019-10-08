@@ -23,7 +23,8 @@ def view_team(request, league_name="", team_name=""):
 	except:
 		return redirect('index')
 	else:
-		return render(request, 'teams/view_team.html', {'team' : team}) 
+		bowlers = team.roster.all()
+		return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers}) 
 		
 def create_roster(request, league_name="", team_name=""):
 	if request.method == 'POST':

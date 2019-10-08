@@ -13,9 +13,10 @@
 		<td> {{ team.league.name }} </td>
 	</tr>
 	
-	{% for bowler in teams.bowlers %}
+	{% for bowler in bowlers %}
 	<tr>	
-		<td> {{ bowler }} </td>
+		<td><a href="{% url 'view-profile' bowler.username %}">{{ bowler.userprofile.first_name }} </td> </a>
+		
 	</tr>
 	{% endfor %}
 </table>

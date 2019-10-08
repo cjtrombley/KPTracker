@@ -12,7 +12,7 @@ class CreateTeamForm(forms.ModelForm):
 class TeamRosterForm(forms.ModelForm):
 	class Meta:
 		model = TeamRoster
-		fields = ('bowler', 'team', 'games_with_team', 'is_substitute')
+		fields = ('bowler', 'team', 'is_substitute')
 		
 #class TeamRosterForm(forms.Form):
 #	team = forms.ModelChoiceField(queryset=Team.objects.all())
