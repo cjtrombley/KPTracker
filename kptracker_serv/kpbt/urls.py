@@ -1,6 +1,5 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from kpbt import views
-
 
 urlpatterns=[
 	
@@ -22,4 +21,8 @@ urlpatterns=[
 	
 	#Paths that map to game functions
 	path('games/', include('kpbt.games.urls')),
+
+	#Paths that map to account verification
+	#re_path(r'verify/(.*)', include('kpbt.accounts.verify')),
+	# Trying to figure out how to get this to work
 ]
