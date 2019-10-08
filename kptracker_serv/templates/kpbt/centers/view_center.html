@@ -3,12 +3,21 @@
 {% block content %}
 
 	<h2>Bowling Center Info</h2>
+	
+	
 	<table>
-		{% for field in %}
-			<tr>
-				<td> {{ field.label }} </td>
-				<td> {{ field.value }} </td>
-			</tr>
-		{% endfor %}
+		<tr>
+			<td> Center Name </td>
+			<td> {{ center.name }} </td>
+		</tr>
+		<tr>
+			<td> Number of lanes </td>
+			<td> {{ center.num_lanes }} </td>
+		</tr>
+		<tr>
+			<td> Manager </td>
+			<td><a href=" {% url 'view-profile-by-username' manager.username %} "> {{ manager.username }} </a>
+			
 	</table>
+	
 {% endblock %}

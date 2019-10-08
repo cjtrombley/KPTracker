@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table>
+	<tr>
+		<td> Team Name </td>
+		<td> {{ team.name }} </td>
+	</tr>
+	
+	<tr>
+		<td> League </td>
+		<td> {{ team.league.name }} </td>
+	</tr>
+	
+	{% for bowler in bowlers %}
+	<tr>	
+		<td><a href="{% url 'view-profile-by-username' bowler.username %}">{{ bowler.userprofile.first_name }} </td> </a>
+		
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
+	
+	

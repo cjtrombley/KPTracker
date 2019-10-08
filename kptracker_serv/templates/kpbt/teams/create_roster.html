@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+	{{ roster.as_table }}
+	<button type="submit">Create Roster</button>
+</form>
+{% endblock %}

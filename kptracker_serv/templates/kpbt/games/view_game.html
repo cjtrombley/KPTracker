@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table>
+	{% for game in games %}
+	<tr>
+		<td> Bowler </td>
+		<td> {{ game.bowler.userprofile.first_name }}
+	</tr>
+	
+	<tr>
+		<td> League </td>
+		<td> {{ game.league.name }} </td>
+	</tr>
+	
+	<tr>
+		<td> Team </td>
+		<td> {{ game.team.name }} </td>
+	</tr>
+	
+	<tr>
+		<td> Game One Score </td>
+		<td> {{ game.game_one_score }} </td>
+	</tr>
+	
+	<tr>
+		<td> Game Two Score </td>
+		<td> {{ game.game_two_score }} </td>
+	</tr>
+	
+	<tr>
+		<td> Game Three Score </td>
+		<td> {{ game.game_three_score }} </td>
+	</tr>
+	
+	{% endfor %}
+</table>
+
+{% endblock %}
+		

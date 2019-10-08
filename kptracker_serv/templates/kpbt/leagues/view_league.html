@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<table>
+	<tr>
+		<td> League </td>
+		<td> {{ league.name }} </td>
+	<tr>
+	
+	<tr>
+		<td> Bowling Center </td>
+		<td> {{ league.bowling_center.name }} </td>
+	</tr>
+	
+	{% for team in teams %}
+	<tr>
+		<td> Team Name </td>
+		<td> <a href="{% url 'view-team' team.name %}"> {{ team.name }} </td>
+	</tr>	
+	{% endfor %}
+</table>
+
+{% endblock %}
