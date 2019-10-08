@@ -8,7 +8,7 @@
 	<table>
 		<tr>
 			<td> Center Name </td>
-			<td> {{ center.center_name }} </td>
+			<td> {{ center.name }} </td>
 		</tr>
 		<tr>
 			<td> Number of lanes </td>
@@ -16,7 +16,7 @@
 		</tr>
 		<tr>
 			<td> Manager </td>
-			<td><a href=" {% url 'view_profile' manager.username %} "> {{ manager.username }} </a>
+			<td><a href=" {% url 'view-profile-by-username' manager.username %} "> {{ manager.username }} </a>
 			
 	</table>
 	

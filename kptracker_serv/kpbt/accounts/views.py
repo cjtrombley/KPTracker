@@ -38,7 +38,6 @@ def create_profile(request):
 				up = userprofile_form.save(commit=False)
 				bp = bowlerprofile_form.save(commit=False)
 			
-				#up.void_default()
 				request.user.userprofile = up
 				request.user.bowlerprofile = bp
 			

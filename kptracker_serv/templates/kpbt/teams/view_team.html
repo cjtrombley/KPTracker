@@ -15,7 +15,7 @@
 	
 	{% for bowler in bowlers %}
 	<tr>	
-		<td><a href="{% url 'view-profile' bowler.username %}">{{ bowler.userprofile.first_name }} </td> </a>
+		<td><a href="{% url 'view-profile-by-username' bowler.username %}">{{ bowler.userprofile.first_name }} </td> </a>
 		
 	</tr>
 	{% endfor %}
