@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from kpbt.teams.forms import CreateTeamForm, TeamRosterForm
 from kpbt.teams.models import Team
-
+from kpbt.leagues.models import League
 
 def create_team(request):
 	if request.method == 'POST':
@@ -17,7 +17,14 @@ def create_team(request):
 	return render(request, 'teams/create_team.html', {'form' : team_form})
 
 
-def view_team(request, league_name="", team_name=""):
+def view_team(request, center_name= "", league_name="", team_name=""):
+	if center_name:
+		if league_name:
+			if team_name:
+				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+				bowlers = team.roster.all()
+				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
+	"""
 	try:
 		team = Team.objects.get(name=team_name)
 	except:
@@ -25,6 +32,7 @@ def view_team(request, league_name="", team_name=""):
 	else:
 		bowlers = team.roster.all()
 		return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers}) 
+	"""
 		
 def create_roster(request, league_name="", team_name=""):
 	if request.method == 'POST':

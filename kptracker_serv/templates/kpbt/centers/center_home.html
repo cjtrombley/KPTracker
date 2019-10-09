@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Bowling Centers </h2>
+
+<table>
+	{% for center in centers %}
+	<tr>
+		<td> {{ center.name }} </td>
+		<td> {{ center.num_lanes }} </td>
+		<td><a href="{% url 'view-profile-by-username' center.manager.username %}"> {{ center.manager.userprofile.first_name }} </a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

@@ -5,5 +5,6 @@ urlpatterns = [
 	path('', views.view_league, name='league-home'),
 	path('create-league', views.create_league, name='create-league'),
 	path('view-league/', views.view_league, name='view-league-home'),
-	path('view-league/<str:identifier>', views.view_league, name='view-league-by-name'),
+	path('view-league/<str:league_name>', views.view_league, name='view-league-by-name'),
+	path('<str:league_name>', views.view_league, name='view-league-by-name'),
 ]

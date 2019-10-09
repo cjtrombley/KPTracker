@@ -64,7 +64,7 @@ def view_profile(request, identifier=""):
 			userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
 			bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
 	except ObjectDoesNotExist:
-		return redirect('create_profile')
+		return redirect('create-profile')
 	else:
 		up_form = CreateUserProfileForm(instance=userprofile)
 		bp_form = CreateBowlerProfileForm(instance=bowlerprofile)
