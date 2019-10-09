@@ -6,10 +6,13 @@ from kpbt.centers.models import BowlingCenter
 
 def create_league(request, center_name=""):
 	if request.method == 'POST':
-		league_form = LeagueCreationForm(request.POST)
-		if league_form.is_valid():
-			league_form.save()
-			return redirect('index')
+		if center_name:
+			league_form = LeagueCreationForm(request.POST)
+			if league_form.is_valid():
+				league = league_form.save()
+				league.set_center(center_name)
+				league.save()
+				return redirect('view-center-by-name', center_name=center_name)
 	else:
 		league_form = LeagueCreationForm()
 	return render(request, 'leagues/create_league.html', {'form' : league_form })

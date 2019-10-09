@@ -1,5 +1,6 @@
 from django.db import models
 from kpbt.centers.models import BowlingCenter
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class League(models.Model):
@@ -15,7 +16,7 @@ class League(models.Model):
 		('X', 'Mixed'),
 	)
 
-	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.CASCADE,
+	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.SET_NULL, null=True,
 		related_name='leagues', verbose_name=('bowling center'))
 	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
@@ -35,6 +36,14 @@ class League(models.Model):
 	
 	def __str__(self):
 		return self.bowling_center.name + ", " + self.name
+		
+	def set_center(self, center_name):
+		try:
+			center = BowlingCenter.objects.get(name=center_name)
+		except ObjectDoesNotExist:
+			print("Whoa")
+		else:
+			self.bowling_center = center
 	
 
 class LeagueBowler(models.Model):

@@ -11,9 +11,6 @@ team_patterns = [
 
 league_patterns = [
 	
-	path('<str:league_name>', league_views.view_league, name='view-center-league-by-name'),
-	path('<str:league_name>/', include(team_patterns)),
-
 	#Paths that map to league-team functions
 	path('teams/', include('kpbt.teams.urls')),
 	
@@ -21,6 +18,12 @@ league_patterns = [
 	path('games/', include('kpbt.games.urls')),
 	
 	path('leagues/', include('kpbt.leagues.urls')),
+	
+	
+	path('<str:league_name>', league_views.view_league, name='view-center-league-by-name'),
+	path('<str:league_name>/', include(team_patterns)),
+
+	
 ]
 
 urlpatterns=[
