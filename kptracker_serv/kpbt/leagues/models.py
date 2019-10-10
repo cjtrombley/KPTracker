@@ -94,7 +94,7 @@ class Schedule(models.Model):
 	def pairings(self):
 		this_league = self.league
 		
-		teams = this_league.teams.all()
+		teams = list(range(1, this_league.teams.count()+1))
 		
 		if len(teams) % 2:
 			teams.append('Bye')

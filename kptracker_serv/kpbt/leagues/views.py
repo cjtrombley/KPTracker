@@ -48,5 +48,7 @@ def view_schedule(request, center_name="", league_name=""):
 	if center_name:
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-			schedule = league.schedule.pairings()
+			schedule = list(league.schedule.pairings())
+			print(schedule)
+			print(schedule[12][0][0])
 			return render(request, 'leagues/view_schedule.html', {'schedule' : schedule })
