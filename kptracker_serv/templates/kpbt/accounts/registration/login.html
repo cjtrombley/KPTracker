@@ -1,19 +1,18 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %}
 
 {% block title %}<title>Kingpin Bowling Tracker - Login</title>{% endblock %}
 
 {% block content %}
 <body id="bg-bowl">
-<div class="container-fluid" align="center">
+<main id="mainContent" tabindex="-1">    
+<div class="container-fluid mx-auto d-block" align="center">
   <div class="row">
     <div class="col-md-12">
         <header>
-            <h1 class="mainhead font-weight-bolder margin-botm">Kingpin</h1>
-            <!-- Image Here !!! -->
-    </header>
-    <div class="card bg-danger text-white">
-        <h2>Login:</h2>
-        <hr class="hr-style">
+            <h1 class="mainhead font-weight-bolder text-center">Kingpin</h1>
+        </header>
+            <div class="card-login text-white bg-trans" id="login">
+        <img src="{% static 'images/icons/bowling.svg' %}" alt="Pins with bowling ball" width="200" height="200" class="mx-auto d-block login-icon">
 {% if form.errors %}
 	<p class="lead">Your username and password did not match. Please try again.</p>
 {% endif %}
@@ -29,33 +28,55 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 
-<table class="margin-botm">
+<table>
     <div class="form-group one-edge-box-shadow">
 	<tr>
-		<td class="font-weight-bolder text-bluegrey">{{ form.username.label_tag }}</td>
-		<td>{{ form.username }}</td>
+		<td><div class="username-row row">{{ form.username }}</div></td>
 	</tr>
      </div>    
     
 	<div class="form-group one-edge-box-shadow">
 	<tr>
-		<td class="font-weight-bolder text-bluegrey">{{ form.password.label_tag }}</td>
-		<td>{{ form.password }}</td>
+        <td><div class="password-row row">{{ form.password }}</div></td>
 	</tr>
     </div>    
 </table>
 
-<input type="submit" value="Login" class="btn btn-secondary margin-botm" />
+<input type="submit" value="Login" class="btn-login margin-botm" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p><a href="{% url 'password_reset' %}" class="link-login">Forgot password&#63;</a></p>
-<p><a href="{% url 'register' %}" class="link-login">Register&#33;</a></p>
+<p class="login-para"><a href="{% url 'password_reset' %}" class="link-login">Forgot password&#63;</a></p>
+<p class="login-para"><a href="{% url 'register' %}" class="link-login">Register&#33;</a></p>
          <div class="card-footer"><footer><span class="text-center">&copy; 2019 Kingpin</span></footer></div>
         </div>
+            
+           
+      
+        
+        
+        
+        
+        
+        
+        
         </div>     
        </div>      
-      </div>        
+      </div>
+    </main>  
+      {% load static %}
+  <!-- jQuery -->    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper.js-->    
+  <script src="{% static 'js/Popper.js' %}"></script>
+   <!-- Bootstrap minified JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/velocity/1.2.2/velocity.ui.min.js"></script>      
+  <!-- app.js -->    
+  <script src="{% static 'js/app.js' %}"></script>
+    
+    
 </body>
 {% endblock %}
 

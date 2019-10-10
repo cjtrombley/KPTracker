@@ -1,19 +1,23 @@
 /* styles.css file */
 
+
+html, body {
+   height: 100%;
+}
+
 body {
     font-family: 'Arimo', sans-serif;
     margin: 0;
     padding: 0;
     font-size: 1.25rem;
-    background: url("../images/bowling-bg.jpg") 25% 25% no-repeat;
-}
-
-body, html{
-   height: 100%;
+    background: #3ab59c;
+    background: url("../images/bowling_ball_down_lane-bg.jpg") 25% 25%;
+    background-size: cover;
 }
 
 #bg-bowl {
-    background: url("../images/bowling_wallpaper.jpg") 20% 30% no-repeat;
+    background: url("../images/bowling_balls-bg.jpg") repeat;
+    background-size: cover;
 }
 
 header, section, footer, aside, nav, main, article, figure {
@@ -39,7 +43,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .logo {
-   width:600px; 
+   width: 400px; 
    margin-left: auto; 
    margin-right: auto; 
 }
@@ -58,7 +62,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .nav-bg, .foot-bg {
-    background-color: #4078a5; /* shade of steelblue */
+    background-color: darkturquoise;  /* shade of steelblue */
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -75,11 +79,15 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .fa-sign-in-alt {
-  color: #FFA500; /* shade of yellow */
+  color: gold; /* shade of yellow */
 }
 
 .fa-bowling-ball {
     color: #000000; /* black */
+}
+
+.fa-home {
+    color: springgreen;
 }
 
 *:focus {
@@ -110,6 +118,11 @@ min-height: 100%;
 
 .mainhead {
     font-family: 'Abril Fatface', cursive;
+    font-size: 3.125rem;
+}
+
+.margin-head {
+    margin-bottom: 75px;   
 }
 
 .margin-botm {
@@ -124,8 +137,177 @@ min-height: 100%;
     text-decoration: underline;
 }
 
-.link-login {
-    color: #000000;
+.card-login {
+  max-width: 380px;
+  min-height: 500px;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+  margin: 290px auto;
+}
+
+.card-regist {
+    
+  max-width: 980px;
+  min-height: 400px;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 4px solid rgba(0, 200, 0, .125);
+  border-radius: 8px;
+    
+}
+
+input {
+    border-radius:10px;
+    background-color: darkturquoise;
+}
+
+.bg-trans {
+    background-color: rgba(10,10,10,.68);
+}
+
+.login-icon {
+  margin: 50px 65px;
+}
+
+.username {
+    background-image: url('../images/icons/user-solid.svg');
+    background-position: 5px 1px; 
+    background-repeat: no-repeat;
+    padding-left: 45px;
+}
+
+.password {
+    background-image: url('../images/icons/key-solid.svg');
+    background-position: 5px 1px; 
+    background-repeat: no-repeat;
+    padding-left: 45px;
+}
+
+/* Leave commented out! */
+
+/*
+.row {
+  display: none;
+}
+*/
+
+#login input[id="id_username"], input[id="id_password"] {
+  background-color: darkturquoise;   
+}
+
+.username-row {
+  position: relative;
+  height: 40px;
+  margin-bottom: 10px;  
+}
+
+.password-row {
+  position: relative;
+  height: 40px; 
+}
+
+input:focus, .btn-login:focus, button:focus {
+  outline: none;
+}
+
+input::-webkit-input-placeholder {
+  color: rgba(0,0,0,.8);
+}
+
+input::-moz-placeholder {
+  color: rgba(0,0,0,.8);  
+}
+
+p + ul {
+    list-style: square;
+}
+
+.btn-login {
+  display: block;
+  width: 280px;
+  height: 40px;
+  padding: 0;
+  margin: 10px 20px 10px;
+  font-weight: 700;
+  color: #000;
+  background-color: #22c08a;
+  border: none;
+  border-radius: 20px;
+  transition: .10s ease-in-out;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+.btn-login:hover {
+  background-color: #26d69a;
+}
+
+.btn-login:active {
+  background-color: #1eaa7a;
+}
+
+.btn-regist {
+  display: block;
+  width: 280px;
+  height: 40px;
+  padding: 0;
+  margin: 10px 20px 10px;
+  font-weight: 700;
+  color: #000;
+  background-color: tomato;
+  border: none;
+  border-radius: 20px;
+  transition: .10s ease-in-out;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+.btn-regist:hover {
+  background-color: #26d69a;
+}
+
+.btn-regist:active {
+  background-color: #1eaa7a;
+}
+
+label,
+p a:hover {
+  -webkit-cursor: pointer;
+  cursor: pointer;
+}
+
+@-webkit-keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.link-login, .label-bg {
+    color: khaki;
 }
 
 .link-login:hover {
@@ -138,6 +320,8 @@ min-height: 100%;
 
 label {
     font-weight: bolder;
+    font-size: 1.125rem;
+    color: khaki;
 }
 
 .buttonDrop {
@@ -157,10 +341,15 @@ label {
 .breadcrumb {
     background: none;
     margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 .breadcrumb a {
     text-decoration: underline;
+}
+
+.breadcrumb .active {
+    color: darkgreen;
 }
 
 #footer {
@@ -170,4 +359,23 @@ label {
    width: 100%;
    height: auto;
    clear: both;
+}
+
+
+/* Responsive CSS */
+
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) { /* Laptops and Desktops */
+    
+
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) { /* Tablets, Laptops */
+    
+    
+}
+
+@media only screen and (min-width: 0px) and (max-width: 580px) { /* Phones & other small devices */
+    
+    
 }
