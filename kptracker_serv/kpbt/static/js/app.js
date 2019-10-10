@@ -30,8 +30,10 @@ $("button").on("click", function () {
 const usrname = document.getElementById("id_username");
 usrname.classList.add("username");
 usrname.placeholder="Username";
+$('#id_username').attr('aria-label', 'Username');
 
 /*Login form - Password styling */
 const passwd = document.getElementById("id_password");
 passwd.classList.add("password");
 passwd.placeholder="Password";
+$('#id_password').attr('aria-label', 'Password');

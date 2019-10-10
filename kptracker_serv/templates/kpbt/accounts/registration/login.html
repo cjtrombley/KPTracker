@@ -11,8 +11,8 @@
         <header>
             <h1 class="mainhead font-weight-bolder text-center">Kingpin</h1>
         </header>
-            <div class="card text-white bg-trans" id="login">
-        <img src="{% static 'images/icons/bowling.svg' %}" width="200" height="200" class="mx-auto d-block login-icon">
+            <div class="card-login text-white bg-trans" id="login">
+        <img src="{% static 'images/icons/bowling.svg' %}" alt="Pins with bowling ball" width="200" height="200" class="mx-auto d-block login-icon">
 {% if form.errors %}
 	<p class="lead">Your username and password did not match. Please try again.</p>
 {% endif %}
@@ -28,7 +28,7 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 
-<table class="margin-botm">
+<table>
     <div class="form-group one-edge-box-shadow">
 	<tr>
 		<td><div class="username-row row">{{ form.username }}</div></td>
