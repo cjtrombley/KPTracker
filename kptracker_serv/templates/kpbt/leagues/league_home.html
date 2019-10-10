@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Leagues at {{ center.name }} !</h2>
+
+<table>
+	{% for league in leagues %}
+	<tr>
+		<td><a href="{% url 'view-center-league-by-name' center.name league.name %}"> {{ league.name }} </a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
+	

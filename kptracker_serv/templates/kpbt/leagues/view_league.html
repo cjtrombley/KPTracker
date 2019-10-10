@@ -2,7 +2,7 @@
 
 {% block content %}
 
-
+<h2> Leagues </h2>
 <table>
 	<tr>
 		<td> League </td>
@@ -17,7 +17,7 @@
 	{% for team in teams %}
 	<tr>
 		<td> Team Name </td>
-		<td> <a href="{% url 'view-team' team.name %}"> {{ team.name }} </td>
+		<td> <a href="{% url 'view-center-league-team-by-name' league.bowling_center.name league.name team.name %}"> {{ team.name }} </td>
 	</tr>	
 	{% endfor %}
 </table>

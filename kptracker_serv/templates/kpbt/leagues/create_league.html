@@ -4,7 +4,8 @@
 
 <form method="post">
 	{% csrf_token %}
-	{{ form.as_p }}
+	{{ schedule_form.as_p }}
+    {{ league_form.as_p }}
 	<button type="submit">Create League</button>
 </form>
 {% endblock %}

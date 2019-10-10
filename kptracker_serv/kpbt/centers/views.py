@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from kpbt.centers.forms import BowlingCenterForm
 from kpbt.leagues.forms import LeagueCreationForm
@@ -19,7 +19,24 @@ def create_bowling_center(request):
 		form = BowlingCenterForm()
 	return render(request, 'centers/create_center.html', {'form': form})
 	
+	
+def view_center_home(request, center_name=""):
+	if center_name:	
+		center = get_object_or_404(BowlingCenter, name=center_name)
+		leagues = center.leagues.all()
+		return render(request, 'centers/view_center.html', {'center' : center, 'leagues' : leagues})
+	else:
+		centers = BowlingCenter.objects.all()
+		return render(request, 'centers/center_home.html', {'centers' : centers })
+		
+		#try:
+		#	center = BowlingCenter.objects.get(name=identifier)
+		#except:
+		#	ObjectDoesNotExist
+	
+"""	
 @permission_required('kpbt.view_bowlingcenter')
+
 def view_center_home(request, identifier=""):
 	try:
 		center = request.user.center_managed
@@ -27,5 +44,5 @@ def view_center_home(request, identifier=""):
 		return render(request, 'centers/view_center.html', {'center' : center, 'manager' : manager})
 	except ObjectDoesNotExist:
 		return render(request, 'centers/create_center.html', {'form' : BowlingCenterForm()})
-		
+"""		
 	
