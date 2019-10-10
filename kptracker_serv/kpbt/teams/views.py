@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from kpbt.teams.forms import CreateTeamForm, TeamRosterForm
 from kpbt.teams.models import Team
 from kpbt.leagues.models import League
+from kpbt.centers.models import BowlingCenter
 
 def create_team(request):
 	if request.method == 'POST':
@@ -18,12 +19,18 @@ def create_team(request):
 
 
 def view_team(request, center_name= "", league_name="", team_name=""):
-	if center_name:
+	center = get_object_or_404(BowlingCenter, name=center_name)
+	if center:
 		if league_name:
-			if team_name:
-				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-				bowlers = team.roster.all()
-				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
+			league= get_object_or_404(League, name=league_name)
+			if league:
+				if team_name:
+					team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+					bowlers = team.roster.all()
+					return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
+				else:
+					teams = Teams.objects.filter(league__bowling_center_name=center_name, league__name=league_name)
+					return render(request, 'teams/team_home.html', {'teams' : teams, 'center' : center, 'leagues' : leagues})
 	"""
 	try:
 		team = Team.objects.get(name=team_name)

@@ -1,5 +1,5 @@
 from django.db import models
-from kpbt.leagues.models import League
+#from kpbt.leagues.models import League
 #from kpbt.accounts.models import BowlerProfile
 from django.contrib.auth.models import User
 

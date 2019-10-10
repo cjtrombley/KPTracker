@@ -6,10 +6,12 @@ from kpbt.teams import views as team_views
 
 
 team_patterns = [
+	#path('teams', team_views.view_team, name='view-center-league-teams-home'),
 	path('<str:team_name>', team_views.view_team, name='view-center-league-team-by-name'),
 ]
 
 league_patterns = [
+	
 	
 	#Paths that map to league-team functions
 	path('teams/', include('kpbt.teams.urls')),

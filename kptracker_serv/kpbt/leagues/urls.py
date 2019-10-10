@@ -7,4 +7,5 @@ urlpatterns = [
 	path('view-league/', views.view_league, name='view-league-home'),
 	path('view-league/<str:league_name>', views.view_league, name='view-league-by-name'),
 	path('<str:league_name>', views.view_league, name='view-league-by-name'),
+	path('<str:league_name>/view-schedule/', views.view_schedule, name='view-center-league-schedule'),
 ]

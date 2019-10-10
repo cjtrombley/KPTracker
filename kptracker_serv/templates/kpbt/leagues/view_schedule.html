@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Weekly Schedule</h2>
+
+<table>
+    {% for pairing in schedule %}
+    <tr>
+        <td> Week {{forloop.counter }}</td>
+        <td> {{ pairing }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
