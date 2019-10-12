@@ -5,11 +5,6 @@ from kpbt.leagues import views as league_views
 from kpbt.teams import views as team_views
 
 
-team_patterns = [
-	#path('teams', team_views.view_team, name='view-center-league-teams-home'),
-	path('<str:team_name>', team_views.view_team, name='view-center-league-team-by-name'),
-]
-
 league_patterns = [
 	
 	
@@ -23,9 +18,8 @@ league_patterns = [
 	
 	
 	path('<str:league_name>', league_views.view_league, name='view-center-league-by-name'),
-	path('<str:league_name>/', include(team_patterns)),
+	path('<str:league_name>/', include('kpbt.leagues.urls')),
 
-	
 ]
 
 urlpatterns=[

@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'location_field.apps.DefaultConfig',
+	'dlf_app',
 	'kpbt',
 	'rest_framework',
 	'dateutil',

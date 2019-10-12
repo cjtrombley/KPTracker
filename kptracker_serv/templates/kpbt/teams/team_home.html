@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Teams in KPBT</h2>
+
+
+<table>
+    <thead>
+        <tr>
+            <td>{{ team.name }}</td><td> {{ team.league.name }}</td> <td> {{ team.league.bowling_center.name }} </td>
+        </tr>
+    </thead>
+    {% for team in teams %}
+    <tr>
+        <td><a href="{% url 'view-center-league-team-by-name' team.league.bowling_center.name team.league.name team.name %}"> {{ team.name }} </a></td>
+        <td><a href="{% url 'view-center-league-by-name' team.league.bowling_center.name team.league.name %}"> {{ team.league.name }}</a></td>
+        <td><a href="{% url 'view-center-by-name' team.league.bowling_center.name %}"> {{ team.league.bowling_center.name }} </a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

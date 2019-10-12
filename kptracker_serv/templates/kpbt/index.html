@@ -18,20 +18,19 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="" id="navbardrop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Link
+        Centers
         </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop">
-        <a class="dropdown-item" href="">link 1</a>
-        <a class="dropdown-item" href="">link 2</a>
-        <a class="dropdown-item" href="">link 3</a>  
+        <a class="dropdown-item" href="{% url 'center-home' %}">Home</a>
+        
       </div>    
       </li>
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="" id="navbardrop2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Link 2
+        Leagues
       </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop2">
-        <a class="dropdown-item" href="">link 1</a>
+        <a class="dropdown-item" href="{% url 'league-home' %}">Home</a>
         <a class="dropdown-item" href="">link 2</a>
         <a class="dropdown-item" href="" >link 3</a>
       </div>    
@@ -80,7 +79,7 @@
                 {% if request.user.is_authenticated %}
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
                 {% if request.user.is_authenticated %}
-                {% if request.user.is_admin %}
+                {% if request.user.is_superuser %}
                 <a href="{% url 'admin:index' %}"><i class="fad fa-user-crown"></i> Admin page</a>
                 {% endif %}
                 {% endif %}

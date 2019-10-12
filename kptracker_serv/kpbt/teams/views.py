@@ -19,8 +19,8 @@ def create_team(request):
 
 
 def view_team(request, center_name= "", league_name="", team_name=""):
-	center = get_object_or_404(BowlingCenter, name=center_name)
-	if center:
+	if center_name:
+		center = get_object_or_404(BowlingCenter, name=center_name)
 		if league_name:
 			league= get_object_or_404(League, name=league_name)
 			if league:
@@ -30,7 +30,11 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 					return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
 				else:
 					teams = Teams.objects.filter(league__bowling_center_name=center_name, league__name=league_name)
-					return render(request, 'teams/team_home.html', {'teams' : teams, 'center' : center, 'leagues' : leagues})
+					return render(request, 'leagues/league_home.html', {'teams' : teams, 'center' : center, 'leagues' : leagues})
+	else:
+		teams = Team.objects.all()
+		return render(request, 'teams/team_home.html', {'teams' : teams})
+	
 	"""
 	try:
 		team = Team.objects.get(name=team_name)
