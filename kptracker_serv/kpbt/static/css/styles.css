@@ -15,7 +15,7 @@ body {
     background-size: cover;
 }
 
-#bg-bowl {
+.bg-bowl {
     background: url("../images/bowling_balls-bg.jpg") repeat;
     background-size: cover;
 }
@@ -62,7 +62,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .nav-bg, .foot-bg {
-    background-color: darkturquoise;  /* shade of steelblue */
+    background-color: #00CED1;  /* shade of darkturquoise */
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -71,7 +71,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .dropdown-item {
-    background-color: #DCDCDC; /* moccasin */
+    background-color: #DCDCDC; /* shade of gainsboro */
 }
 
 .dropdown-item:hover {
@@ -79,7 +79,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .fa-sign-in-alt {
-  color: gold; /* shade of yellow */
+  color: #FFD700; /* shade of gold */
 }
 
 .fa-bowling-ball {
@@ -87,7 +87,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .fa-home {
-    color: springgreen;
+    color: #00FF7F; /* springgreen */
 }
 
 *:focus {
@@ -119,6 +119,7 @@ min-height: 100%;
 .mainhead {
     font-family: 'Abril Fatface', cursive;
     font-size: 3.125rem;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .margin-head {
@@ -167,12 +168,11 @@ min-height: 100%;
   background-clip: border-box;
   border: 4px solid rgba(0, 200, 0, .125);
   border-radius: 8px;
-    
 }
 
 input {
-    border-radius:10px;
-    background-color: darkturquoise;
+    border-radius: 10px;
+    background-color: #00CED1;
 }
 
 .bg-trans {
@@ -206,7 +206,7 @@ input {
 */
 
 #login input[id="id_username"], input[id="id_password"] {
-  background-color: darkturquoise;   
+  background-color: #00CED1;   
 }
 
 .username-row {
@@ -270,7 +270,7 @@ p + ul {
   margin: 10px 20px 10px;
   font-weight: 700;
   color: #000;
-  background-color: tomato;
+  background-color: #ff6347; /* tomato */
   border: none;
   border-radius: 20px;
   transition: .10s ease-in-out;
@@ -281,11 +281,11 @@ p + ul {
 }
 
 .btn-regist:hover {
-  background-color: #26d69a;
+  background-color: #ff9380; /* shade of tomato */
 }
 
 .btn-regist:active {
-  background-color: #1eaa7a;
+  background-color: #ff5233; /* shade of tomato */
 }
 
 label,
@@ -372,10 +372,33 @@ label {
 
 @media only screen and (min-width: 768px) and (max-width: 992px) { /* Tablets, Laptops */
     
+    .nav-link {
+    font-size: 1rem;
+   }
+    
+    .fa-sign-in-alt, .fa-bowling-ball {
+       font-size: 1rem; 
+    }
+    
+    .logo {
+   width: 200px;
+} 
+    
+}
+
+@media only screen and (min-width: 300px) and (max-width: 500px) {
+    
+    .btn-login {
+      width: 250px;
+      height: 40px;
+    }
     
 }
 
 @media only screen and (min-width: 0px) and (max-width: 580px) { /* Phones & other small devices */
-    
+       
+.logo {
+   width: 300px;
+}  
     
 }

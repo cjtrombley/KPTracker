@@ -1,12 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %}
+
+{% block title %}<title>Kingpin Bowling Tracker - Create Profile/title>{% endblock %}
 
 {% block content %}
-	<p>Enter information below to create your profile.</p>
+<body class="bg-bowl">
+<main id="mainContent" tabindex="-1">
+ <div class="container-fluid">  
+ <div class="row"> 
+ <div class="col-md-12">
+    <header>
+	<h1 class="mainhead">Create Profile</h1>
+    <hr class="style15">
+    </header>        
+	<p class="lead text-white">Enter the information below to create your profile.</p>
 	<form method="post">
 		{% csrf_token %}
 		{{ userprofile.as_p }}
 		{{ bowlerprofile.as_p }}
-		<button type="submit"> Create Profile </button>
+		<button type="submit" class="btn btn-regist mx-auto d-block"> Create Profile </button>
 	</form>
-
+     
+     </div> 
+     </div> 
+     </div> 
+    </main>    
+</body>
 {% endblock %}
