@@ -1,7 +1,6 @@
 {% extends "base.html" %} {% load static %} 
-
-{%block content%}
-<body>
+{% block content %}
+ <body>
     
     <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content">Skip to main content</a>
     <nav class="navbar navbar-expand-md nav-bg nav-marg navbar-light" aria-label="Navigation">
@@ -90,7 +89,13 @@
                 {% endif %}
             </div>
           </div>
-	
+          
+	     <div class="pageContent">
+             {% block page_content %}
+             {% endblock %}
+         </div>
+             
+             
       </div>
     </div>
   </div>    
