@@ -57,9 +57,11 @@ header, section, footer, aside, nav, main, article, figure {
     margin-bottom: 20px;
 }
 
+/*
 .dropdown:hover>.dropdown-menu {
     display: block;
 }
+*/
 
 .nav-bg, .foot-bg {
     background-color: #00CED1;  /* shade of darkturquoise */
@@ -177,6 +179,11 @@ input {
 
 .bg-trans {
     background-color: rgba(10,10,10,.68);
+}
+
+.border-style {
+    border: 2px #fff solid;
+    border-radius: 4px;
 }
 
 .login-icon {
