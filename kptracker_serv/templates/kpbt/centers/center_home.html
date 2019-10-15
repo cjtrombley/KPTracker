@@ -1,15 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
-{% block content %}
+{% block page_content %}
 
 <h2> Bowling Centers </h2>
 
 <table>
-	{% for center in centers %}
-	<tr>
+	<thead>
+        <tr>
+            <td>Center Name</td><td>Number of Lanes</td><td>Manager</td>
+        </tr>
+    </thead>
+    {% for center in centers %}
+    <tr>
 		<td><a href="{% url 'view-center-by-name' center.name %}"> {{ center.name }} </a></td>
 		<td> {{ center.num_lanes }} </td>
-		<td><a href="{% url 'view-profile-by-username' center.manager.username %}"> {{ center.manager.userprofile.first_name }} </a></td>
+		<td><a href="{% url 'view-profile-by-username' center.manager.username %}"> {{ center.manager.userprofile.first_name }} {{ center.manager.userprofile.last_name }} </a></td>
 	</tr>
 	{% endfor %}
 </table>
