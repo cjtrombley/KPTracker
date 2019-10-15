@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
-from kpbt.centers.forms import BowlingCenterForm
+from kpbt.centers.forms import BowlingCenterForm, UpdateManagerForm
 from kpbt.leagues.forms import LeagueCreationForm
 from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import UserProfile
@@ -37,6 +37,36 @@ def view_center_home(request, center_name=""):
 		#except:
 		#	ObjectDoesNotExist
 		
+
+def center_management_home(request, center_name=""):
+	if center_name:
+		center = get_object_or_404(BowlingCenter, name=center_name)
+		return render(request, 'centers/manage_center.html', {'center' : center})
+	else:
+		center = get_object_or_404(BowlingCenter, name=request.user.center_managed.name)
+		return render(request, 'centers/manage_center.html', {'center' : center })
+	
+
+def update_manager(request, center_name =""):
+	if request.method == 'POST':
+		if center_name:
+			center = get_object_or_404(BowlingCenter, name=center_name)
+			update_manager_form = UpdateManagerForm(request.POST)
+			if update_manager_form.is_valid():
+				center.manager.userprofile.set_center_manager(False)
+				center.manager.userprofile.save()
+				new_manager = update_manager_form.cleaned_data['manager']
+				center.set_manager(new_manager)
+				new_manager.userprofile.set_center_manager(True)
+				new_manager.userprofile.save()
+				
+				center.save()
+				return redirect('index')
+				
+	else:
+		center = get_object_or_404(BowlingCenter, name=center_name)
+		update_manager_form = UpdateManagerForm()
+	return render(request, 'centers/update_manager.html', {'center' : center, 'form' : update_manager_form})
 	
 """	
 @permission_required('kpbt.view_bowlingcenter')

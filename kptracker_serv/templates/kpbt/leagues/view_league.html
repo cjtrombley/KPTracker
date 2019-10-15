@@ -20,6 +20,13 @@
 		<td> <a href="{% url 'view-center-league-team-by-name' league.bowling_center.name league.name team.name %}"> {{ team.name }} </td>
 	</tr>	
 	{% endfor %}
+    
 </table>
+
+<h4> League Rules</h4>
+{{ rules.as_p }}
+
+<h4> League Schedule</h4>
+{{ schedule.as_p }}
 
 {% endblock %}

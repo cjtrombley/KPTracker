@@ -21,7 +21,7 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name
 	
-	def set_center_manager(self, is_manager=False):
+	def set_center_manager(self, is_manager):
 		self.is_center_manager = is_manager
 	
 class BowlerProfile(models.Model):

@@ -18,7 +18,7 @@ def register(request):
 			raw_password = form.cleaned_data.get('password1')
 			user = authenticate(username=username, password=raw_password)
 			login(request, user)
-			return redirect('create_profile')
+			return redirect('create-profile')
 	else:
 		form = UserCreationForm()
 	return render(request, 'registration/register.html', {'form': form})
@@ -44,7 +44,7 @@ def create_profile(request):
 				request.user.userprofile.save()
 				request.user.bowlerprofile.save()
 			
-				return redirect('index')
+				return redirect('view-profile-by-username', identifier=request.user.username)
 		else:
 			userprofile_form = CreateUserProfileForm()
 			bowlerprofile_form = CreateBowlerProfileForm()
@@ -58,8 +58,8 @@ def view_profile(request, identifier=""):
 	try:
 		if identifier:
 			user = User.objects.get(username = identifier)
-			userprofile = UserProfile.objects.get(pk=user.id)
-			bowlerprofile = BowlerProfile.objects.get(pk=user.id)
+			userprofile = UserProfile.objects.get(user__username=identifier)
+			bowlerprofile = BowlerProfile.objects.get(user__username=identifier)
 		else:
 			userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
 			bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
