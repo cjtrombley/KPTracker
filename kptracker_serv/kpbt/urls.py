@@ -23,6 +23,6 @@ urlpatterns=[
 	path('games/', include('kpbt.games.urls')),
 
 	#Paths that map to account verification
-	#re_path(r'verify/(.*)', include('kpbt.accounts.verify')),
+	re_path(r'verify/(.*)', include('kpbt.accounts.urls')),
 	# Trying to figure out how to get this to work
 ]

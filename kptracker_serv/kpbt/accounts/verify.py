@@ -5,3 +5,6 @@
 def verify(request, token):
 	print("Request:", request)
 	print("Token:", token)
+
+
+# TODO: DELETE
