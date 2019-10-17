@@ -15,7 +15,9 @@ class TeamRosterForm(forms.ModelForm):
 		model = TeamRoster
 		fields = ('bowler', 'is_substitute')
 	
-RosterFormSet = formset_factory(TeamRosterForm, extra = 4)	
+RosterFormSet = formset_factory(TeamRosterForm)	
+
+
 #class TeamRosterForm(forms.Form):
 #	team = forms.ModelChoiceField(queryset=Team.objects.all())
 #	bowlers = forms.ModelChoiceField(queryset=User.objects.all())

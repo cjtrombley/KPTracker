@@ -23,14 +23,13 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 		center = get_object_or_404(BowlingCenter, name=center_name)
 		if league_name:
 			league= get_object_or_404(League, name=league_name)
-			if league:
-				if team_name:
-					team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-					bowlers = team.roster.all()
-					return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
-				else:
-					teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
-					return render(request, 'teams/team_home.html', {'teams' : teams })
+			if team_name:
+				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+				bowlers = team.roster.all()
+				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
+			else:
+				teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
+				return render(request, 'teams/team_home.html', {'teams' : teams })
 	else:
 		teams = Team.objects.all()
 		return render(request, 'teams/team_home.html', {'teams' : teams})
@@ -40,7 +39,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 	if request.method == 'POST':
 		if team_name:
 			team = get_object_or_404(Team, league__name=league_name, name=team_name)
-			formset = RosterFormSet(request.POST)
+			formset = RosterFormSet(request.POST, extra = team.league.leaguerules.max_roster_size)
 			if formset.is_valid():
 				for roster in formset:
 					new_roster = roster.save(commit=False)
@@ -53,7 +52,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		
 		team = get_object_or_404(Team, league__name=league_name, name=team_name)
 		rosterset = RosterFormSet(request.GET or None)
-		roster_size = range(1, team.league.leaguerules.max_roster_size +1)
+		roster_size = range(1, team.league.leaguerules.max_roster_size)
 	
 	return render(request, 'teams/create_roster.html', {'team': team, 'rosterset' : rosterset, 'size' : roster_size })
 	

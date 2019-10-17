@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from kptracker.settings import SCHEDULEFILES_FOLDER as SCHEDULEDIR
+
 
 from collections import deque
 from itertools import islice
@@ -92,8 +95,29 @@ class Schedule(models.Model):
 		current_week += 1
 	
 	
+		
 	def pairings(self):
-		this_league = self.league
+		filename = str(self.league.leaguerules.num_teams) + 'teams'
+		filedir = SCHEDULEDIR + filename + '.csv'
+		with open(filedir) as schedule:
+			for week in schedule:
+				pairings_list = week.strip('\n').split(',')
+				
+				
+				for pairing in pairings_list:
+					
+				
+				
+				
+					print(pairing)
+				yield pairings_list
+		
+		
+		
+		
+		
+		
+		"""this_league = self.league
 		
 		teams = list(range(1, this_league.leaguerules.num_teams+1))
 		
@@ -113,7 +137,7 @@ class Schedule(models.Model):
 			dq2.append(dq1.pop())
 			dq1.appendleft(start)
 		
-
+		"""
 
 """		
 	def shuffle(self, pairings):
