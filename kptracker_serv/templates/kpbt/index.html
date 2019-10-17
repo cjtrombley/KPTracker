@@ -73,7 +73,6 @@
 	<div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-          
       <h1 class="text-center mainhead font-weight-bolder margin-head">Kingpin</h1>
           <hr class="style15">
           <div class="dropdown" align="right">
@@ -96,19 +95,24 @@
                 {% endif %}
             </div>
           </div>
-          
-	     <div class="pageContent">
-             {% block page_content %}
-             {% endblock %}
-         </div>
-             
-             
       </div>
     </div>
-  </div>    
-    </main>
-    
-    
+  </div>
+        <div class="pageContent bg-trans border-style">
+        {% block page_content %}
+        <div class="container-fluid">
+          <div class="row">
+          <div class="col-md-12">
+         
+              <p class="text-white">Content goes here...</p>
+              
+              
+              </div>
+              </div>
+              </div>
+        {% endblock %}
+    </div>
+    </main>        
       <footer class="foot-bg" id="footer">
         
             <div class="container-fluid">
