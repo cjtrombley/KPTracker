@@ -1,13 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
-{% block content %}
+{% block page_content %}
 
-<h2> Leagues at {{ center.name }} !</h2>
+<h2> Leagues Tracked by KPBT</h2>
 
 <table>
 	{% for league in leagues %}
 	<tr>
-		<td><a href="{% url 'view-center-league-by-name' center.name league.name %}"> {{ league.name }} </a></td>
+		<td><a href="{% url 'view-center-league-by-name' league.bowling_center.name league.name %}"> {{ league.name }} </a></td>
+        <td><a href="{% url 'view-center-by-name' league.bowling_center.name %}"> {{ league.bowling_center.name }}</a></td>
 	</tr>
 	{% endfor %}
 </table>

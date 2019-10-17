@@ -1,9 +1,11 @@
 from django import forms
 from kpbt.leagues.models import LeagueRules, Schedule
+from kpbt.centers.models import BowlingCenter
 
 class LeagueCreationForm(forms.ModelForm):
 	
 	league_name = forms.CharField(max_length=32)
+	#bowling_center = ModelChoiceField(queryset=BowlingCenter
 	
 	class Meta:
 		model = LeagueRules

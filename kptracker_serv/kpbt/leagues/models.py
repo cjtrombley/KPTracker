@@ -8,6 +8,7 @@ from collections import deque
 from itertools import islice
 from dateutil import rrule
 import datetime
+import itertools
 
 
 class League(models.Model):
@@ -94,7 +95,7 @@ class Schedule(models.Model):
 	def pairings(self):
 		this_league = self.league
 		
-		teams = list(range(1, this_league.teams.count()+1))
+		teams = list(range(1, this_league.leaguerules.num_teams+1))
 		
 		if len(teams) % 2:
 			teams.append('Bye')
@@ -112,3 +113,60 @@ class Schedule(models.Model):
 			dq2.append(dq1.pop())
 			dq1.appendleft(start)
 		
+
+
+"""		
+	def shuffle(self, pairings):
+		mod_base = len(pairings[0]) 
+		mod_counter = mod_base - 1
+		num_weeks = len(pairings)
+		cur_week = 1
+		
+		for i in range(1, num_weeks):
+			#print(mod_base, mod_counter)
+			p_list = list(pairings[i])
+			front_slice = ifilter(lambda x: x%2, p_list)
+			back_slice = islice(lambda x: (x%2)+1, p_list)
+			#slice = list(p_list[-(mod_counter)])
+			#print(list(front_slice))
+			#print(list(back_slice))
+			new_list = list(itertools.chain(back_slice, front_slice))
+			print(new_list)
+			#slice.append(p_list)
+			#print(slice)
+			
+			
+			mod_counter -= 1
+			if mod_counter < 0:
+				mod_counter = mod_base - 1
+			
+			p_list = list(pairings[i])
+			shifted_team = p_list.pop() #remove last team, insert it in front
+			p_list.insert(0, shifted_team)
+			print(p_list)
+			
+			print('Range is ' + i.__str__())
+			if not cur_week % 2: #Every even week, reverse the order of each individual pairing
+				#print('Cur week is ' + cur_week.__str__())
+				reverse_list = []
+				for j in pairings[cur_week]:
+					j = tuple(reversed(j))
+					reverse_list.append(j)
+				#yield reverse_list
+				
+				for j in range(1, len(pairings[i])):
+					swap = list(pairings[cur_week][j]) #convert tuple to list for swapping
+					temp = swap[0]
+					print(temp)
+					swap[0] = swap[1]
+					swap[1] = temp
+					
+					#, pairings[cur_week][j][1] = pairings[cur_week][j][1], pairings[cur_week][j][0]
+					j =+ 2 # Move to the next pair
+				
+			
+			cur_week += 1
+
+					
+"""				
+			

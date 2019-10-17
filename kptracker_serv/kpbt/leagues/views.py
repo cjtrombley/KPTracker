@@ -39,9 +39,10 @@ def view_league(request, center_name = "", league_name=""):
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()
-			return render(request, 'leagues/league_home.html', {'leagues' : leagues, 'center' : center })
+			return render(request, 'centers/view_center.html', {'leagues' : leagues, 'center' : center })
 	else:
-		return redirect('index')
+		leagues = League.objects.all()
+		return render(request, 'leagues/league_home.html', {'leagues' : leagues})
 
 
 def view_schedule(request, center_name="", league_name=""):

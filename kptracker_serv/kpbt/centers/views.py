@@ -13,13 +13,16 @@ def create_bowling_center(request):
 	if request.method == 'POST':
 		form = BowlingCenterForm(request.POST)
 		if form.is_valid():
+			manager = form.cleaned_data['manager']
+			manager.userprofile.set_center_manager(True)
+			manager.userprofile.save()
 			form.save()
 			return redirect('center-home')
 	else:
 		form = BowlingCenterForm()
 	return render(request, 'centers/create_center.html', {'form': form})
-	
-	
+
+
 def view_center_home(request, center_name=""):
 	if center_name:	
 		center = get_object_or_404(BowlingCenter, name=center_name)
@@ -33,6 +36,7 @@ def view_center_home(request, center_name=""):
 		#	center = BowlingCenter.objects.get(name=identifier)
 		#except:
 		#	ObjectDoesNotExist
+		
 	
 """	
 @permission_required('kpbt.view_bowlingcenter')
