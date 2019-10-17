@@ -35,6 +35,9 @@ class League(models.Model):
 	
 	def set_name(self, name):
 		self.name = name
+		
+	def current_week(self):
+		return self.schedule.current_week
 
 class LeagueRules(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
@@ -96,23 +99,40 @@ class Schedule(models.Model):
 	
 	
 		
-	def pairings(self):
-		filename = str(self.league.leaguerules.num_teams) + 'teams'
+	def pairings(self, current_week=""):
+		
+		
+		num_teams = self.league.leaguerules.num_teams
+		num_weeks = self.num_weeks // 2
+		
+		if num_teams % 2:
+			num_teams += 1
+			
+			
+		filename = str(num_teams) + 'teams'
 		filedir = SCHEDULEDIR + filename + '.csv'
+		
+		pairings = [None] * num_weeks
 		with open(filedir) as schedule:
-			for week in schedule:
-				pairings_list = week.strip('\n').split(',')
+			
+			schedule.readline() #skip first line to allow week number to align with list index
+			
+			for i in range(1, num_weeks):
 				
+				weekly_pairings = schedule.readline()
 				
-				for pairing in pairings_list:
-					
-				
-				
-				
-					print(pairing)
-				yield pairings_list
+				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
+				pairings[i] = weekly_pairing_list
+			
 		
+				
 		
+		if current_week:
+		
+			
+			return [pairings[current_week]]
+		else:
+			return pairings
 		
 		
 		

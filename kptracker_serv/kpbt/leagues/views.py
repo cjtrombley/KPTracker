@@ -47,8 +47,11 @@ def view_league(request, center_name = "", league_name=""):
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
+			pairings = list(league.schedule.pairings())
+			weekly_pairing = pairings[league.current_week()]
 			teams = league.teams.all()
-			return render(request, 'leagues/view_league.html', {'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams })
+			return render(request, 'leagues/view_league.html', {'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings,
+				'weekly_pairing' : weekly_pairing})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()
@@ -63,7 +66,8 @@ def view_schedule(request, center_name="", league_name=""):
 	if center_name:
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-			schedule = list(league.schedule.pairings())
-			print(schedule)
-			print(schedule[12][0])
+			schedule = list(league.schedule.pairings(1))
+			#schedule = schedule[1:] #shift schedule indices left one space to maintain 1:1 alignment with current week
+			print(list(schedule))
+			#print(schedule[12][0])
 			return render(request, 'leagues/view_schedule.html', {'schedule' : schedule })

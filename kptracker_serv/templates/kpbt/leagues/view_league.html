@@ -23,10 +23,15 @@
     
 </table>
 
+<h2>League Schedule</h2>
+<p>Current Week: {{league.current_week }} </p>
+<p>This week's lane pairings: {{ weekly_pairing }} </p>
+
+<div>
 <h4> League Rules</h4>
 {{ rules.as_p }}
 
 <h4> League Schedule</h4>
 {{ schedule.as_p }}
-
+</div>
 {% endblock %}
