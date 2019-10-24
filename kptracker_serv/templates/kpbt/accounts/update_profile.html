@@ -1,6 +1,6 @@
 {% extends 'index.html' %} {% load static %}
 
-{% block title %}<title>Kingpin Bowling Tracker - Create Profile</title>{% endblock %}
+{% block title %}<title>Kingpin Bowling Tracker - Update Profile</title>{% endblock %}
 
 {% block page_content %}
 <body class="bg-bowl">
@@ -9,14 +9,14 @@
  <div class="row"> 
  <div class="col-md-12">
     <header>
-	<h1 class="mainhead">Create Profile</h1>
+	<h1 class="mainhead">Update Profile</h1>
     <hr class="style15">
     </header>        
-	<p class="lead text-white">Enter the information below to create your profile.</p>
+	<p class="lead text-white">Enter the information below to update your profile.</p>
 	<form method="post">
 		{% csrf_token %}
 		{{ profile_form.as_p }}
-		<button type="submit" class="btn btn-regist mx-auto d-block"> Create Profile </button>
+		<button type="submit" class="btn btn-regist mx-auto d-block"> Update Profile </button>
 	</form>
      
      </div> 

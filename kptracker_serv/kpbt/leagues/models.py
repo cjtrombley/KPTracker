@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from kpbt.accounts.models import BowlerProfile
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,7 +19,7 @@ class League(models.Model):
 	
 	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.SET_NULL, null=True,
 		related_name='leagues', verbose_name=('bowling center'))
-	bowlers = models.ManyToManyField(User, through='LeagueBowler')
+	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
 	name = models.CharField(max_length=32)
 	
@@ -69,7 +70,7 @@ class LeagueRules(models.Model):
 
 
 class LeagueBowler(models.Model):
-	bowler = models.ForeignKey(User, on_delete=models.CASCADE)
+	bowler = models.ForeignKey(BowlerProfile, on_delete=models.CASCADE)
 	league = models.ForeignKey(League, on_delete=models.CASCADE)
 	
 	league_average = models.PositiveSmallIntegerField()

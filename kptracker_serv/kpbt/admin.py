@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Permission
 
 
 # Register your models here.
-
+'''
 def promote_to_center_manager(modeladmin, request, queryset):
 	queryset.update(is_center_manager=True)
 	#queryset.update(first_name='Big Time Manager')
@@ -13,10 +13,12 @@ def promote_to_center_manager(modeladmin, request, queryset):
 	#queryset.update(user__user_permissions.add('kpbt.add_bowlingcenter'))
 	promote_to_center_manager.short_description = "Promote user to Bowling Center Manager."
 	
-	
+#	
 class CenterAdmin(admin.ModelAdmin):
-	list_display = ['first_name', 'is_center_manager']
-	ordering = ['first_name']
+	#list_display = ['user.username', 'is_center_manager']
+	#ordering = ['user.username']
 	actions = [promote_to_center_manager]
 	
 admin.site.register(UserProfile, CenterAdmin)
+
+'''
