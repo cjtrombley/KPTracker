@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from kpbt.centers.forms import BowlingCenterForm
 from kpbt.leagues.forms import LeagueCreationForm
@@ -36,7 +37,8 @@ def view_center_home(request, center_name=""):
 		#	center = BowlingCenter.objects.get(name=identifier)
 		#except:
 		#	ObjectDoesNotExist
-		
+def center_locations(request):
+    return render(request, 'centers/center_locations.html')
 	
 """	
 @permission_required('kpbt.view_bowlingcenter')
