@@ -2,8 +2,8 @@
 {% block content %}
  <body>
     
-    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content">Skip to main content</a>
-    <nav class="navbar navbar-expand-md nav-bg nav-marg navbar-light" aria-label="Navigation">
+    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content" aria-label="Skip to main content">Skip to main content</a>
+    <nav class="navbar navbar-expand-md nav-bg mb-4 navbar-light" aria-label="Navigation">
   <a class="navbar-brand" href="{% url 'index' %}" aria-label="Kingpin Bowling Tracker">
    <img src="{% static 'images/Kingpin.png' %}" alt="Kingpin's logo" class="logo">
   </a>
@@ -42,10 +42,11 @@
         {% endif %}
       </div>    
     </li>
-   <!--<li class="nav-item">
-        <a class="nav-link" href="">Link 3</a>
+   <li class="nav-item">
+        <a class="nav-link" href="">About Us</a>
    </li>
-    <li class="nav-item">
+
+   <!-- <li class="nav-item">
         <a class="nav-link" href="">Link 4</a>
     </li> 
    <li class="nav-item">
@@ -74,7 +75,7 @@
 	<div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-      <h1 class="text-center mainhead font-weight-bolder margin-head">Kingpin</h1>
+      <h1 class="text-center mainhead font-weight-bolder margin-head text-uppercase">Kingpin</h1>
           <hr class="style15">
           <div class="dropdown" align="right">
             <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
@@ -86,11 +87,11 @@
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="text-center" style="display: block;"><i class="fad fa-user-crown"></i> Admin page</a>
+                <a href="{% url 'admin:index' %}" class="text-center d-block"><i class="fas fa-user-cog"></i> Admin page</a>
                 {% endif %}
                 {% endif %}
                 <br>
-                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center" style="display: block;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 {% else %}
                 <a href="{% url 'login' %}">Please login to continue.</a>
                 {% endif %}
@@ -105,7 +106,7 @@
           <div class="row">
           <div class="col-md-12">
          
-              <p class="text-white">Content goes here...</p>
+              <p class="text-white text-uppercase">Roll with It!!!</p>
               
               
               </div>

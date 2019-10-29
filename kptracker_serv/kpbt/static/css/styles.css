@@ -53,10 +53,6 @@ header, section, footer, aside, nav, main, article, figure {
     font-size: 1.15rem; /* 18px */
 }
 
-.nav-marg {
-    margin-bottom: 20px;
-}
-
 .dropdown:hover>.dropdown-menu {
     display: block;
 }
@@ -126,10 +122,6 @@ min-height: 100%;
     margin-bottom: 75px;   
 }
 
-.margin-botm {
-    margin-bottom: 25px;
-}
-
 .hr-style {
     border-top: 4px double #101010;
 }
@@ -155,8 +147,7 @@ min-height: 100%;
 }
 
 .card-regist {
-    
-  max-width: 980px;
+  max-width: 1080px;
   min-height: 400px;
   position: relative;
   display: -ms-flexbox;
@@ -173,6 +164,7 @@ min-height: 100%;
 input {
     border-radius: 10px;
     background-color: #00CED1;
+    padding: 3px;
 }
 
 .bg-trans {
@@ -225,8 +217,8 @@ input {
   height: 40px; 
 }
 
-input:focus, .btn-login:focus, button:focus {
-  outline: none;
+input:focus, .btn-login:focus, .btn-univ:focus, button:focus {
+  border: 3px solid #555;
 }
 
 input::-webkit-input-placeholder {
@@ -332,10 +324,14 @@ p a:hover {
     color: #607d8b !important;
 }
 
+.text-dodgerblue {
+    color: lightblue !important;
+}
+
 label {
     font-weight: bolder;
     font-size: 1.125rem;
-    color: khaki;
+    color: #ffc107;
 }
 
 .buttonDrop {
@@ -343,13 +339,6 @@ label {
     width: 60px;
     height: 60px;
     background: #e6e600;
-}
-
-/* Source: https://css-tricks.com/snippets/css/css-box-shadow/ */
-.one-edge-box-shadow {
-	-webkit-box-shadow: 0 8px 6px -6px black;
-	   -moz-box-shadow: 0 8px 6px -6px black;
-	        box-shadow: 0 8px 6px -6px black;
 }
 
 .breadcrumb {
@@ -366,12 +355,6 @@ label {
     color: darkgreen;
 }
 
-/*
-.pageContent {
-    background-color: whitesmoke;
-}
-*/
-
 .form-head {
   color: #66CDAA;
   text-shadow: -1px 0 #FFFF00, 0 1px #FFFF00, 1px 0 #FFFF00, 0 -1px #FFFF00;    
@@ -384,14 +367,12 @@ label {
 }
 
 #map {
-  height: 700px;  /* The height is 400 pixels */
-  width: 100%;  /* The width is the width of the web page */
+  height: 700px;  /* The height is 700 pixels */
+  width: 100%;  /* The width is the entire width of the web page */
 }
 
 #footer {
    position: absolute;
-/*   bottom: 0;*/
-/*   left: 0px;    */
    width: 100%;
    height: auto;
    clear: both;
