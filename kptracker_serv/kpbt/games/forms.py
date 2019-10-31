@@ -3,6 +3,12 @@ from kpbt.accounts.models import BowlerProfile
 from kpbt.games.models import Series
 #from kpbt.leagues.models import Legaue, LeagueSchedule
 
+class ImportScoresForm(forms.Form):
+	week_number = forms.IntegerField(min_value=1, max_value=52)
+	
+	def clean(self):
+		cleaned_data = super().clean()
+
 class CreateSeriesForm(forms.ModelForm):
 	class Meta:
 		model = Series

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, RosterFormSet
-from kpbt.teams.models import Team
+from kpbt.teams.models import Team, TeamRoster
 from kpbt.leagues.models import League
 from kpbt.centers.models import BowlingCenter
+from kpbt.accounts.models import BowlerProfile
 from num2words import num2words
 
 def create_team(request, center_name="", league_name="", team_number=""):
@@ -25,7 +26,12 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 			league= get_object_or_404(League, name=league_name)
 			if team_name:
 				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-				bowlers = team.roster.all()
+				bowlers = team.roster.filter(teamroster__is_active=True)
+				#bp = request.user.bowlerprofile
+				#bowlers = bp.teamroster_set.all()
+				#print(bowlers)
+				#for roster in bowlers:
+				#	print(roster)
 				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
 			else:
 				teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
@@ -39,7 +45,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 	if request.method == 'POST':
 		if team_name:
 			team = get_object_or_404(Team, league__name=league_name, name=team_name)
-			formset = RosterFormSet(request.POST, extra = team.league.leaguerules.max_roster_size)
+			formset = RosterFormSet(request.POST)
 			if formset.is_valid():
 				for roster in formset:
 					new_roster = roster.save(commit=False)
@@ -54,7 +60,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		rosterset = RosterFormSet(request.GET or None)
 		roster_size = range(1, team.league.leaguerules.max_roster_size)
 	
-	return render(request, 'teams/create_roster.html', {'team': team, 'rosterset' : rosterset, 'size' : roster_size })
+	return render(request, 'teams/update_roster.html', {'team': team, 'rosterset' : rosterset, 'size' : roster_size })
 	
 """
 def update_roster(request, center_name="", league_name="", team_name=""):

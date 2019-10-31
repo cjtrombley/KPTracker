@@ -1,8 +1,10 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from kpbt.accounts.models import BowlerProfile
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team
+from kpbt.games.models import Series
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from kptracker.settings import SCHEDULEFILES_FOLDER as SCHEDULEDIR
@@ -13,7 +15,7 @@ from itertools import islice
 from dateutil import rrule
 import datetime
 import itertools
-
+from num2words import num2words
 
 class League(models.Model):
 	
@@ -27,18 +29,67 @@ class League(models.Model):
 		return self.bowling_center.name + ", " + self.name
 		
 	def set_center(self, center_name):
-		try:
-			center = BowlingCenter.objects.get(name=center_name)
-		except ObjectDoesNotExist:
-			print("Whoa")
-		else:
-			self.bowling_center = center
+		center = get_object_or_404(BowlingCenter, name=center_name)
+		self.bowling_center = center
 	
 	def set_name(self, name):
 		self.name = name
 		
 	def current_week(self):
 		return self.schedule.current_week
+		
+		
+		
+	def score_week(self, week_number):
+		
+		weekly_pairs = self.schedule.pairings()
+		
+		this_week = weekly_pairs[week_number]
+		
+		for pair in this_week:
+			teams = pair.split('-')
+			
+			team_one = get_object_or_404(Team, league=self, number=teams[0])
+			team_two = get_object_or_404(Team, league=self, number=teams[1])
+			
+			game_points = self.leaguerules.game_point_value
+			series_points = self.leaguerules.series_point_value
+			weekly_points = self.leaguerules.total_weekly_points
+			
+			team_one_total_series = 0
+			team_two_total_series = 0
+			
+			for i in range(1, 4):
+				
+				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i)
+				team_one_total_series += t1_hc_score
+				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i)
+				team_two_total_series += t2_hc_score
+				
+				if t1_hc_score > t2_hc_score:
+					team_one.team_points_won += game_points
+					team_two.team_points_lost += game_points
+				elif t1_hc_score < t2_hc_score:
+					team_one.team_points_lost += game_points
+					team_two.team_points_won += game_points
+				else:
+					team_one.team_points_won += game_points / 2
+					team_one.team_points_lost += game_points / 2
+					team_two.team_points_won += game_points / 2
+					team_two.team_points_lost += game_points / 2
+			
+			if team_one_total_series > team_two_total_series:
+				team_one.team_points_won += series_points
+				team_two.team_points_lost += series_points
+			elif team_one_total_series < team_two_total_series:
+				team_one.team_points_lost += series_points
+				team_two.team_points_won += series_points
+			else:
+				team_one.team_points_lost += series_points
+				team_two.team_points_lost += series_points
+			
+			team_one.save()
+			team_two.save()
 
 class LeagueRules(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
@@ -58,28 +109,71 @@ class LeagueRules(models.Model):
 	num_teams = models.PositiveSmallIntegerField()
 	designation = models.CharField(max_length=1, choices=DESIGNATION)
 	gender = models.CharField(max_length=1, choices=GENDER)
-	min_roster_size = models.PositiveSmallIntegerField()
-	max_roster_size = models.PositiveSmallIntegerField()
+	playing_strength = models.PositiveSmallIntegerField(default=1)
+	max_roster_size = models.PositiveSmallIntegerField(default=9)
 	is_handicap = models.BooleanField(default=False)
-	handicap_scratch = models.PositiveSmallIntegerField()
+	handicap_scratch = models.PositiveSmallIntegerField(default=0)
+	handicap_percentage = models.PositiveSmallIntegerField(default=0)
 	allow_substitutes = models.BooleanField(default=False)
-	bye_team_point_threshold = models.PositiveSmallIntegerField()
-	absentee_score = models.PositiveSmallIntegerField()
-	game_point_value = models.PositiveSmallIntegerField()
-	series_point_value = models.PositiveSmallIntegerField()
+	bye_team_point_threshold = models.PositiveSmallIntegerField(default=0)
+	absentee_score = models.PositiveSmallIntegerField(default=0)
+	game_point_value = models.PositiveSmallIntegerField(default=0)
+	series_point_value = models.PositiveSmallIntegerField(default=0)
 
+	def total_weekly_points(self):
+		return (3 * game_point_value) + series_point_value
 
 class LeagueBowler(models.Model):
 	bowler = models.ForeignKey(BowlerProfile, on_delete=models.CASCADE)
 	league = models.ForeignKey(League, on_delete=models.CASCADE)
 	
-	league_average = models.PositiveSmallIntegerField()
-	league_high_game = models.PositiveSmallIntegerField()
-	league_high_series = models.PositiveSmallIntegerField()
-	league_total_scratch = models.PositiveSmallIntegerField()
-	league_total_handicap = models.PositiveSmallIntegerField()
+	games_bowled = models.PositiveSmallIntegerField(default=0)
+	league_average = models.PositiveSmallIntegerField(default=0)
+	league_high_scratch_game = models.PositiveSmallIntegerField(default=0)
+	league_high_handicap_game = models.PositiveSmallIntegerField(default=0)
+	league_high_scratch_series = models.PositiveSmallIntegerField(default=0)
+	league_high_handicap_series = models.PositiveSmallIntegerField(default=0)
+	league_total_scratch = models.PositiveSmallIntegerField(default=0)
+	league_total_handicap = models.PositiveSmallIntegerField(default=0)
+	
+	
+	def update(self, average, handicap, scores):
+		series_scratch_score = 0
+		series_handicap_score = 0
+		games_played_counter = 0
+		
+		for score in scores:
+			if score[0] == 'A':
+				#Bowler was absent for this game, does not count toward league stats
+				pass
+			else:
+				games_played_counter += 1
+				series_scratch_score += int(score)
+				if int(score) > self.league_high_scratch_game: #Update highest scratch score
+					self.league_high_scratch_game = int(score)
+				
+				
+				game_handicap_score = int(score) + int(handicap)
+				series_handicap_score += game_handicap_score
+				if game_handicap_score > self.league_high_handicap_game: #Update highest handicap game score
+					self.league_high_handicap_game = game_handicap_score
+
+		self.games_bowled += games_played_counter
+		
+		self.league_total_scratch += series_scratch_score
+		if series_scratch_score > self.league_high_scratch_series:
+			self.league_high_scratch_series = series_scratch_score
+			
+		self.league_total_handicap += series_handicap_score
+		if series_handicap_score > self.league_high_handicap_series:
+			self.league_high_handicap_series = series_handicap_score
 	
 
+		self.update_average()
+	
+	def update_average(self):
+		self.league_average = self.league_total_scratch / self.games_bowled
+		
 class Schedule(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
 
@@ -99,16 +193,12 @@ class Schedule(models.Model):
 		current_week += 1
 	
 	
-		
 	def pairings(self, current_week=""):
-		
-		
 		num_teams = self.league.leaguerules.num_teams
 		num_weeks = self.num_weeks // 2
 		
 		if num_teams % 2:
 			num_teams += 1
-			
 			
 		filename = str(num_teams) + 'teams'
 		filedir = SCHEDULEDIR + filename + '.csv'
@@ -117,101 +207,15 @@ class Schedule(models.Model):
 		with open(filedir) as schedule:
 			
 			schedule.readline() #skip first line to allow week number to align with list index
-			
 			for i in range(1, num_weeks):
-				
 				weekly_pairings = schedule.readline()
 				
 				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
 				pairings[i] = weekly_pairing_list
 			
-		
-				
-		
 		if current_week:
-		
-			
 			return [pairings[current_week]]
 		else:
 			return pairings
-		
-		
-		
-		
-		"""this_league = self.league
-		
-		teams = list(range(1, this_league.leaguerules.num_teams+1))
-		
-		if len(teams) % 2:
-			teams.append('Bye')
-		
-		mid = len(teams) // 2
-		dq1 = deque(islice(teams, None, mid))
-		dq2 = deque(islice(teams, mid, None))
-		
-		week_range = self.num_weeks - 1
-		
-		for _ in range(week_range):
-			yield list(zip(dq1, dq2))
-			start = dq1.popleft()
-			dq1.appendleft(dq2.popleft())
-			dq2.append(dq1.pop())
-			dq1.appendleft(start)
-		
-		"""
-
-"""		
-	def shuffle(self, pairings):
-		mod_base = len(pairings[0]) 
-		mod_counter = mod_base - 1
-		num_weeks = len(pairings)
-		cur_week = 1
-		
-		for i in range(1, num_weeks):
-			#print(mod_base, mod_counter)
-			p_list = list(pairings[i])
-			front_slice = ifilter(lambda x: x%2, p_list)
-			back_slice = islice(lambda x: (x%2)+1, p_list)
-			#slice = list(p_list[-(mod_counter)])
-			#print(list(front_slice))
-			#print(list(back_slice))
-			new_list = list(itertools.chain(back_slice, front_slice))
-			print(new_list)
-			#slice.append(p_list)
-			#print(slice)
-			
-			
-			mod_counter -= 1
-			if mod_counter < 0:
-				mod_counter = mod_base - 1
-			
-			p_list = list(pairings[i])
-			shifted_team = p_list.pop() #remove last team, insert it in front
-			p_list.insert(0, shifted_team)
-			print(p_list)
-			
-			print('Range is ' + i.__str__())
-			if not cur_week % 2: #Every even week, reverse the order of each individual pairing
-				#print('Cur week is ' + cur_week.__str__())
-				reverse_list = []
-				for j in pairings[cur_week]:
-					j = tuple(reversed(j))
-					reverse_list.append(j)
-				#yield reverse_list
 				
-				for j in range(1, len(pairings[i])):
-					swap = list(pairings[cur_week][j]) #convert tuple to list for swapping
-					temp = swap[0]
-					print(temp)
-					swap[0] = swap[1]
-					swap[1] = temp
-					
-					#, pairings[cur_week][j][1] = pairings[cur_week][j][1], pairings[cur_week][j][0]
-					j =+ 2 # Move to the next pair
-				
-			
-			cur_week += 1
-
-					
-"""				
 			

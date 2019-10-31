@@ -11,6 +11,7 @@ class CreateTeamForm(forms.ModelForm):
 		
 		
 class TeamRosterForm(forms.ModelForm):
+	
 	class Meta:
 		model = TeamRoster
 		fields = ('bowler', 'is_substitute')
@@ -18,6 +19,17 @@ class TeamRosterForm(forms.ModelForm):
 RosterFormSet = formset_factory(TeamRosterForm)	
 
 
+class DeleteRosterForm(forms.ModelForm):
+	
+	delete_roster = forms.BooleanField()
+	
+	class Meta:
+		model = TeamRoster
+		fields = ('bowler',)
+
+
+
+	
 #class TeamRosterForm(forms.Form):
 #	team = forms.ModelChoiceField(queryset=Team.objects.all())
 #	bowlers = forms.ModelChoiceField(queryset=User.objects.all())

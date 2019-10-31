@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm
-from kpbt.leagues.models import League
+from kpbt.accounts.models import BowlerProfile
+from kpbt.leagues.models import League, LeagueBowler
 from kpbt.centers.models import BowlingCenter
-from kpbt.teams.models import Team
+from kpbt.teams.models import Team, TeamRoster
 
 def create_league(request, center_name=""):
 	if request.method == 'POST':
@@ -27,10 +28,21 @@ def create_league(request, center_name=""):
 				leaguerules.league = league
 	
 			
-				#create base empty teams for league
+				#create base empty teams with empty rosters for league
+				roster_size = leaguerules.playing_strength
 				for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
-					teami = Team.create(league, i)
+					teami = Team.create_team(league, i)
 					teami.save()
+				
+					for _ in range(roster_size):
+						empty_bowler = BowlerProfile.create_empty_profile()
+						empty_bowler.save()
+						team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
+						#empty_bowler.save()
+						team_roster_record.save()
+					
+						league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=league)
+						league_bowler.save()
 			
 				#save models
 				schedule.save()
