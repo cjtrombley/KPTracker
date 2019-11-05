@@ -42,10 +42,10 @@ def view_center_home(request, center_name=""):
 def center_management_home(request, center_name=""):
 	if center_name:
 		center = get_object_or_404(BowlingCenter, name=center_name)
-		return render(request, 'centers/manage_center.html', {'center' : center})
+		return render(request, 'centers/manage/manage_center.html', {'center' : center})
 	else:
 		center = get_object_or_404(BowlingCenter, name=request.user.center_managed.name)
-		return render(request, 'centers/manage_center.html', {'center' : center })
+		return render(request, 'centers/manage/manage_center.html', {'center' : center })
 	
 
 def update_manager(request, center_name =""):
@@ -67,7 +67,7 @@ def update_manager(request, center_name =""):
 	else:
 		center = get_object_or_404(BowlingCenter, name=center_name)
 		update_manager_form = UpdateManagerForm()
-	return render(request, 'centers/update_manager.html', {'center' : center, 'form' : update_manager_form})
+	return render(request, 'centers/manage/update_manager.html', {'center' : center, 'form' : update_manager_form})
 
 def center_locations(request):
     return render(request, 'centers/center_locations.html')
