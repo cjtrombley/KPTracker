@@ -2,23 +2,35 @@
 
 {% block page_content %}
 
+<h2> Viewing {{ team.name }} in the {{ team.league.name }} league</h2>
+
+<h4> Team Stats</h4>
 <table>
 	<tr>
-		<td> Team Name </td>
-		<td> {{ team.name }} </td>
+		<td> Team Points </td> <td> Total Scratch Pins </td> <td> Total Handicap Pins</td> <td> Total Pinfall</td>
+    </tr>
+    <tr>
+    <td> {{ team.team_points }} </td> <td> {{ team.total_scratch_pins }} </td><td> {{ team.total_handicap_pins }} </td>
+	   <td> {{ team.total_pinfall }} </td>
 	</tr>
-	
-	<tr>
-		<td> League </td>
-		<td> {{ team.league.name }} </td>
-	</tr>
-	
+</table>
+
+<h4> Bowler Roster</h4>
+<table>
 	{% for bowler in bowlers %}
+    
 	<tr>	
-		<td><a href="{% url 'view-profile-by-username' bowler.username %}">{{ bowler.userprofile.first_name }} </td> </a>
+        <td><a href="{% url 'view-profile-by-username' bowler.username %}">{{ bowler.userprofile.first_name }} </a></td>
 		
 	</tr>
 	{% endfor %}
+
+    {% if bowlers|length < team.league.leaguerules.max_roster_size %}
+    <tr>
+        <td><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Add Bowler To Roster</a></td>
+    {% endif %}
+    </tr>
+                    
 </table>
 
 {% endblock %}

@@ -6,6 +6,10 @@ class BowlingCenterForm(forms.ModelForm):
 		model= BowlingCenter
 		fields=('name', 'num_lanes', 'manager')
 
+class UpdateManagerForm(forms.ModelForm):
+	class Meta:
+		model = BowlingCenter
+		fields =('manager',)
 """		
 class CenterSelectForm(forms.modelForm):
 	class Meta:

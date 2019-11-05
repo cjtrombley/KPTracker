@@ -2,9 +2,24 @@
 
 {% block page_content %}
 
+<h2> Add Members to team {{ team.name }} in the league {{ team.league.name }}. </h2>
 <form method="post">
 	{% csrf_token %}
-	{{ roster.as_table }}
-	<button type="submit">Create Roster</button>
+    {{ rosterset.management_form }}
+    <table> 
+        <thead>
+            <tr>
+                <td>Bowler</td><td>Is Substitute</td>
+            </tr>
+         </thead>
+        <tbody>
+            {% for roster in rosterset %}
+                <tr>
+                    <td> {{ roster.bowler }} {{ roster.is_substitute }} </td>
+                </tr>
+              {% endfor %}
+         </tbody>
+        </table>
+	<button type="submit">Add to Roster</button>
 </form>
 {% endblock %}

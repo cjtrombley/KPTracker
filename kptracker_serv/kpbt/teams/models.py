@@ -3,6 +3,8 @@ from django.db import models
 #from kpbt.accounts.models import BowlerProfile
 from django.contrib.auth.models import User
 
+from num2words import num2words
+
 class Team(models.Model):
 	
 	league = models.ForeignKey('League', on_delete=models.CASCADE,
@@ -16,6 +18,17 @@ class Team(models.Model):
 	team_points = models.PositiveSmallIntegerField(default=0)
 	
 	roster = models.ManyToManyField(User, through='TeamRoster')
+	
+	
+	def create(league, number):
+		new_team = Team()
+		
+		new_team.league = league
+		new_team.number = number
+		new_team.name = 'Team' + num2words(new_team.number)
+		
+		
+		return new_team
 		
 	def __str__(self):
 		return self.name

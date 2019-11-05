@@ -4,15 +4,11 @@ import datetime
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='userprofile')
-	first_name = models.CharField(max_length=64, blank=True)
-	last_name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(
 		verbose_name='email address',
 		max_length = 254,
 		unique = False,
 	)
-	date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
-	
 	
 	is_bowler = models.BooleanField(default=False)
 	is_league_secretary = models.BooleanField(default=False)
@@ -21,8 +17,9 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name
 	
-	def set_center_manager(self, is_manager=False):
+	def set_center_manager(self, is_manager):
 		self.is_center_manager = is_manager
+		
 	
 class BowlerProfile(models.Model):
 	HAND = (
@@ -36,14 +33,26 @@ class BowlerProfile(models.Model):
 		('J', 'Junior')
 	)
 	
-	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+	GENDER = (
+		('M', 'Male'),
+		('F', 'Female'),
+	)
+	
+	user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+	
+	first_name = models.CharField(max_length=64, blank=True)
+	last_name = models.CharField(max_length=64, blank=True)
+	
+	date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
+	
 	
 	hand = models.CharField(max_length=1, choices=HAND)
 	designation = models.CharField(max_length=1, choices=DESIGNATION)
+	gender = models.CharField(max_length=1, choices=GENDER)
+	
+	
 	is_sanctioned = models.BooleanField(default=False, blank=False)
 	last_date_sanctioned = models.DateField(default=datetime.date(1900,1,1), blank=True)
 		
 	def __str__(self):
 		return self.user.first_name + ' ' + self.user.last_name		
-		
-

@@ -1,8 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from kpbt.accounts.models import BowlerProfile
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from kptracker.settings import SCHEDULEFILES_FOLDER as SCHEDULEDIR
+
 
 from collections import deque
 from itertools import islice
@@ -15,7 +19,7 @@ class League(models.Model):
 	
 	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.SET_NULL, null=True,
 		related_name='leagues', verbose_name=('bowling center'))
-	bowlers = models.ManyToManyField(User, through='LeagueBowler')
+	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
 	name = models.CharField(max_length=32)
 	
@@ -32,6 +36,9 @@ class League(models.Model):
 	
 	def set_name(self, name):
 		self.name = name
+		
+	def current_week(self):
+		return self.schedule.current_week
 
 class LeagueRules(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
@@ -63,7 +70,7 @@ class LeagueRules(models.Model):
 
 
 class LeagueBowler(models.Model):
-	bowler = models.ForeignKey(User, on_delete=models.CASCADE)
+	bowler = models.ForeignKey(BowlerProfile, on_delete=models.CASCADE)
 	league = models.ForeignKey(League, on_delete=models.CASCADE)
 	
 	league_average = models.PositiveSmallIntegerField()
@@ -92,8 +99,46 @@ class Schedule(models.Model):
 		current_week += 1
 	
 	
-	def pairings(self):
-		this_league = self.league
+		
+	def pairings(self, current_week=""):
+		
+		
+		num_teams = self.league.leaguerules.num_teams
+		num_weeks = self.num_weeks // 2
+		
+		if num_teams % 2:
+			num_teams += 1
+			
+			
+		filename = str(num_teams) + 'teams'
+		filedir = SCHEDULEDIR + filename + '.csv'
+		
+		pairings = [None] * num_weeks
+		with open(filedir) as schedule:
+			
+			schedule.readline() #skip first line to allow week number to align with list index
+			
+			for i in range(1, num_weeks):
+				
+				weekly_pairings = schedule.readline()
+				
+				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
+				pairings[i] = weekly_pairing_list
+			
+		
+				
+		
+		if current_week:
+		
+			
+			return [pairings[current_week]]
+		else:
+			return pairings
+		
+		
+		
+		
+		"""this_league = self.league
 		
 		teams = list(range(1, this_league.leaguerules.num_teams+1))
 		
@@ -113,7 +158,7 @@ class Schedule(models.Model):
 			dq2.append(dq1.pop())
 			dq1.appendleft(start)
 		
-
+		"""
 
 """		
 	def shuffle(self, pairings):

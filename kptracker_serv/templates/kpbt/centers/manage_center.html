@@ -1,0 +1,14 @@
+{% extends 'index.html' %} {% load static %}
+
+
+{% block page_content %}
+
+<h2> {{center.name}} - Management Options</h2>
+
+<ul>
+    <li>
+        <a href="{% url 'update-center-manager' center.name %}">Change center manager.</a>
+    </li>
+</ul>
+    
+{% endblock %}

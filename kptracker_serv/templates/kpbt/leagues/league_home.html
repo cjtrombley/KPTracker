@@ -9,10 +9,17 @@
 <h2 class="form-head"> Leagues Tracked by KPBT</h2>
 <div class="table-responsive">
 <table class="table table-striped table-bordered table-hover">
+
 	{% for league in leagues %}
 	<tr>
 		<td><a href="{% url 'view-center-league-by-name' league.bowling_center.name league.name %}"> {{ league.name }} </a></td>
-        <td><a href="{% url 'view-center-by-name' league.bowling_center.name %}"> {{ league.bowling_center.name }}</a></td>
+        <td><a href="{% url 'center-home' league.bowling_center.name %}"> {{ league.bowling_center.name }}</a></td>
+        
+        {% for team in league.teams.all %}
+        <td><a href="{% url 'view-center-league-team-by-name' league.bowling_center.name league.name team.name %}"> 
+            {{ team.name }} </a></td>
+        {% endfor %}
+        
 	</tr>
 	{% endfor %}
 </table>

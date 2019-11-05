@@ -132,5 +132,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, 'static'),
 )
-
 LOGIN_REDIRECT_URL = '/'
+
+SCHEDULEFILES_FOLDER = os.path.join(BASE_DIR, 'kpbt\\schedules\\')

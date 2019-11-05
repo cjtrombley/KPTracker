@@ -1,11 +1,15 @@
 from django.shortcuts import redirect, render
-from kpbt.games.forms import CreateGameForm
+from kpbt.games.forms import CreateSeriesForm
 from django.contrib.auth.decorators import permission_required
-from kpbt.games.models import Game
+from kpbt.games.models import Series
 
-def create_game(request):
+
+
+
+"""
+def create_series(request):
 	if request.method == 'POST':
-		game_form = CreateGameForm(request.POST)
+		series_form = CreateSeriesForm(request.POST)
 		if game_form.is_valid():
 			game_form.save()
 			return redirect('index')
@@ -21,4 +25,4 @@ def view_games_by_bowler(request, username=""):
 		return render(request, 'games/view_game.html', {'games' : games })
 	else:
 		return redirect('index')
-		
+"""		
