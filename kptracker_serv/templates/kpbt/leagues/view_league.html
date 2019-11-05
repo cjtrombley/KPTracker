@@ -2,9 +2,48 @@
 
 {% block page_content %}
 
-<h2> Leagues </h2>
+<h2> {{ league.name }} </h2>
+<h4> Standings </h4>
+
 <table>
-	<tr>
+	<thead>
+        <tr>
+            <td>Team Name</td> <td> Total Points Won</td> <td> Total Points Lost</td> <td> Total Pinfall</td>
+        </tr>
+    
+    </thead>
+    <tbody>
+    {% for team in teams %}
+    
+        <tr>
+            <td>{{ team.name }}</td><td>{{team.team_points_won}}</td><td>{{team.team_points_lost}}</td><td>{{team.total_pinfall}}</td>
+        </tr>
+    </tbody>
+    {% endfor%}
+</table>
+    
+  
+<h2>League Schedule</h2>
+<p>Current Week: {{league.current_week }} </p>
+<p>This week's lane pairings: {{ weekly_pairing }} </p>
+
+<h2> League Bowlers </h2>
+<table>
+    <thead>
+        <tr>
+            <td>First Name</td><td>Last Name</td><td>League Average</td><td>Games Bowled</td><td>High Scratch Game</td><td>High Handicap Game</td><td>High Scratch Series</td><td>High Handicap Series</td><td>Total Scratch Pins</td><td>Total Handicap Pins</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for bowler in bowlers %} 
+        <tr>
+            <td>{{bowler.bowler.first_name}}</td><td>{{bowler.bowler.last_name}}</td><td>{{bowler.league_average}}</td><td>{{bowler.games_bowled}}</td><td>{{bowler.league_high_scratch_game}}</td><td>{{bowler.league_high_handicap_game}}</td><td>{{bowler.league_high_scratch_series}}</td><td>{{bowler.league_high_handicap_series}}</td><td>{{bowler.league_total_scratch}}</td><td>{{bowler.league_total_handicap}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<!--    
+    <tr>
 		<td> League </td>
 		<td> {{ league.name }} </td>
 	<tr>
@@ -23,9 +62,8 @@
     
 </table>
 
-<h2>League Schedule</h2>
-<p>Current Week: {{league.current_week }} </p>
-<p>This week's lane pairings: {{ weekly_pairing }} </p>
+
+
 
 <div>
 <h4> League Rules</h4>
@@ -34,4 +72,6 @@
 <h4> League Schedule</h4>
 {{ schedule.as_p }}
 </div>
+//-->
+
 {% endblock %}

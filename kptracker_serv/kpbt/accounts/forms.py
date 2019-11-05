@@ -15,14 +15,14 @@ class RegisterForm(UserCreationForm):
 		model = User 
 		fields = ('username', 'email', 'password1', 'password2', )
 	
-class CreateProfileForm(forms.ModelForm):
+class CreateUserProfileForm(forms.ModelForm):
 	
 	class Meta:
 		model = BowlerProfile
 		fields = ('first_name', 'last_name', 'date_of_birth', 'hand', 'designation', 'gender')
 		
 		
-class UpdateBowlerProfileForm(forms.ModelForm):
+class UpdateUserBowlerProfileForm(forms.ModelForm):
 		
 	class Meta:
 		model = BowlerProfile

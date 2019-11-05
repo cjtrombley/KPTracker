@@ -9,9 +9,14 @@ team_patterns = [
 	path('<str:team_name>/', include('kpbt.teams.urls')),
 ]
 
+series_patterns = [
+	path('', include('kpbt.games.urls')),
+]
 
 
 urlpatterns = [
+	path('scores/', include(series_patterns)),
+
 	path('', views.view_league, name='league-home'),
 	path('create-league', views.create_league, name='create-league'),
 	path('view-league/', views.view_league, name='view-league-home'),
@@ -19,5 +24,6 @@ urlpatterns = [
 	#path('view-league/<str:league_name>', views.view_league, name='view-league-by-name'),
 	#path('<str:league_name>', views.view_league, name='view-league-by-name'),
 	path('', include(team_patterns)),
+	path('scores/', include(series_patterns)),
 ]
 

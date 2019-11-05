@@ -19,10 +19,16 @@
 <table>
 	{% for bowler in bowlers %}
     
-	<tr>	
-        <td><a href="{% url 'view-profile-by-username' bowler.username %}">{{ bowler.userprofile.first_name }} </a></td>
+    {% if bowler.user.username %}
+	   <tr>	
+            <td><a href="{% url 'view-profile-by-username' bowler.user.username %}">{{ bowler.first_name }} {{ bowler.last_name }} </a></td>
 		
-	</tr>
+	   </tr>
+    {% else %}
+        <tr>
+            <td> {{bowler.first_name }}</td>
+    </tr>
+    {% endif %}
 	{% endfor %}
 
     {% if bowlers|length < team.league.leaguerules.max_roster_size %}
