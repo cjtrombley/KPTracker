@@ -7,8 +7,16 @@
     <div class="row">
     <div class="col-md-12">
 <h2 class="form-head">Bowling Centers</h2>
+        
+      <div class="d-flex justify-content-center mb-3">
+        <div class="searchbar">
+          <input class="search_input" type="text" name="search-bw-centers" placeholder="Search centers..." id="center-search" aria-label="Search filter">
+          <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+        </div>
+      </div>
+            
 <div class="table-responsive">
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover" id="centers-table">
 	<thead class="table-danger">
         <tr class="text-center font-weight-bolder">
             <th>Center Name</th><th>Number of Lanes</th><th>Manager</th>
@@ -23,6 +31,7 @@
 	{% endfor %}
     <!-- This is just a dummy row! -->
     <tr class="text-justify table-info font-weight-bolder"><td>HangLoose Lanes</td> <td>16</td> <td>Evan Hassan</td></tr>
+    <tr class="text-justify table-info font-weight-bolder"><td>Luxury Lanes</td> <td>20</td> <td>Bob McGuire</td></tr>
 </table>
 </div>
 </div>

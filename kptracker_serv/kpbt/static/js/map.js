@@ -1,5 +1,5 @@
-      var map;
-      var markers = [];
+      let map;
+      let markers = [];
 
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -7,18 +7,18 @@
           zoom: 0
         });
           
-        var locations = [
+        let locations = [
           {title: 'Michigan', location: {lat: 43.6211955, lng: -84.6824346}},
           {title: 'Luxury Lanes', location: {lat: 42.4603541, lng: -83.1256903}},
         ];
 
-        var largeInfowindow = new google.maps.InfoWindow();
-        var bounds = new google.maps.LatLngBounds();
+        let largeInfowindow = new google.maps.InfoWindow();
+        let bounds = new google.maps.LatLngBounds();
 
-        for (var i = 0; i < locations.length; i++) {
-          var position = locations[i].location;
-          var title = locations[i].title;
-          var marker = new google.maps.Marker({
+        for (let i = 0; i < locations.length; i++) {
+          let position = locations[i].location;
+          let title = locations[i].title;
+          let marker = new google.maps.Marker({
             map: map,
             position: position,
             title: title,
