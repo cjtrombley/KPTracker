@@ -20,6 +20,9 @@ class UserProfile(models.Model):
 	def set_center_manager(self, is_manager):
 		self.is_center_manager = is_manager
 		
+
+
+
 	
 class BowlerProfile(models.Model):
 	HAND = (
@@ -59,3 +62,6 @@ class BowlerProfile(models.Model):
 		
 	def create_empty_profile():
 		return BowlerProfile()
+		
+	def get_name(self):
+		return self.first_name + ' ' + self.last_name

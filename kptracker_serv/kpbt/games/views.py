@@ -22,7 +22,7 @@ def import_scores(request, center_name = "", league_name=""):
 				filedir = SCOREDIR + filename + '.txt'
 				
 				with open(filedir) as scores:
-					for _ in range(1):
+					for _ in range(2):
 						team_id = scores.readline().strip()
 						team = get_object_or_404(Team, id=team_id, league__name=league_name)
 						game_scores = []

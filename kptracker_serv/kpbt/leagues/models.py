@@ -52,41 +52,70 @@ class League(models.Model):
 			team_one = get_object_or_404(Team, league=self, number=teams[0])
 			team_two = get_object_or_404(Team, league=self, number=teams[1])
 			
+			team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
+			team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
+			
 			game_points = self.leaguerules.game_point_value
 			series_points = self.leaguerules.series_point_value
-			weekly_points = self.leaguerules.total_weekly_points
+			weekly_points = self.leaguerules.total_weekly_points()
 			
 			team_one_total_series = 0
 			team_two_total_series = 0
 			
+			team_one_points = 0
+			team_two_points = 0
+			
 			for i in range(1, 4):
 				
-				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i)
+				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i, team_one_series)
 				team_one_total_series += t1_hc_score
-				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i)
+				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i, team_two_series)
 				team_two_total_series += t2_hc_score
 				
 				if t1_hc_score > t2_hc_score:
-					team_one.team_points_won += game_points
-					team_two.team_points_lost += game_points
+					#team_one.team_points_won += game_points
+					team_one_points += game_points
+					#team_two.team_points_lost += game_points
+					
 				elif t1_hc_score < t2_hc_score:
-					team_one.team_points_lost += game_points
-					team_two.team_points_won += game_points
+					#team_one.team_points_lost += game_points
+					#team_two.team_points_won += game_points
+					team_two_points += game_points
 				else:
-					team_one.team_points_won += game_points / 2
-					team_one.team_points_lost += game_points / 2
-					team_two.team_points_won += game_points / 2
-					team_two.team_points_lost += game_points / 2
+					team_one_points += game_points / 2
+					team_two_points += game_points / 2
+					#team_one.team_points_won += game_points / 2
+					#team_one.team_points_lost += game_points / 2
+					#team_two.team_points_won += game_points / 2
+					#team_two.team_points_lost += game_points / 2
 			
 			if team_one_total_series > team_two_total_series:
-				team_one.team_points_won += series_points
-				team_two.team_points_lost += series_points
+				team_one_points += series_points
+				#team_one.team_points_won += series_points
+				#team_two.team_points_lost += series_points
 			elif team_one_total_series < team_two_total_series:
-				team_one.team_points_lost += series_points
-				team_two.team_points_won += series_points
-			else:
-				team_one.team_points_lost += series_points
-				team_two.team_points_lost += series_points
+				team_two_points += series_points
+				#team_one.team_points_lost += series_points
+				#team_two.team_points_won += series_points
+			#else:
+				#team_one.team_points_lost += series_points
+				#team_two.team_points_lost += series_points
+			
+			
+			
+			#team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
+			#team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
+			
+			for series_one in team_one_series:
+				series_one.set_points_won(team_one_points)
+				series_one.set_points_lost(weekly_points - team_one_points)
+				series_one.save()
+			
+			for series_two in team_two_series:
+				series_two.set_points_won(team_two_points)
+				series_two.set_points_lost(weekly_points - team_two_points)
+				series_two.save()
+			
 			
 			team_one.save()
 			team_two.save()
@@ -121,7 +150,7 @@ class LeagueRules(models.Model):
 	series_point_value = models.PositiveSmallIntegerField(default=0)
 
 	def total_weekly_points(self):
-		return (3 * game_point_value) + series_point_value
+		return (3 * self.game_point_value) + self.series_point_value
 
 class LeagueBowler(models.Model):
 	bowler = models.ForeignKey(BowlerProfile, on_delete=models.CASCADE)
@@ -217,5 +246,10 @@ class Schedule(models.Model):
 			return [pairings[current_week]]
 		else:
 			return pairings
-				
-			
+'''				
+class WeeklyStandings(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE)
+	series = models.ForeignKey(Series, on_delete=models.CASCADE)
+	
+	week_number = models.PositiveSmallIntegerField(default=1)
+'''	

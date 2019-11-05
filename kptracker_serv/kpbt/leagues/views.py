@@ -5,6 +5,7 @@ from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
+from kpbt.games.models import Series
 
 def create_league(request, center_name=""):
 	if request.method == 'POST':
@@ -57,13 +58,19 @@ def view_league(request, center_name = "", league_name=""):
 	if center_name:
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+			
+			
+			#standings = Series.objects.filter(league__name=league_name).order_by('-team__team_points_won')
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
 			pairings = list(league.schedule.pairings())
 			weekly_pairing = pairings[league.current_week()]
-			teams = league.teams.all()
-			return render(request, 'leagues/view_league.html', {'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings,
-				'weekly_pairing' : weekly_pairing})
+			teams = league.teams.all().order_by('-team_points_won')
+			league_bowlers = LeagueBowler.objects.filter(league__name=league_name)
+			
+			return render(request, 'leagues/view_league.html', 
+				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings,
+				'weekly_pairing' : weekly_pairing, 'bowlers' : league_bowlers})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 #from django.contrib.auth.forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from kpbt.accounts.forms import RegisterForm, CreateProfileForm, UpdateBowlerProfileForm #, CreateUserProfileForm
+from kpbt.accounts.forms import RegisterForm, CreateUserProfileForm, UpdateUserBowlerProfileForm #, CreateUserProfileForm
 from kpbt.accounts.models import UserProfile, BowlerProfile
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -38,7 +38,7 @@ def register(request):
 
 
 @login_required
-def create_or_update_profile(request, username=""):
+def create_or_update_user_profile(request, username=""):
 	'''
 	try:
 		#Check to see if request.user has an associated UserProfile. If so, we want to make sure it is not
@@ -47,16 +47,20 @@ def create_or_update_profile(request, username=""):
 		has_profile = request.user.userprofile #Exception occurs if no profile is found
 	'''	
 	if request.method == 'POST':
-		bowler_profile_form = UpdateBowlerProfileForm(request.POST)
+		bowler_profile_form = UpdateUserBowlerProfileForm(request.POST, instance=request.user.bowlerprofile)
 		
 		if bowler_profile_form.is_valid():
-			updated_profile = bowler_profile_form.save(commit=False)
-			request.user.bowlerprofile = updated_profile
-			request.user.bowlerprofile.save()
+			bowler_profile_form.save()
+			
+			#user_bowler_profile = BowlerProfile.objects.get(id=request.user.bowlerprofile.id)
+			
+			
+			#request.user.bowlerprofile = updated_profile
+			#request.user.bowlerprofile.save()
 			return redirect('view-profile-by-username', request.user.username)
 	else:
 		user = get_object_or_404(User, username=username)
-		bowler_profile_form = UpdateBowlerProfileForm(instance=user.bowlerprofile)
+		bowler_profile_form = UpdateUserBowlerProfileForm(instance=user.bowlerprofile)
 	return render(request, 'accounts/update_profile.html', {'profile_form' : bowler_profile_form})
 	
 	'''
@@ -116,7 +120,7 @@ def view_profile(request, username= ""):
 		except ObjectDoesNotExist:
 			return redirect('create-profile')
 		else:
-			bp_form = CreateProfileForm(instance=bp)
+			bp_form = CreateUserProfileForm(instance=bp)
 		return render(request, 'accounts/view_profile.html', {'bp_form' : bp_form})
 	'''
 	try:
