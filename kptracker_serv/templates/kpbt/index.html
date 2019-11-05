@@ -2,8 +2,8 @@
 {% block content %}
  <body>
     
-    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content">Skip to main content</a>
-    <nav class="navbar navbar-expand-md nav-bg nav-marg navbar-light" aria-label="Navigation">
+    <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content" aria-label="Skip to main content">Skip to main content</a>
+    <nav class="navbar navbar-expand-md nav-bg mb-4 navbar-light" aria-label="Navigation">
   <a class="navbar-brand" href="{% url 'index' %}" aria-label="Kingpin Bowling Tracker">
    <img src="{% static 'images/Kingpin.png' %}" alt="Kingpin's logo" class="logo">
   </a>
@@ -35,7 +35,7 @@
         Centers
         </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop">
-        <a class="dropdown-item" href="{% url 'center-home' %}">Home</a>
+        <a class="dropdown-item" href="{% url 'center-home' %}">Centers Home</a>
         {% if request.user.is_authenticated %}
             {% if request.user.is_superuser %}
             <a class="dropdown-item" href="{% url 'create-bowling-center' %}">Create Center</a>
@@ -44,6 +44,7 @@
                 <a class="dropdown-item" href="{% url 'center-management-home' request.user.center_managed.name %}"> Manage Center</a>
             {% endif %}
         {% endif %}
+        <a class="dropdown-item" href="{% url 'center_locations' %}">Locations</a>  
       </div>    
       </li>
     <li class="nav-item dropdown">
@@ -51,7 +52,7 @@
         Leagues
       </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop2">
-        <a class="dropdown-item" href="{% url 'league-home' %}">Home</a>
+        <a class="dropdown-item" href="{% url 'league-home' %}">Leagues Home</a>
         {% if user.is_authenticated %}
             {% if user.userprofile.is_center_manager %}
             <a class="dropdown-item" href="{% url 'create-league' user.center_managed.name %}" >Create League</a>
@@ -59,6 +60,7 @@
         {% endif %}
       </div>    
     </li>
+
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Teams
@@ -67,14 +69,34 @@
             <a class="dropdown-item" href="{% url 'team-home' %}">Home</a>
             </div>    
     </li>  
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'about' %}">About KPBT</a>
-    </li> 
    
+   
+
+   <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">About Us</a>
+   </li>
+
+   <!-- <li class="nav-item">
+        <a class="nav-link" href="">Link 4</a>
+    </li> 
+   <li class="nav-item">
+        <a class="nav-link" href="">Link 5</a>
+   </li>
+   <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Link 6
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbardrop3">
+        <a class="dropdown-item" href="">link 1</a>
+        <a class="dropdown-item" href="">link 2</a>
+        <a class="dropdown-item" href="">link 3</a>
+      </div>    
+    </li> -->
+
     </ul>
        <ul class="nav navbar-nav ml-auto">
-        <li><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
-        <li><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>           
+        <li class="grow"><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
+        <li class="grow"><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>           
       </ul>
       
   </div>  
@@ -84,7 +106,7 @@
 	<div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-      <h1 class="text-center mainhead font-weight-bolder margin-head">Kingpin</h1>
+      <h1 class="text-center mainhead font-weight-bolder margin-head text-uppercase">Kingpin</h1>
           <hr class="style15">
           <div class="dropdown" align="right">
             <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
@@ -96,11 +118,11 @@
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}"><i class="fad fa-user-crown"></i> Admin page</a>
+                <a href="{% url 'admin:index' %}" class="text-center d-block"><i class="fas fa-user-cog"></i> Admin page</a>
                 {% endif %}
                 {% endif %}
                 <br>
-                <a href="{% url 'logout' %}?next={% url 'login' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 {% else %}
                 <a href="{% url 'login' %}">Please login to continue.</a>
                 {% endif %}
@@ -115,7 +137,7 @@
           <div class="row">
           <div class="col-md-12">
          
-              <p class="text-white">Content goes here...</p>
+              <p class="text-white text-uppercase">Roll with It!!!</p>
               
               
               </div>
@@ -146,6 +168,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <!-- app.js -->    
   <script src="{% static 'js/app.js' %}"></script>
-    
+  <!-- Google Maps -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaRw18zPOLk-b3WAzaEWWNtmT0-OGsJBw&callback=initMap"
+  type="text/javascript"></script>
+  <!-- map.js -->     
+  <script src="{% static 'js/map.js' %}"></script>
 </body>
 {% endblock %}

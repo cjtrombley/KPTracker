@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from kpbt.centers.forms import BowlingCenterForm, UpdateManagerForm
 from kpbt.leagues.forms import LeagueCreationForm
@@ -67,6 +68,10 @@ def update_manager(request, center_name =""):
 		center = get_object_or_404(BowlingCenter, name=center_name)
 		update_manager_form = UpdateManagerForm()
 	return render(request, 'centers/update_manager.html', {'center' : center, 'form' : update_manager_form})
+
+def center_locations(request):
+    return render(request, 'centers/center_locations.html')
+
 	
 """	
 @permission_required('kpbt.view_bowlingcenter')
