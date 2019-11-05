@@ -43,7 +43,7 @@ class BowlerProfile(models.Model):
 	
 	user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
 	
-	first_name = models.CharField(max_length=64, blank=True, default='VACANT')
+	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
 	
 	date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)

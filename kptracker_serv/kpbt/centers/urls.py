@@ -8,7 +8,7 @@ center_management_patterns = [
 
 urlpatterns =[
 	path('create', views.create_bowling_center, name='create-bowling-center'),
-  path('locations', views.center_locations, name='center_locations'),
+	path('locations', views.center_locations, name='center_locations'),
 	path('', views.view_center_home, name='center-home'),
 	path('create', views.create_bowling_center, name='create-bowling-center'),
 	path('center_management/', include(center_management_patterns)),
