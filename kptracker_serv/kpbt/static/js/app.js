@@ -1,6 +1,16 @@
 /* app.js file */
 
 
+/* Search funcrionality - Centers Home */
+$(document).ready(function () {
+        $("#center-search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#centers-table tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
 /* Tooltips */   
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();   
