@@ -16,7 +16,6 @@ class TeamRosterForm(forms.ModelForm):
 		model = TeamRoster
 		fields = ('bowler', 'is_substitute')
 	
-RosterFormSet = formset_factory(TeamRosterForm)	
 
 
 class DeleteRosterForm(forms.ModelForm):

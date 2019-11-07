@@ -68,20 +68,21 @@ def view_league(request, center_name = "", league_name=""):
 			teams = league.teams.all().order_by('-team_points_won')
 			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
 			last_week_scores = []
-			
+			'''
 			if league.schedule.current_week > 1:
 				
 				for pairing in weekly_pairings:
-					teams = pairing.trim().split('-')
+					teams = pairing.strip().split('-')
 					for team in teams:
 				
 				
-						scores = Series.objects.filter(league__name=league_name, team__number = team, week=current_week)
-						last_week_scores.append(scores)
-			
+						scores = Series.objects.filter(league__name=league_name, team__number = team, week_number=league.schedule.current_week -1)
+						if scores:
+							last_week_scores.append(scores)
+			'''
+			last_week_scores=[]
 			return render(request, 'leagues/view_league.html', 
-				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings,
-				'weekly_pairing' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
+				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings, 'weekly_pairing' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()

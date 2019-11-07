@@ -4,7 +4,7 @@
 
 <h2> {{ league.name }} </h2>
 
-{% if league.schedule.currentweek > 1 %}
+{% if league.schedule.current_week > 1 %}
     <h4>Last Week's Results</h4>
     <table>
         {% for score in last_week_scores %}

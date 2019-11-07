@@ -14,6 +14,7 @@ class Series(models.Model):
 	
 	series_date = models.DateField()
 	week_number = models.PositiveSmallIntegerField()
+	pair_number = models.PositiveSmallIntegerField()
 	applied_average = models.PositiveSmallIntegerField()
 	applied_handicap = models.PositiveSmallIntegerField()
 	game_one_score = models.CharField(max_length=4)
