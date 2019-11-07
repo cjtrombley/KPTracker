@@ -23,6 +23,9 @@ class Series(models.Model):
 	weekly_points_won = models.PositiveSmallIntegerField(default=0)
 	weekly_points_lost = models.PositiveSmallIntegerField(default=0)
 	
+	
+	
+	
 	def get_scratch_score(self):
 		scratch_score = 0
 		for score in [self.game_one_score, self.game_two_score, self.game_three_score]:
@@ -60,4 +63,12 @@ class Series(models.Model):
 		
 		return handicap_score
 			
+	@staticmethod
+	def calc_team_scratch_game_score(team, week_number, game_number, team_series):
+		scratch_score = 0
+		
+		for game in team_series:
+			gamefield = 'game_' + num2words(game_number) +'_score'
+			scratch_score += int(getattr(game, gamefield))
 			
+		return scratch_score

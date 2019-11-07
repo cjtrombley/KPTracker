@@ -20,6 +20,10 @@ class Team(models.Model):
 	
 	roster = models.ManyToManyField(BowlerProfile, through='TeamRoster')
 	
+	def update_points(self, points_won, points_lost):
+		self.team_points_won += points_won
+		self.team_points_lost += points_lost
+	
 	def update_pinfall(self, handicap, game_scores):
 		scratch_score = 0
 		handicap_score = 0

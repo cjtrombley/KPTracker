@@ -65,7 +65,7 @@ class League(models.Model):
 			team_one_points = 0
 			team_two_points = 0
 			
-			for i in range(1, 4):
+			for i in range(1, 4): #Games number 1-3
 				
 				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i, team_one_series)
 				team_one_total_series += t1_hc_score
@@ -110,13 +110,16 @@ class League(models.Model):
 				series_one.set_points_won(team_one_points)
 				series_one.set_points_lost(weekly_points - team_one_points)
 				series_one.save()
+				
+				
 			
 			for series_two in team_two_series:
 				series_two.set_points_won(team_two_points)
 				series_two.set_points_lost(weekly_points - team_two_points)
 				series_two.save()
 			
-			
+			team_one.update_points(team_one_points, weekly_points - team_one_points)
+			team_two.update_points(team_two_points, weekly_points - team_two_points)
 			team_one.save()
 			team_two.save()
 
@@ -224,7 +227,7 @@ class Schedule(models.Model):
 	
 	def pairings(self, current_week=""):
 		num_teams = self.league.leaguerules.num_teams
-		num_weeks = self.num_weeks // 2
+		num_weeks = self.num_weeks # // 2
 		
 		if num_teams % 2:
 			num_teams += 1
@@ -238,7 +241,7 @@ class Schedule(models.Model):
 			schedule.readline() #skip first line to allow week number to align with list index
 			for i in range(1, num_weeks):
 				weekly_pairings = schedule.readline()
-				
+					
 				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
 				pairings[i] = weekly_pairing_list
 			

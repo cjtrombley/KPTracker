@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<table>
+    <thead>
+        <tr>
+            <td> Bowler </td> <td> Team </td> <td> Avg </td> <td> Hcp </td> <td> Game 1 </td> <td> Game 2 </td> <td> Game 3 </td>
+        </tr>
+    </thead>
+    {% for score in scores %}
+    <tr>
+       <td> {{ score.bowler.get_name }} </td> <td> {{ score.team.name }} </td> <td> {{ score.applied_average }} </td> <td> {{ score.applied_handicap }} </td>
+        <td> {{ score.game_one_score }} </td> <td> {{ score.game_two_score }} </td> <td> {{ score.game_three_score }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -77,6 +77,19 @@ def import_scores(request, center_name = "", league_name=""):
 		import_form = ImportScoresForm()
 		return render(request, 'games/import_scores.html', {'league' : league, 'import_form' : import_form })
 		
+		
+		
+def view_scores(request, center_name="", league_name="", week_number=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if week_number:
+		scores = Series.objects.filter(league=league, week_number=week_number)
+	else:
+		scores = Series.objects.filter(league=league).order_by('-week_number')
+		
+	return render(request, 'games/view_scores.html', {'scores' : scores})
+	
+		
 """
 def create_series(request):
 	if request.method == 'POST':

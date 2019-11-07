@@ -3,6 +3,26 @@
 {% block page_content %}
 
 <h2> {{ league.name }} </h2>
+
+{% if league.schedule.currentweek > 1 %}
+    <h4>Last Week's Results</h4>
+    <table>
+        {% for score in last_week_scores %}
+            {% cycle 'row' '' as row silent %}
+            {% if row %} <tr> {% endif %}
+        <td> {{ last_week_scores.weekly_points_won}} </td>
+                {% if not row %} </tr> {% endif %}
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+
+
+
+
+
+
 <h4> Standings </h4>
 
 <table>

@@ -36,8 +36,8 @@ def create_league(request, center_name=""):
 					teami.save()
 				
 					for _ in range(roster_size):
-						empty_bowler = BowlerProfile.create_empty_profile()
-						empty_bowler.save()
+						empty_bowler = get_object_or_404(BowlerProfile, id=0)
+						#empty_bowler.save()
 						team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
 						#empty_bowler.save()
 						team_roster_record.save()
@@ -64,13 +64,24 @@ def view_league(request, center_name = "", league_name=""):
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
 			pairings = list(league.schedule.pairings())
-			weekly_pairing = pairings[league.current_week()]
+			weekly_pairings = pairings[league.current_week()]
 			teams = league.teams.all().order_by('-team_points_won')
-			league_bowlers = LeagueBowler.objects.filter(league__name=league_name)
+			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
+			last_week_scores = []
+			
+			if league.schedule.current_week > 1:
+				
+				for pairing in weekly_pairings:
+					teams = pairing.trim().split('-')
+					for team in teams:
+				
+				
+						scores = Series.objects.filter(league__name=league_name, team__number = team, week=current_week)
+						last_week_scores.append(scores)
 			
 			return render(request, 'leagues/view_league.html', 
 				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings,
-				'weekly_pairing' : weekly_pairing, 'bowlers' : league_bowlers})
+				'weekly_pairing' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()
@@ -85,8 +96,7 @@ def view_schedule(request, center_name="", league_name=""):
 	if center_name:
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-			schedule = list(league.schedule.pairings(1))
-			#schedule = schedule[1:] #shift schedule indices left one space to maintain 1:1 alignment with current week
-			print(list(schedule))
-			#print(schedule[12][0])
+			schedule = list(league.schedule.pairings())
+			schedule = schedule[1:] #shift schedule indices left one space to maintain 1:1 alignment with current week
+			
 			return render(request, 'leagues/view_schedule.html', {'schedule' : schedule })
