@@ -3,6 +3,7 @@ from kpbt.teams.models import Team, TeamRoster
 from kpbt.accounts.models import BowlerProfile
 from django.contrib.auth.models import User
 from django.forms import formset_factory
+from kpbt.accounts.forms import CreateUserBowlerProfileForm, UpdateUserBowlerProfileForm
 
 class CreateTeamForm(forms.ModelForm):
 	class Meta:
@@ -10,11 +11,11 @@ class CreateTeamForm(forms.ModelForm):
 		fields = ('league', 'number', 'name')
 		
 		
-class TeamRosterForm(forms.ModelForm):
+class TeamRosterForm(forms.ModelForm): #extends BowlerProfile?
 	
 	class Meta:
-		model = TeamRoster
-		fields = ('bowler', 'is_substitute')
+		model = BowlerProfile
+		fields = ('__all__')
 	
 
 

@@ -70,7 +70,7 @@ class Team(models.Model):
 		return self.name
 		
 class TeamRoster(models.Model):
-	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE)
+	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE, related_name='roster_record')
 	team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='roster_record')
 	games_with_team = models.PositiveSmallIntegerField(default=0)
 	
@@ -81,7 +81,9 @@ class TeamRoster(models.Model):
 	
 	def __str__(self):
 		return self.bowler.first_name + " " + self.bowler.last_name + ", " + self.team.name
-		
+	
+	def get_bowler(self):
+		return self.bowler
 	
 	def create_roster_record(team, bowler):
 		roster_record = TeamRoster(bowler=bowler, team=team)

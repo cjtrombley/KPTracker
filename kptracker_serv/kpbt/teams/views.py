@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from django.forms.formsets import formset_factory
+from django.forms import modelformset_factory
 from kpbt.teams.forms import CreateTeamForm, TeamRosterForm #RosterFormSet
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.leagues.models import League
@@ -27,7 +27,7 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 			league= get_object_or_404(League, name=league_name)
 			if team_name:
 				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-				bowlers = team.roster.filter(teamroster__is_active=True)
+				bowlers = team.roster.filter(roster_record__is_active=True)
 				#bp = request.user.bowlerprofile
 				#bowlers = bp.teamroster_set.all()
 				#print(bowlers)
@@ -44,34 +44,23 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 #previously create_roster		
 def update_roster(request, center_name= "", league_name="", team_name=""):
 	team = get_object_or_404(Team, league__bowling_center__name = center_name, league__name = league_name, name=team_name)
-	
-	RosterFormSet = formset_factory(TeamRosterForm, extra=0)	
-	
+	RosterFormSet = modelformset_factory(BowlerProfile, extra = 0, fields=('first_name', 'last_name', 'hand', 'designation', 'gender'))	
 	team_rosters = TeamRoster.objects.filter(team_id=team.id)
-	roster_data = [{'bowler' : roster.bowler} for roster in team_rosters]
+	
+	bowler_data = []
+	for roster in team_rosters:
+		id = roster.bowler.id
+		bowler_data.append(id)
 	
 	if request.method == 'POST':
 		formset = RosterFormSet(request.POST)
 		if formset.is_valid():
-			for roster in formset:
-				if roster.has_changed():
-					print(roster.changed_data)
-					new_roster = roster.save(commit=False)
-					new_roster.team = team
-					new_roster.save()
+			 formset.save()
+				
 		return redirect('update-roster', center_name, league_name, team_name)
 	
 	else:
+		bowlers = BowlerProfile.objects.filter(id__in=bowler_data, is_linked=False)
+		rosterset = RosterFormSet(queryset=bowlers)
 		
-		rosterset = RosterFormSet(initial=roster_data)
-		#roster_size = range(1, team.league.leaguerules.max_roster_size)
-	
-	return render(request, 'teams/update_roster.html', {'team': team, 'rosterset' : rosterset})
-	
-"""
-def update_roster(request, center_name="", league_name="", team_name=""):
-	if request.method == 'POST':	
-		if center_name, league_name, team_name:
-			team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-			new_roster = TeamRoster(request.user, team)
-"""			
+		return render(request, 'teams/update_roster.html', {'team': team, 'rosterset' : rosterset})		
