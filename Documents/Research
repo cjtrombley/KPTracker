@@ -1,0 +1,18 @@
+                                           GOOD WEB PROGRAMMING PRACTICES 
+•	Understand the big picture 
+  Understand what you want the web application to do, what’s its purpose, and why is it being created. 
+•	Do not skip diagram creation 
+  It will help you better understand how you want to tackle every task and identify priorities. 
+•	Start with User experience 
+  Creating an interesting appearance is greatly important when creating a web application. Research and design should take up about 70% of the project. The first thing that users look at is appearance; no body wants to use an application that looks boring and complex to use. It needs to be a user-friendly application. Once the design is determined, the development will be a lot easier. 
+•	Write smart code 
+  Do not write complicated unnecessary code. Every line of code must have a purpose (solve a problem or provide a feature). Unnecessary code leads to bugs. Write clean, purposeful, easy-to-read code. 
+•	Pick a good framework 
+  Creating an application is like building a house. If you’re building a house, would you rather start with a bare piece of land, or a nearly built house where you just must focus on final details? 
+  That’s when you need to pick a good framework that provides a good structure in which you can build instead of starting from scratch. 
+•	Consider the future 
+  The application you’re building today, will inevitable be outdated in a few years. Therefore, writing updatable code is very important. Write comments on your code, that way, in the future when you need to update your application, you don’t need to start from scratch, you will be able to change small details. 
+•	Write testable code 
+  Some code is written in a way that is hard or even impossible to test. Make sure your code is testable. Testing practices are important for a serious developer. 
+•	Don’t stop there
+  The more prepared and experienced you are, the less bugs will arise in your code. You will be able to develop without major issues and be more prepared when bugs arise. Read more programming book, do more research, get better at it. 
