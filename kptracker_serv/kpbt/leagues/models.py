@@ -17,6 +17,8 @@ import datetime
 import itertools
 from num2words import num2words
 
+import math
+
 class League(models.Model):
 	
 	bowling_center = models.ForeignKey('BowlingCenter', on_delete=models.SET_NULL, null=True,
@@ -24,6 +26,7 @@ class League(models.Model):
 	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
 	name = models.CharField(max_length=32)
+	current_week = models.PositiveSmallIntegerField(default=1)
 	
 	def __str__(self):
 		return self.bowling_center.name + ", " + self.name
@@ -35,10 +38,48 @@ class League(models.Model):
 	def set_name(self, name):
 		self.name = name
 		
-	def current_week(self):
-		return self.schedule.current_week
+	#def current_week(self):
+		#return self.schedule.current_week
 		
+	def create_pairings(self):
+		num_teams = self.leaguerules.num_teams
+		num_weeks = self.schedule.num_weeks # // 2
 		
+		if num_teams % 2:
+			num_teams += 1
+			
+		filename = str(num_teams) + 'teams'
+		filedir = SCHEDULEDIR + filename + '.csv'
+		
+		pairings = [None] * num_weeks
+		with open(filedir) as schedule:
+			
+			schedule.readline() #skip first line to allow week number to align with list index
+			
+			raw_weekly_pairings = schedule.readlines()
+			week_number_counter=1
+			for raw_pairings in raw_weekly_pairings:
+
+				weekly_pairing_list = raw_pairings.strip('\n').split(',')
+				
+				pair_counter = 1
+				for pair in weekly_pairing_list:
+					
+					teams = pair.split('-')
+					team_one = Team.objects.get(league=self, number=teams[0])
+					team_two = Team.objects.get(league=self, number=teams[1])
+					new_pairing = WeeklyPairings.objects.create(league=self, team_one=team_one, team_two=team_two, week_number=week_number_counter, lane_pair = math.ceil(pair_counter))
+					
+					new_pairing.save()
+					pair_counter +=1
+				
+				week_number_counter += 1
+		
+
+		#if current_week:
+			#return [pairings[current_week]]
+		#else:
+			#return pairings	
 		
 	def score_week(self, week_number):
 		
@@ -214,7 +255,7 @@ class Schedule(models.Model):
 	num_weeks = models.PositiveSmallIntegerField(default=0)
 	start_time = models.TimeField()
 	
-	current_week = models.PositiveSmallIntegerField(default=1)
+	#current_week = models.PositiveSmallIntegerField(default=1)
 	
 	def calc_num_weeks(self):
 		weeks = rrule.rrule(rrule.WEEKLY, dtstart=self.date_starting, until=self.date_ending)
@@ -224,7 +265,7 @@ class Schedule(models.Model):
 	def advance_week(self):
 		current_week += 1
 	
-	
+	'''
 	def pairings(self, current_week=""):
 		num_teams = self.league.leaguerules.num_teams
 		num_weeks = self.num_weeks # // 2
@@ -249,7 +290,57 @@ class Schedule(models.Model):
 			return [pairings[current_week]]
 		else:
 			return pairings
-'''				
+	'''		
+			
+class WeeklyPairings(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='pairings')
+	
+	team_one = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='first_pair')
+	team_two = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='second_pair')
+	
+	week_number = models.PositiveSmallIntegerField(default=0)
+	lane_pair = models.PositiveSmallIntegerField(default=0)
+	
+	def __str__(self):
+		return str(self.team_one.number) + " - " + str(self.team_two.number)
+		
+		
+	def get_lanes_by_pairnumber(self):
+		return str(self.lane_pair *2 - 1) + ' - ' + str(self.lane_pair*2)
+	'''
+	def create_pairings(self):
+		num_teams = self.league.leaguerules.num_teams
+		num_weeks = self.num_weeks # // 2
+		
+		if num_teams % 2:
+			num_teams += 1
+			
+		filename = str(num_teams) + 'teams'
+		filedir = SCHEDULEDIR + filename + '.csv'
+		
+		pairings = [None] * num_weeks
+		with open(filedir) as schedule:
+			
+			schedule.readline() #skip first line to allow week number to align with list index
+			for i in range(1, num_weeks):
+				weekly_pairings = schedule.readline()
+					
+				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
+				
+				
+				for pair in weekly_pairing_list:
+					teams = pair.split('-')
+					new_pairing = WeeklyPairing(
+				
+				
+				pairings[i] = weekly_pairing_list
+			
+		#if current_week:
+			#return [pairings[current_week]]
+		#else:
+			return pairings
+	
+			
 class WeeklyStandings(models.Model):
 	league = models.ForeignKey(League, on_delete=models.CASCADE)
 	series = models.ForeignKey(Series, on_delete=models.CASCADE)

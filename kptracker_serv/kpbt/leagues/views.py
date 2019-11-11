@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm
 from kpbt.accounts.models import BowlerProfile
-from kpbt.leagues.models import League, LeagueBowler
+from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
@@ -14,45 +14,52 @@ import math
 def create_league(request, center_name=""):
 	if request.method == 'POST':
 		center = get_object_or_404(BowlingCenter, name=center_name)
-		if center:
-			schedule_form = CreateScheduleForm(request.POST)
-			league_form = LeagueCreationForm(request.POST)
-			if schedule_form.is_valid() and league_form.is_valid():
-				league = League.objects.create(
-					name=league_form.cleaned_data['league_name'], bowling_center=center,)
-				league.save()
-				
-				#create and save league schedule
-				schedule = schedule_form.save(commit=False)
-				schedule.league = league
-				schedule.calc_num_weeks()
-				
-				
-				#create and save league rules
-				leaguerules = league_form.save(commit=False)
-				leaguerules.league = league
-	
+		
+		schedule_form = CreateScheduleForm(request.POST)
+		league_form = LeagueCreationForm(request.POST)
+		if schedule_form.is_valid() and league_form.is_valid():
+			new_league = League.objects.create(
+				name=league_form.cleaned_data['league_name'], bowling_center=center,)
+			new_league.save()
 			
-				#create base empty teams with empty rosters for league
-				roster_size = leaguerules.playing_strength
-				for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
-					teami = Team.create_team(league, i)
-					teami.save()
-				
-					for _ in range(roster_size):
-						empty_bowler = get_object_or_404(BowlerProfile, id=0)
-						#empty_bowler.save()
-						team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
-						#empty_bowler.save()
-						team_roster_record.save()
-					
-						league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=league)
-						league_bowler.save()
 			
-				#save models
-				schedule.save()
-				leaguerules.save()
-				return redirect('center-home', center_name=center_name)
+			#create and save league schedule
+			schedule = schedule_form.save(commit=False)
+			schedule.league = new_league
+			schedule.calc_num_weeks()
+			
+		
+			
+			#create and save league rules
+			leaguerules = league_form.save(commit=False)
+			leaguerules.league = new_league
+		
+			#create base empty teams with empty rosters for league
+			roster_size = leaguerules.playing_strength
+			for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
+				teami = Team.create_team(new_league, i)
+				teami.save()
+			
+				for _ in range(roster_size):
+					empty_bowler = get_object_or_404(BowlerProfile, id=0)
+					#empty_bowler.save()
+					team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
+					#empty_bowler.save()
+					team_roster_record.save()
+				
+					league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
+					league_bowler.save()
+			
+			
+			
+			#generate weekly lane pairings
+			new_league.create_pairings()
+			
+			
+			#save models
+			schedule.save()
+			leaguerules.save()
+			return redirect('center-home', center_name=center_name)
 	else:
 		schedule_form = CreateScheduleForm()
 		league_form = LeagueCreationForm()
@@ -67,8 +74,8 @@ def view_league(request, center_name = "", league_name=""):
 			#standings = Series.objects.filter(league__name=league_name).order_by('-team__team_points_won')
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
-			pairings = list(league.schedule.pairings())
-			weekly_pairings = pairings[league.current_week()]
+			#pairings = list(league.schedule.pairings())
+			weekly_pairings = WeeklyPairings.objects.filter(league=league, week_number = league.current_week)
 			teams = league.teams.all().order_by('-team_points_won')
 			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
 			last_week_scores = []
@@ -86,7 +93,7 @@ def view_league(request, center_name = "", league_name=""):
 			'''
 			last_week_scores=[]
 			return render(request, 'leagues/view_league.html', 
-				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'pairings' : pairings, 'weekly_pairing' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
+				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()
@@ -101,10 +108,26 @@ def view_schedule(request, center_name="", league_name=""):
 	if center_name:
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-			schedule = list(league.schedule.pairings())
-			schedule = schedule[1:] #shift schedule indices left one space to maintain 1:1 alignment with current week
 			
-			return render(request, 'leagues/view_schedule.html', {'schedule' : schedule })
+			weekly_schedule = []
+			
+			
+			schedule = WeeklyPairings.objects.filter(league=league).order_by('week_number')
+			#print(weekly_schedule)
+			
+			for i in range(1, league.schedule.num_weeks):
+				week_pairs = WeeklyPairings.objects.filter(league=league, week_number=i)
+				
+				if week_pairs:
+					week_list = []
+					for pair in week_pairs:
+						teams = str(pair)
+						week_list.append(teams)
+					print(week_list)
+					weekly_schedule.append(week_list)
+			
+			
+			return render(request, 'leagues/view_schedule.html', {'schedule' : weekly_schedule })
 			
 
 
