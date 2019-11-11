@@ -37,8 +37,8 @@ class Team(models.Model):
 				
 		self.total_scratch_pins += scratch_score
 		self.total_handicap_pins += handicap_score
-		self.total_pinfall += scratch_score + handicap_score
 		self.save()
+		self.total_pinfall += scratch_score + handicap_score
 		
 	def create_team(league, number):
 		new_team = Team(league=league, number=number,

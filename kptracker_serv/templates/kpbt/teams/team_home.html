@@ -5,6 +5,24 @@
 <h2> Teams in KPBT</h2>
 
 
+
+{% regroup teams by league.bowling_center as teams_by_center %}
+<ul>
+{% for bowling_center in teams_by_center %}
+<li> 
+  {{ bowling_center.grouper }} 
+    <ul>{% for team in teams_by_center %}
+        <li> {{ team.name }} </li>
+        {% endfor %}
+    </ul>
+    </li>
+{% endfor %}
+</ul>
+
+
+
+
+
 <table>
     <thead>
         <tr>
@@ -12,13 +30,49 @@
         </tr>
     </thead>
     <tbody>
-    {% for team in teams %}
-    <tr>
-        <td><a href="{% url 'view-center-league-team-by-name' team.league.bowling_center.name team.league.name team.name %}"> {{ team.name }} </a></td>
-        <td><a href="{% url 'view-center-league-by-name' team.league.bowling_center.name team.league.name %}"> {{ team.league.name }}</a></td>
-        <td><a href="{% url 'center-home' team.league.bowling_center.name %}"> {{ team.league.bowling_center.name }} </a></td>
-    </tr>
-    {% endfor %}
+  
+        
+        {% regroup teams by league as teams_by_league %}
+        
+      
+        <tr>
+            <td> {{ teams.grouper }}</td>
+            </tr>
+            {% for team in teams_by_league %}
+                <tr> <td> {{ team.name }}</td></tr>
+            
+        
+          
+            {% endfor %}
+        
+        <!---
+        {% regroup team by team.league.bowling_center as teams %}
+        
+    
+        {% for team in teams %}
+        <tr>
+            <td> {{ team.league.bowling_center.name }} </td> 
+        </tr>
+        {% endfor %}
+        
+        {% for team in teams_by_center %}
+        
+            {% regroup team by team.league as teams_by_league %}
+        
+            {% for team.league, team in teams_by_league %}
+                <tr>
+                    <td> {{ team.league.name }}</td>
+                </tr>
+                {% for team in teams_by_league %}
+                    <tr>
+                        <td> {{team.name }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        --->
+
+
     </tbody>
 </table>
 {% endblock %}

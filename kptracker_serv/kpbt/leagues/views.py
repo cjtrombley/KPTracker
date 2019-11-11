@@ -6,6 +6,7 @@ from kpbt.leagues.models import League, LeagueBowler
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
+from kptracker.settings import ROSTEREXPORT_FOLDER as ROSTERS_DIR
 
 def create_league(request, center_name=""):
 	if request.method == 'POST':
@@ -101,3 +102,40 @@ def view_schedule(request, center_name="", league_name=""):
 			schedule = schedule[1:] #shift schedule indices left one space to maintain 1:1 alignment with current week
 			
 			return render(request, 'leagues/view_schedule.html', {'schedule' : schedule })
+			
+			
+			
+def export_rosters(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	week_number = league.schedule.current_week
+	
+	
+	export_filename = str(league.id) + '_' + str(week_number) +'.txt'
+	rosterFile = open(ROSTERS_DIR + export_filename, 'w')
+	
+	weekly_pairs_list = league.schedule.pairings(week_number)[0]
+	team_numbers = []
+	for pair in weekly_pairs_list:
+		pairs = pair.strip().split('-')
+		
+		team_numbers.append(pairs[0])
+		team_numbers.append(pairs[1])
+	
+	print(team_numbers)
+	
+	for i in team_numbers:
+		team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
+		rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
+		
+		rosterFile.write(str(team.number) + '\n')
+		for roster in rosters:
+			league_record = get_object_or_404(LeagueBowler, league=league, bowler=roster.bowler)
+			bowler_name = roster.bowler.get_name()
+			
+			line = str(roster.bowler.id) + ',' + bowler_name + ',' + str(league_record.league_average)
+			
+			print(line)
+			rosterFile.write(line + '\n')
+	rosterFile.close()	
+	return render(request, 'leagues/view_league.html')
+		

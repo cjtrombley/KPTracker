@@ -38,7 +38,8 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 				teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
 				return render(request, 'teams/team_home.html', {'teams' : teams })
 	else:
-		teams = Team.objects.all()
+		teams = Team.objects.all().order_by('-league__bowling_center__name', 'league__name', 'number')
+		print(teams)
 		return render(request, 'teams/team_home.html', {'teams' : teams})
 	
 #previously create_roster		
@@ -64,3 +65,4 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		rosterset = RosterFormSet(queryset=bowlers)
 		
 		return render(request, 'teams/update_roster.html', {'team': team, 'rosterset' : rosterset})		
+	

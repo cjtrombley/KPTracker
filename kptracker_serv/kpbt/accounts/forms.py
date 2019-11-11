@@ -26,7 +26,7 @@ class UpdateUserBowlerProfileForm(forms.ModelForm):
 		
 	class Meta:
 		model = BowlerProfile
-		exclude = ['user']
+		exclude = ['user', 'is_linked']
 		fields = ('__all__')
 		
 '''		
