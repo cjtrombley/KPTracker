@@ -1,9 +1,14 @@
 from django.urls import path, include
 from kpbt.leagues import views
 from kpbt.teams import views as team_views
+from kpbt.games import views as series_views
+
 
 weekly_patterns = [
-	path('export-rosters', views.export_rosters, name='export-rosters')
+	path('', views.view_weekly_tasks, name='league-view-weekly-tasks'),
+	path('export-rosters', views.export_rosters, name='export-rosters'),
+	path('import-scores', views.import_scores, name='import-scores'),
+	path('view-scores/<str:week_number>', series_views.view_scores, name='league-view-scores-by-week'),
 ]
 
 team_patterns = [
@@ -19,7 +24,7 @@ series_patterns = [
 
 
 urlpatterns = [
-	path('scores/', include(series_patterns)),
+	#path('scores/', include(series_patterns)),
 
 	path('', views.view_league, name='league-home'),
 	path('create-league', views.create_league, name='create-league'),

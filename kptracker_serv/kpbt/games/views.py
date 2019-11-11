@@ -9,21 +9,22 @@ from kpbt.games.forms import ImportScoresForm
 from kptracker.settings import SCOREFILES_FOLDER as SCOREDIR
 
 import math
-
+'''
 def import_scores(request, center_name = "", league_name=""):
 	if request.method == 'POST':
-		import_form = ImportScoresForm(request.POST)
+		#import_form = ImportScoresForm(request.POST)
 		
-		if import_form.is_valid():
-			week_number = import_form.cleaned_data['week_number']
-			league = get_object_or_404(League, name=league_name)
-			
+		#if import_form.is_valid():
+			#week_number = import_form.cleaned_data['week_number']
+		league = get_object_or_404(League, name=league_name)
+		week_number = league.schedule.current_week
+		
 			if league and week_number:
 				filename = str(league.id) + '_' + str(week_number)
 				filedir = SCOREDIR + filename + '.txt'
 				
 				with open(filedir) as scores:
-					for i in range(1, 5): 
+					for i in range(1, 5):  # only importing 4 teams until scores file has been updated to include a leagues worth of scores
 						pair_number = int(math.ceil(i / 2))
 						team_id = scores.readline().strip()
 						team = get_object_or_404(Team, id=team_id, league__name=league_name)
@@ -79,7 +80,7 @@ def import_scores(request, center_name = "", league_name=""):
 		import_form = ImportScoresForm()
 		return render(request, 'games/import_scores.html', {'league' : league, 'import_form' : import_form })
 		
-		
+'''		
 		
 def view_scores(request, center_name="", league_name="", week_number=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
@@ -89,7 +90,7 @@ def view_scores(request, center_name="", league_name="", week_number=""):
 		
 		#teams = league.teams.all()
 		#for team in teams:
-		scores = Series.objects.filter(league=league, week_number=week_number).order_by('team')
+		scores = Series.objects.filter(league=league, week_number=int(week_number)).order_by('team')
 		return render(request, 'games/view_scores_by_week.html', {'week_number' : week_number, 'scores' : scores})
 	else:
 		scores = Series.objects.filter(league=league).order_by('-week_number')
