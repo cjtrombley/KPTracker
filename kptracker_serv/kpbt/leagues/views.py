@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm
+from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
@@ -243,3 +243,33 @@ def import_scores(request, center_name = "", league_name=""):
 		league = get_object_or_404(League, name=league_name)
 		import_form = ImportScoresForm()
 		return render(request, 'games/import_scores.html', {'league' : league, 'import_form' : import_form })
+
+
+
+def manage_league(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	return render(request, 'leagues/manage/manage_league.html', {'league' : league })
+		
+def manage_league_secretary(request, center_name="", league_name=""):
+	if request.method == 'POST':
+		
+		form = UpdateLeagueSecretaryForm(request.POST)
+		if form.is_valid():
+			new_secretary = form.cleaned_data['secretary']
+			league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
+			
+			old_secretary = league.secretary
+			
+			if old_secretary:
+				other_leagues = League.objects.filter(secretary=old_secretary)
+				if not other_leagues:
+					old_secretary.set_league_secretary(False)
+			
+			print(new_secretary)
+			league.set_secretary(new_secretary)
+		
+			return redirect('index')
+	else:
+		form = UpdateLeagueSecretaryForm()
+		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })

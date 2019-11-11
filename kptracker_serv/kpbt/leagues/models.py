@@ -25,6 +25,8 @@ class League(models.Model):
 		related_name='leagues', verbose_name=('bowling center'))
 	bowlers = models.ManyToManyField('BowlerProfile', through='LeagueBowler')
 	
+	secretary = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+	
 	name = models.CharField(max_length=32)
 	current_week = models.PositiveSmallIntegerField(default=1)
 	
@@ -37,6 +39,10 @@ class League(models.Model):
 	
 	def set_name(self, name):
 		self.name = name
+		
+	def set_secretary(self, user):
+		self.secretary = user
+		self.save()
 		
 	#def current_week(self):
 		#return self.schedule.current_week
@@ -264,6 +270,8 @@ class Schedule(models.Model):
 	
 	def advance_week(self):
 		current_week += 1
+		
+	
 	
 	'''
 	def pairings(self, current_week=""):

@@ -19,8 +19,9 @@ class UserProfile(models.Model):
 	
 	def set_center_manager(self, is_manager):
 		self.is_center_manager = is_manager
-		
-
+	
+	def set_league_secretary(self, is_league_secretary):
+		self.is_league_secretary = is_league_secretary
 
 
 	
