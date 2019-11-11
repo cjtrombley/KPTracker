@@ -252,24 +252,30 @@ def manage_league(request, center_name="", league_name=""):
 	return render(request, 'leagues/manage/manage_league.html', {'league' : league })
 		
 def manage_league_secretary(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
+	
 	if request.method == 'POST':
 		
 		form = UpdateLeagueSecretaryForm(request.POST)
 		if form.is_valid():
 			new_secretary = form.cleaned_data['secretary']
-			league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
 			
 			old_secretary = league.secretary
 			
-			if old_secretary:
-				other_leagues = League.objects.filter(secretary=old_secretary)
-				if not other_leagues:
-					old_secretary.set_league_secretary(False)
-			
-			print(new_secretary)
 			league.set_secretary(new_secretary)
-		
-			return redirect('index')
+			new_secretary.userprofile.set_league_secretary(True)
+			new_secretary.userprofile.save()
+			
+			
+			if old_secretary:
+				
+				other_leagues = League.objects.filter(secretary__id=old_secretary.id)
+				if not other_leagues:
+					old_secretary.userprofile.set_league_secretary(False)
+					old_secretary.userprofile.save()
+			
+			
+		return redirect('manage-league', league.bowling_center.name, league.name)
 	else:
 		form = UpdateLeagueSecretaryForm()
 		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })
