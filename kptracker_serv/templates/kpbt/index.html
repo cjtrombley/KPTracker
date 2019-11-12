@@ -133,9 +133,29 @@
 -->
            
         {% endif %}       
-                                                                                                        
+         <div class="dropdown">
+            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
+                <i class="far fa-user fa-2x mx-auto d-block"></i>
+            </button>
+            <div class="dropdown-menu">
+              <h5 class="dropdown-header text-center underline">Account info</h5>
+                {% if request.user.is_authenticated %}
+                <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
+                <a class="text-center d-block mb-2" href="{% url 'view-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="View Profile"><span class="mr-1"><i class="fas fa-user-circle"></i></span> View Profile</a>
+                <a class="text-center d-block mb-2" href="{% url 'update-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="Update Profile"><span class="mr-1"><i class="fas fa-user-edit"></i></span> Update Profile</a>
+                {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
+                <a href="{% url 'admin:index' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Admin page"><span class="mr-1"><i class="fas fa-user-cog"></i></span> Admin page</a>
+                {% endif %}
+                {% endif %}
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Logout"><span class="mr-1"><i class="fas fa-sign-out-alt"></i></span> Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Please login to continue.</a>
+                {% endif %}
+            </div>
+          </div>                                                                                                  
         <li class="grow"><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
-        <li class="grow"><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>           
+        <li class="grow"><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>    
       </ul>
       
   </div>  
@@ -147,7 +167,7 @@
       <div class="col-md-12">
       <h1 class="text-center mainhead font-weight-bolder margin-head text-uppercase">Kingpin</h1>
           <hr class="style15">
-          
+          <!---
             <div class="dropdown" align="right">
             <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
                 <i class="far fa-user fa-2x mx-auto d-block"></i>
@@ -168,7 +188,7 @@
                 <a href="{% url 'login' %}">Please login to continue.</a>
                 {% endif %}
             </div>
-          </div>
+          </div> --->
           
           
       </div>
