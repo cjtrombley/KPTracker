@@ -1,25 +1,22 @@
 {% extends 'index.html' %}
 
+{% block title %}<title>Kingpin Bowling Tracker - View Profile</title>{% endblock %}
+
 {%block page_content %}
-	<table>
-		
-		{% for field in bp_form %}
-			<tr>
-				<td> {{ field.label }} </td>
-				<td> {{ field.value|default_if_none:'' }} </td>
-			</tr>
-		{% endfor %}
-	</table>
-	<br>
-	<table>
-		<thead>
+ <div class="container-fluid">  
+ <div class="row"> 
+ <div class="col-md-12">
+	<h2 class="form-head">Your Profile - {{ user.get_username }}:</h2>
+     <div class="table-responsive">
+	<table class="table table-striped table-bordered table-hover">
+		<thead class="table-danger">
 			
 			{% for field in bp_form %}
-				<th> {{ field.label }} </th>
+				<th class="text-center font-weight-bolder"> {{ field.label }} </th>
 			{% endfor %}
 		</thead>
 		<tbody>
-			<tr>
+			<tr class="text-justify table-info font-weight-bolder">
 				
 				{% for field in bp_form %}
 					<td> {{field.value|default_if_none:'' }}</td>
@@ -27,4 +24,8 @@
 			</tr>
 		</tbody>
 	</table>
+     </div>     
+     </div> 
+     </div> 
+     </div>  
 {% endblock %}
