@@ -466,6 +466,10 @@ label {
     color: #ffc107;
 }
 
+.text-label {
+	color: #ffc107
+}
+
 .buttonDrop {
     border-radius: 50%;
     width: 60px;

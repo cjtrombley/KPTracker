@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block page_content %}
-
+<div class="text-white">
 <h2> {{ league.name }} </h2> {% if request.user == secretary %} <p><a href="{% url 'manage-league' league.bowling_center.name league.name %}"> Manage League</a></p> {% endif %}
 
 {% if league.schedule.current_week > 1 %}
@@ -113,5 +113,5 @@
 {{ schedule.as_p }}
 </div>
 //-->
-
+</div>
 {% endblock %}

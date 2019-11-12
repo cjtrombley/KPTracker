@@ -197,7 +197,7 @@ class LeagueRules(models.Model):
 	is_handicap = models.BooleanField(default=False)
 	handicap_scratch = models.PositiveSmallIntegerField(default=0)
 	handicap_percentage = models.PositiveSmallIntegerField(default=0)
-	allow_substitutes = models.BooleanField(default=False)
+	#allow_substitutes = models.BooleanField(default=False)
 	bye_team_point_threshold = models.PositiveSmallIntegerField(default=0)
 	absentee_score = models.PositiveSmallIntegerField(default=0)
 	game_point_value = models.PositiveSmallIntegerField(default=0)
@@ -258,12 +258,24 @@ class LeagueBowler(models.Model):
 		self.league_average = self.league_total_scratch / self.games_bowled
 		
 class Schedule(models.Model):
+	WEEKDAY = (
+		('MO', 'Monday'),
+		('TU', 'Tuesday'),
+		('WE', 'Wednesday'),
+		('TH', 'Thursday'),
+		('FR', 'Friday'),
+		('SA', 'Saturday'),
+		('SU', 'Sunday'),
+	)
+	
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
 
 	date_starting = models.DateField()
 	date_ending = models.DateField()
 	num_weeks = models.PositiveSmallIntegerField(default=0)
 	start_time = models.TimeField()
+	
+	day_of_week = models.CharField(max_length=2, choices=WEEKDAY)
 	
 	#current_week = models.PositiveSmallIntegerField(default=1)
 	

@@ -17,7 +17,9 @@ def create_league(request, center_name=""):
 		
 		schedule_form = CreateScheduleForm(request.POST)
 		league_form = LeagueCreationForm(request.POST)
+		print('got here')
 		if schedule_form.is_valid() and league_form.is_valid():
+			print('got_here 2')
 			new_league = League.objects.create(
 				name=league_form.cleaned_data['league_name'], bowling_center=center,)
 			new_league.save()
@@ -60,6 +62,9 @@ def create_league(request, center_name=""):
 			schedule.save()
 			leaguerules.save()
 			return redirect('center-home', center_name=center_name)
+		else:
+			print(schedule_form.errors)
+			print(league_form.errors)
 	else:
 		schedule_form = CreateScheduleForm()
 		league_form = LeagueCreationForm()

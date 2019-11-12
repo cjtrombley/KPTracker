@@ -49,10 +49,10 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 	new_RosterFormSet = modelformset_factory(BowlerProfile, extra=4, fields=('first_name', 'last_name', 'hand', 'designation', 'gender'))
 	
 	team_rosters = TeamRoster.objects.filter(team_id=team.id)
-	bowler_data = [1,2,3,4]
-	#for roster in team_rosters:
-	#	id = roster.bowler.id
-	#	bowler_data.append(id)
+	bowler_data = []
+	for roster in team_rosters:
+		id = roster.bowler.id
+		bowler_data.append(id)
 	bowlers = BowlerProfile.objects.filter(id__in=bowler_data, is_linked=False)
 	
 	if request.method == 'POST':
