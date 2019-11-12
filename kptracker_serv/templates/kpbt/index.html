@@ -18,7 +18,7 @@
         <a class="nav-link" href="{% url 'index' %}">Home</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="" id="navbardrop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'center-home' %}" id="navbardrop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Centers
         </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop">
@@ -35,7 +35,7 @@
       </div>    
       </li>
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="" id="navbardrop2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="{% url 'league-home' %}" id="navbardrop2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Leagues
       </a>
       <div class="dropdown-menu" aria-labelledby="navbardrop2">
@@ -49,7 +49,7 @@
     </li>
 
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'team-home' %}" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Teams
         </a>
             <div class="dropdown-menu" aria-labelledby="navbardrop3">
@@ -84,16 +84,54 @@
       
        <ul class="nav navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
+<!--
             <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            KPBT Profile
+            <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="KPBT User account profile" title="KPBT Account profile">
+            KPBT Profile    
             </a>
             <div class="dropdown-menu" aria-labelledby="navbardrop3">
-                <a class="dropdown-item" href="{% url 'view-profile-by-username' request.user.username %}">View Profile</a>
-                <a class="dropdown-item" href="{% url 'update-profile-by-username' request.user.username %}">Update     Profile</a>
-        
+            <h5 class="dropdown-header text-center underline">Account info</h5>
+            {% if request.user.is_authenticated %}
+              <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
+            {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+            <a href="{% url 'admin:index' %}" class="text-center dropdown-item d-block"><i class="fas fa-user-cog"></i> Admin page</a>
+            {% endif %}
+            {% endif %}
+            <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center dropdown-item d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="text-center">Please login to continue.</a>
+            {% endif %}
+            <a class="dropdown-item text-center" href="{% url 'view-profile-by-username' request.user.username %}"><i class="fas fa-user-circle"></i> View Profile</a>
+            <a class="dropdown-item text-center" href="{% url 'update-profile-by-username' request.user.username %}"><i class="fas fa-user-edit"></i> Update Profile</a>
             </div>    
             </li>
+-->
+<!--
+                      <li> <div class="dropdown">
+           <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
+                <i class="far fa-user fa-2x mx-auto d-block"></i>
+            </button>
+            <div class="dropdown-menu">
+              <h5 class="dropdown-header text-center underline">Account info</h5>
+                {% if request.user.is_authenticated %}
+                <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
+                <a class="text-center d-block" href="{% url 'view-profile-by-username' request.user.username %}"><i class="fas fa-user-circle"></i> View Profile</a>
+                <a class="text-center d-block" href="{% url 'update-profile-by-username' request.user.username %}"><i class="fas fa-user-edit"></i> Update Profile</a>
+                {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
+                <a href="{% url 'admin:index' %}" class="text-center d-block"><i class="fas fa-user-cog"></i> Admin page</a>
+                {% endif %}
+                {% endif %}
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Please login to continue.</a>
+                {% endif %}
+            </div>
+          </div>
+          </li>
+-->
+           
         {% endif %}       
                                                                                                         
         <li class="grow"><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
@@ -109,38 +147,45 @@
       <div class="col-md-12">
       <h1 class="text-center mainhead font-weight-bolder margin-head text-uppercase">Kingpin</h1>
           <hr class="style15">
-          <div class="dropdown" align="right">
-            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" title="Account info">
+          
+            <div class="dropdown" align="right">
+            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
                 <i class="far fa-user fa-2x mx-auto d-block"></i>
             </button>
             <div class="dropdown-menu">
               <h5 class="dropdown-header text-center underline">Account info</h5>
                 {% if request.user.is_authenticated %}
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
+                <a class="text-center d-block mb-2" href="{% url 'view-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="View Profile"><span class="mr-1"><i class="fas fa-user-circle"></i></span> View Profile</a>
+                <a class="text-center d-block mb-2" href="{% url 'update-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="Update Profile"><span class="mr-1"><i class="fas fa-user-edit"></i></span> Update Profile</a>
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="text-center d-block"><i class="fas fa-user-cog"></i> Admin page</a>
+                <a href="{% url 'admin:index' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Admin page"><span class="mr-1"><i class="fas fa-user-cog"></i></span> Admin page</a>
                 {% endif %}
                 {% endif %}
-                <br>
-                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Logout"><span class="mr-1"><i class="fas fa-sign-out-alt"></i></span> Logout</a>
                 {% else %}
                 <a href="{% url 'login' %}">Please login to continue.</a>
                 {% endif %}
             </div>
           </div>
+          
+          
       </div>
     </div>
   </div>
-        <div class="pageContent bg-trans border-style">
+        <div class="pageContent bg-trans border-style m-4 p-3 fade-in one">
         {% block page_content %}
         <div class="container-fluid">
           <div class="row">
           <div class="col-md-12">
          
-              <p class="text-white text-uppercase">Roll with It!!!</p>
-              
-              
+              <p id="kpmission" class="text-white text-uppercase"><span class="underline">B</span>owling to perfection...</p>
+              <p class="speech d-block mx-auto">Kingpin is a user-friendly app that allows for easy bowling center and league management. Kingpin will allow users to connect with bowling centers to view the leagues that they are within to see stats and recent scores. Bowling Centers can upload data, select league secretaries and maintain league quality.</p>
+              <figure>
+              <img src="{% static 'images/Kingpin-character.png' %}" alt="Kingpin character" class="mx-auto d-block img-fluid">
+               <figcaption class="text-center text-white">-KP</figcaption>      
+              </figure>      
               </div>
               </div>
               </div>
