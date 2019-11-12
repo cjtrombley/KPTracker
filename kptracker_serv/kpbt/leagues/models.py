@@ -89,15 +89,19 @@ class League(models.Model):
 		
 	def score_week(self, week_number):
 		
-		weekly_pairs = self.schedule.pairings()
+		#weekly_pairs = self.schedule.pairings()
 		
-		this_week = weekly_pairs[week_number]
+		#this_week = weekly_pairs[week_number]
+		
+		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number)
 		
 		for pair in this_week:
-			teams = pair.split('-')
+			#teams = pair.split('-')
 			
-			team_one = get_object_or_404(Team, league=self, number=teams[0])
-			team_two = get_object_or_404(Team, league=self, number=teams[1])
+			#team_one = get_object_or_404(Team, league=self, number=teams[0])
+			#team_two = get_object_or_404(Team, league=self, number=teams[1])
+			team_one = pair.team_one
+			team_two = pair.team_two
 			
 			team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
 			team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)

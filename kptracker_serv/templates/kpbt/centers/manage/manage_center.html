@@ -6,9 +6,8 @@
 <h2> {{center.name}} - Management Options</h2>
 
 <ul>
-    <li>
-        <a href="{% url 'update-center-manager' center.name %}">Change center manager.</a>
-    </li>
+    <li><a href="{% url 'update-center-manager' center.name %}">Change center manager.</a></li>
+    <li><a href="{% url 'update-center' center.name %}">Update Center Information</a></li>
 </ul>
     
 {% endblock %}

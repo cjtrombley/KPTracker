@@ -4,6 +4,7 @@ from kpbt.centers import views
 center_management_patterns = [
 	path('', views.center_management_home, name='center-management-home'),
 	path('update_manager', views.update_manager, name='update-center-manager'),
+	path('update_center', views.update_center, name='update-center'),
 ]
 
 urlpatterns =[
@@ -15,7 +16,7 @@ urlpatterns =[
 
 	
 	#path('<str:center_name>', views.view_center_home, name='view-center-by-name'),
-	path('center-management/', include(center_management_patterns)),
+	path('management/', include(center_management_patterns)),
 	
 ]
 	

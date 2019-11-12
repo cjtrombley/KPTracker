@@ -63,7 +63,7 @@ def create_league(request, center_name=""):
 	else:
 		schedule_form = CreateScheduleForm()
 		league_form = LeagueCreationForm()
-	return render(request, 'leagues/create_league.html', {'schedule_form' : schedule_form, 'league_form' : league_form })
+	return render(request, 'leagues/manage/create_league.html', {'schedule_form' : schedule_form, 'league_form' : league_form })
 
 def view_league(request, center_name = "", league_name=""):
 	if center_name:
@@ -74,11 +74,12 @@ def view_league(request, center_name = "", league_name=""):
 			#standings = Series.objects.filter(league__name=league_name).order_by('-team__team_points_won')
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
-			#pairings = list(league.schedule.pairings())
+			
 			weekly_pairings = WeeklyPairings.objects.filter(league=league, week_number = league.current_week)
 			teams = league.teams.all().order_by('-team_points_won')
 			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
-			last_week_scores = []
+			last_week_scores=[]
+			secretary = league.secretary
 			'''
 			if league.schedule.current_week > 1:
 				
@@ -91,9 +92,10 @@ def view_league(request, center_name = "", league_name=""):
 						if scores:
 							last_week_scores.append(scores)
 			'''
-			last_week_scores=[]
+			
 			return render(request, 'leagues/view_league.html', 
-				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores})
+				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores,
+					'secretary' : secretary})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()
@@ -105,29 +107,23 @@ def view_league(request, center_name = "", league_name=""):
 
 
 def view_schedule(request, center_name="", league_name=""):
-	if center_name:
-		if league_name:
-			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-			
-			weekly_schedule = []
-			
-			
-			schedule = WeeklyPairings.objects.filter(league=league).order_by('week_number')
-			#print(weekly_schedule)
-			
-			for i in range(1, league.schedule.num_weeks):
-				week_pairs = WeeklyPairings.objects.filter(league=league, week_number=i)
-				
-				if week_pairs:
-					week_list = []
-					for pair in week_pairs:
-						teams = str(pair)
-						week_list.append(teams)
-					print(week_list)
-					weekly_schedule.append(week_list)
-			
-			
-			return render(request, 'leagues/view_schedule.html', {'schedule' : weekly_schedule })
+	
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	weekly_schedule = []
+	schedule = WeeklyPairings.objects.filter(league=league).order_by('week_number')
+	#print(weekly_schedule)
+	
+	for i in range(1, league.schedule.num_weeks):
+		week_pairs = WeeklyPairings.objects.filter(league=league, week_number=i)
+		if week_pairs:
+			week_list = []
+			for pair in week_pairs:
+				teams = str(pair)
+				week_list.append(teams)
+			#print(week_list)
+			weekly_schedule.append(week_list)
+	
+	return render(request, 'leagues/view_schedule.html', {'schedule' : weekly_schedule })
 			
 
 
@@ -140,19 +136,20 @@ def view_weekly_tasks(request, center_name="", league_name=""):
 			
 def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-	week_number = league.schedule.current_week
+	week_number = league.current_week
 	
 	
 	export_filename = str(league.id) + '_' + str(week_number) +'.txt'
 	rosterFile = open(ROSTERS_DIR + export_filename, 'w')
 	
-	weekly_pairs_list = league.schedule.pairings(week_number)[0]
+	#weekly_pairs_list = league.schedule.pairings(week_number)[0]
+	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('-lane_pair')
 	team_numbers = []
 	for pair in weekly_pairs_list:
-		pairs = pair.strip().split('-')
+		#pairs = pair.strip().split('-')
 		
-		team_numbers.append(pairs[0])
-		team_numbers.append(pairs[1])
+		team_numbers.append(pair.team_one.id)
+		team_numbers.append(pair.team_two.id)
 	
 	print(team_numbers)
 	
@@ -170,7 +167,7 @@ def export_rosters(request, center_name="", league_name=""):
 			print(line)
 			rosterFile.write(line + '\n')
 	rosterFile.close()	
-	return render(request, 'leagues/view_league.html')
+	return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
 		
 		
 		
@@ -181,7 +178,7 @@ def import_scores(request, center_name = "", league_name=""):
 		#if import_form.is_valid():
 			#week_number = import_form.cleaned_data['week_number']
 		league = get_object_or_404(League, name=league_name)
-		week_number = league.schedule.current_week
+		week_number = league.current_week
 			
 		if league and week_number:
 			filename = str(league.id) + '_' + str(week_number)
@@ -236,13 +233,13 @@ def import_scores(request, center_name = "", league_name=""):
 						team_roster_record.save()
 						
 			league.score_week(week_number)				
-		return redirect('view_league', center_name, league_name )
+		return redirect('view-league-home', center_name, league_name )
 								
 							
 	else:
 		league = get_object_or_404(League, name=league_name)
 		import_form = ImportScoresForm()
-		return render(request, 'games/import_scores.html', {'league' : league, 'import_form' : import_form })
+		return render(request, 'leagues/weekly/import_scores.html', {'league' : league, 'import_form' : import_form })
 
 
 
@@ -250,6 +247,7 @@ def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	
 	return render(request, 'leagues/manage/manage_league.html', {'league' : league })
+		
 		
 def manage_league_secretary(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
