@@ -10,4 +10,4 @@ class IndexView(TemplateView):
 
 class AboutView(TemplateView):
 	
-	template_name = 'about-us.html'
+	template_name = 'about.html'
