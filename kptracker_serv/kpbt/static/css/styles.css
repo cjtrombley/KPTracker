@@ -10,6 +10,7 @@ body {
     margin: 0;
     padding: 0;
     font-size: 1.25rem;
+    line-height: 1.5;
     background: #3ab59c;
     background: url("../images/bowling_ball_down_lane-bg.jpg") 25% 25%;
     background-size: cover;
@@ -69,7 +70,7 @@ header, section, footer, aside, nav, main, article, figure {
     transition:0.2s;
 }
 
-.dropdown:hover>.dropdown-menu {
+.navbar-nav .dropdown:hover>.dropdown-menu {
     display: block;
 }
 
@@ -116,6 +117,10 @@ header, section, footer, aside, nav, main, article, figure {
 
 .dropdown-item:hover {
     background-color: #ff4d4d; /* shade of red */
+}
+
+.fa-user {
+    color: #4B0082; /* Indigo */
 }
 
 .fa-sign-in-alt {
@@ -172,6 +177,45 @@ min-height: 100%;
 
 .underline {
     text-decoration: underline;
+}
+
+#kpmission {
+    font-size: 2rem;
+    color: ghostwhite;
+}
+
+#kpmission::first-letter {
+    font-size: 300%;
+}
+
+/* Source: https://www.sitepoint.com/pure-css3-speech-bubbles/ */
+.speech {
+  position: relative;
+  width: 720px;
+  height: 300px;
+  text-align: center;
+  line-height: 60px;
+  background-color: antiquewhite;
+  border: 8px solid darkcyan;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: 2px 2px 4px lightslategray;
+  -moz-box-shadow: 2px 2px 4px lightslategray
+  box-shadow: 2px 2px 4px lightslategray;
+  color: darkblue;
+  margin: 10px;
+}
+
+.speech:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 285px;    
+  top: 295px;
+  border: 18px solid;
+  border-color: darkcyan transparent transparent darkcyan;
 }
 
 .card-login {
@@ -454,9 +498,35 @@ label {
     transform: scale(1.3);
 }
 
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fade-in { /* https://fabriceleven.com/design/creating-fancy-css3-fade-in-animations-on-page-load/ */
+	opacity:0;  /* make things invisible upon start */
+	-webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+	-moz-animation:fadeIn ease-in 1;
+	animation:fadeIn ease-in 1;
+
+	-webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+	-moz-animation-fill-mode:forwards;
+	animation-fill-mode:forwards;
+
+	-webkit-animation-duration:1s;
+	-moz-animation-duration:1s;
+	animation-duration:1s;
+}
+
+.fade-in.one {
+-webkit-animation-delay: 0.9s;
+-moz-animation-delay: 0.9s;
+animation-delay: 0.9s;
+}
+
 #map {
   height: 700px;  /* The height is 700 pixels */
-  width: 100%;  /* The width is the entire width of the web page */
+  width: 100%; /* The width is the entire width of the web page */    
+  border: 1px solid #000;    
 }
 
 #footer {
@@ -472,7 +542,10 @@ label {
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) { /* Laptops and Desktops */
     
-
+    .logo {
+   width: 300px;
+} 
+    
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) { /* Tablets, Laptops */
@@ -482,16 +555,54 @@ label {
    }
     
     .fa-sign-in-alt, .fa-bowling-ball {
-       font-size: 1rem; 
+       font-size: 2.0rem; 
     }
     
     .logo {
    width: 200px;
-} 
+}
+    
+#kpmission {
+    font-size: 1.6rem;
+}
+
+#kpmission::first-letter {
+    font-size: 200%;
+}
+
+/* Source: https://www.sitepoint.com/pure-css3-speech-bubbles/ */
+.speech {
+  position: relative;
+  width: 620px;
+  height: 300px;
+  text-align: center;
+  line-height: 60px;
+  background-color: antiquewhite;
+  border: 8px solid #666;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: 2px 2px 4px #888;
+  -moz-box-shadow: 2px 2px 4px #888;
+  box-shadow: 2px 2px 4px #888;
+  color: darkblue;
+  margin: 10px;
+}
+
+.speech:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 265px;    
+  top: 295px;
+  border: 18px solid;
+  border-color: #666 transparent transparent #666;
+}    
     
 }
 
-@media only screen and (min-width: 300px) and (max-width: 500px) {
+@media only screen and (min-width: 400px) and (max-width: 600px) {
     
     .btn-login {
       width: 250px;
@@ -504,6 +615,46 @@ label {
        
 .logo {
    width: 300px;
-}  
+}
+
+#kpmission {
+    font-size: 1.2rem;
+}
+
+#kpmission::first-letter {
+    font-size: 200%;
+}
+
+/* Source: https://www.sitepoint.com/pure-css3-speech-bubbles/ */
+.speech {
+  position: relative;
+  width: 215px;
+  height: 370px;
+  text-align: center;
+  line-height: 30px;
+  background-color: antiquewhite;
+  border: 8px solid #666;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: 2px 2px 4px #888;
+  -moz-box-shadow: 2px 2px 4px #888;
+  box-shadow: 2px 2px 4px #888;
+  color: darkblue;
+  margin: 10px;
+  font-size: 1rem;
+}
+
+.speech:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 60px;    
+  top: 360px;
+  border: 18px solid;
+  border-color: #666 transparent transparent #666;
+}    
+    
     
 }

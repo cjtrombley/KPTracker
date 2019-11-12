@@ -3,25 +3,19 @@
 {% block title %}<title>Kingpin Bowling Tracker - Update Profile</title>{% endblock %}
 
 {% block page_content %}
-<body class="bg-bowl">
-<main id="mainContent" tabindex="-1">
  <div class="container-fluid">  
  <div class="row"> 
  <div class="col-md-12">
     <header>
-	<h1 class="mainhead">Update Profile</h1>
-    <hr class="style15">
+	<h2 class="form-head">Update Profile</h2>
     </header>        
 	<p class="lead text-white">Enter the information below to update your profile.</p>
 	<form method="post">
 		{% csrf_token %}
 		{{ profile_form.as_p }}
-		<button type="submit" class="btn btn-regist mx-auto d-block"> Update Profile </button>
+		<button type="submit" class="btn btn-univ"> Update Profile </button>
 	</form>
-     
      </div> 
      </div> 
      </div> 
-    </main>    
-</body>
 {% endblock %}
