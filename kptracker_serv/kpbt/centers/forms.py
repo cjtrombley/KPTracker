@@ -1,10 +1,33 @@
 from django import forms
-from kpbt.centers.models import BowlingCenter
+from kpbt.centers.models import BowlingCenter, CenterAddress
 
-class BowlingCenterForm(forms.ModelForm):
+class CreateBowlingCenterForm(forms.ModelForm):
 	class Meta:
 		model= BowlingCenter
 		fields=('name', 'num_lanes', 'manager')
+		
+class CreateCenterAddressForm(forms.ModelForm):
+	class Meta:
+		model = CenterAddress
+		exclude = ['bowling_center']
+		fields = ('__all__')
+		
+		
+class UpdateCenterForm(forms.ModelForm):
+	#center_name = forms.CharField(max_length=32)
+	#num_lanes = forms.IntegerField(min_value=2, label='Number of lanes')
+	
+	class Meta:
+		model = BowlingCenter
+		exclude = ['manager']
+		fields = ('__all__')
+	
+		
+class UpdateAddressForm(forms.ModelForm):
+	class Meta:
+		model = CenterAddress
+		exclude = ['bowling_center']
+		fields = ('__all__')
 
 class UpdateManagerForm(forms.ModelForm):
 	class Meta:

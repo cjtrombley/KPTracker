@@ -1,5 +1,5 @@
 from django import forms
-from kpbt.leagues.models import LeagueRules, Schedule
+from kpbt.leagues.models import League, LeagueRules, Schedule
 from kpbt.centers.models import BowlingCenter
 
 class LeagueCreationForm(forms.ModelForm):
@@ -18,3 +18,8 @@ class CreateScheduleForm(forms.ModelForm):
 	class Meta:
 		model = Schedule
 		fields = ('date_starting', 'date_ending', 'start_time')
+		
+class UpdateLeagueSecretaryForm(forms.ModelForm):
+	class Meta:
+		model = League
+		fields = ('secretary',)

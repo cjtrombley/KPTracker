@@ -19,8 +19,9 @@ class UserProfile(models.Model):
 	
 	def set_center_manager(self, is_manager):
 		self.is_center_manager = is_manager
-		
-
+	
+	def set_league_secretary(self, is_league_secretary):
+		self.is_league_secretary = is_league_secretary
 
 
 	
@@ -46,7 +47,7 @@ class BowlerProfile(models.Model):
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
 	
-	date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
+	#date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
 	
 	
 	hand = models.CharField(max_length=1, choices=HAND, blank=True)
@@ -54,8 +55,10 @@ class BowlerProfile(models.Model):
 	gender = models.CharField(max_length=1, choices=GENDER, blank=True)
 	
 	
-	is_sanctioned = models.BooleanField(default=False, blank=False)
-	last_date_sanctioned = models.DateField(default=datetime.date(1900,1,1), blank=True)
+	#is_sanctioned = models.BooleanField(default=False, blank=False)
+	#last_date_sanctioned = models.DateField(default=datetime.date(1900,1,1), blank=True)
+	
+	is_linked = models.BooleanField(default=False)
 		
 	def __str__(self):
 		return self.first_name + ' ' + self.last_name		

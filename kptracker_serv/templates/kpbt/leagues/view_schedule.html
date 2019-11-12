@@ -7,7 +7,7 @@
 <table>
     {% for pairing in schedule %}
     <tr>
-        <td> {{ pairing }} </td>
+        <td> Week Number {{forloop.counter}}:  </td><td> {{ pairing }} </td>
     </tr>
     {% endfor %}
 </table>

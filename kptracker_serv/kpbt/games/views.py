@@ -8,21 +8,24 @@ from kpbt.accounts.models import BowlerProfile
 from kpbt.games.forms import ImportScoresForm
 from kptracker.settings import SCOREFILES_FOLDER as SCOREDIR
 
-
+import math
+'''
 def import_scores(request, center_name = "", league_name=""):
 	if request.method == 'POST':
-		import_form = ImportScoresForm(request.POST)
+		#import_form = ImportScoresForm(request.POST)
 		
-		if import_form.is_valid():
-			week_number = import_form.cleaned_data['week_number']
-			league = get_object_or_404(League, name=league_name)
-			
+		#if import_form.is_valid():
+			#week_number = import_form.cleaned_data['week_number']
+		league = get_object_or_404(League, name=league_name)
+		week_number = league.schedule.current_week
+		
 			if league and week_number:
 				filename = str(league.id) + '_' + str(week_number)
 				filedir = SCOREDIR + filename + '.txt'
 				
 				with open(filedir) as scores:
-					for _ in range(2):
+					for i in range(1, 5):  # only importing 4 teams until scores file has been updated to include a leagues worth of scores
+						pair_number = int(math.ceil(i / 2))
 						team_id = scores.readline().strip()
 						team = get_object_or_404(Team, id=team_id, league__name=league_name)
 						game_scores = []
@@ -46,7 +49,7 @@ def import_scores(request, center_name = "", league_name=""):
 							game_three = series_data[5]
 							
 							
-							new_series = Series.objects.create(league=league, team=team, bowler=bp, week_number=week_number, series_date="1900-1-1",
+							new_series = Series.objects.create(league=league, team=team, bowler=bp, week_number=week_number, pair_number=pair_number, series_date="1900-1-1",
 								applied_average = app_avg, applied_handicap = app_handi,
 								game_one_score = game_one, game_two_score = game_two, game_three_score = game_three)
 								
@@ -76,6 +79,23 @@ def import_scores(request, center_name = "", league_name=""):
 		league = get_object_or_404(League, name=league_name)
 		import_form = ImportScoresForm()
 		return render(request, 'games/import_scores.html', {'league' : league, 'import_form' : import_form })
+		
+'''		
+		
+def view_scores(request, center_name="", league_name="", week_number=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if week_number:
+		#scores =[]
+		
+		#teams = league.teams.all()
+		#for team in teams:
+		scores = Series.objects.filter(league=league, week_number=int(week_number)).order_by('team')
+		return render(request, 'games/view_scores_by_week.html', {'week_number' : week_number, 'scores' : scores})
+	else:
+		scores = Series.objects.filter(league=league).order_by('-week_number')
+		return render(request, 'games/view_scores.html', {'week_number': week_number, 'scores' : scores})
+	
 		
 """
 def create_series(request):

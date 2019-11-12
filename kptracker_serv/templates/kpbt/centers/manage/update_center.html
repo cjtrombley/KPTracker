@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ update_center_form.as_p }}
+    {{ update_address_form.as_p }}
+    <button type="submit">Update Center</button>
+
+</form>
+{% endblock %}

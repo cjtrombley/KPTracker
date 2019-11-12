@@ -2,7 +2,27 @@
 
 {% block page_content %}
 
-<h2> {{ league.name }} </h2>
+<h2> {{ league.name }} </h2> {% if request.user == secretary %} <p><a href="{% url 'manage-league' league.bowling_center.name league.name %}"> Manage League</a></p> {% endif %}
+
+{% if league.schedule.current_week > 1 %}
+    <h4>Last Week's Results</h4>
+    <table>
+        {% for score in last_week_scores %}
+            {% cycle 'row' '' as row silent %}
+            {% if row %} <tr> {% endif %}
+        <td> {{ last_week_scores.weekly_points_won}} </td>
+                {% if not row %} </tr> {% endif %}
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+
+
+
+
+
+
 <h4> Standings </h4>
 
 <table>
@@ -25,7 +45,27 @@
   
 <h2>League Schedule</h2>
 <p>Current Week: {{league.current_week }} </p>
-<p>This week's lane pairings: {{ weekly_pairing }} </p>
+<p> <a href="{% url 'view-center-league-schedule' league.bowling_center.name league.name %}"> View Schedule</a></p>
+<p>This week's lane pairings: </p>
+<table>
+    <tr>
+    <td>Lanes</td>
+    {% for pair in weekly_pairings %}
+    
+            <td> {{ pair.get_lanes_by_pairnumber }} </td>
+    
+    {% endfor %}
+    </tr>
+    
+    <tr>
+    <td> Team Numbers</td>
+    {% for pair in weekly_pairings %}
+        
+            <td> {{ pair }}</td>
+    
+    {% endfor %}
+    </tr>
+</table>
 
 <h2> League Bowlers </h2>
 <table>

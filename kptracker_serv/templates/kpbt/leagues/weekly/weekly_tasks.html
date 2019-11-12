@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<h1> {{ league.name }} </h1>
+<h2> Current Week: {{ league.current_week }}</h2>
+
+<h4>Weekly Tasks</h4>
+
+<ol>
+    <!--- <li>Update Team Rosters</li> --->
+    <li><a href="{% url 'export-rosters' league.bowling_center.name league.name%}">Export Team Rosters </a></li>
+    <li><a href="{% url 'import-scores' league.bowling_center.name league.name %}">Import Weekly Scores</a></li>
+    <li><a href="{% url 'league-view-scores-by-week' league.bowling_center.name league.name %}"> View Weeks Scores</a></li>
+
+
+</ol>
+{% endblock %}

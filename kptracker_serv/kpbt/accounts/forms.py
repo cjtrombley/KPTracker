@@ -19,15 +19,35 @@ class CreateUserBowlerProfileForm(forms.ModelForm):
 	
 	class Meta:
 		model = BowlerProfile
-		fields = ('first_name', 'last_name', 'date_of_birth', 'hand', 'designation', 'gender')
+		fields = ('first_name', 'last_name', 'hand', 'designation', 'gender')
 		
 		
 class UpdateUserBowlerProfileForm(forms.ModelForm):
 		
 	class Meta:
 		model = BowlerProfile
-		exclude = ['user', 'is_sanctioned', 'last_date_sanctioned']
+		exclude = ['user', 'is_linked']
 		fields = ('__all__')
+		
+'''		
+class UpdateLeagueBowlerProfileForm(forms.ModelForm):
+		
+		
+	class Meta:
+		model = BowlerProfile
+		exclude = ['user']
+		fields = ('__all__')
+		
+		def has_changed(self):
+			changed_data = super(UpdateLeagueBowlerProfileForm, self).has_changed()
+			return bool(changed_data)
+			
+class UpdateLeagueBowlerProfileFormset(BaseModelFormSet):
+	def clean(self):
+		super(UpdateLeagueBowlerProfileFormset, self).clean()
+
+'''
+
 		
 """		
 class DisplayProfile(forms.Form):

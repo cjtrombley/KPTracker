@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<h1> {{ league.name }} Management</h1>
+
+<ol>
+    <li><a href="{% url 'update-league-secretary' league.bowling_center.name league.name %}"> Manage League Secretary</a> </li>
+
+
+</ol>
+{% endblock %}

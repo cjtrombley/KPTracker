@@ -20,6 +20,10 @@ class Team(models.Model):
 	
 	roster = models.ManyToManyField(BowlerProfile, through='TeamRoster')
 	
+	def update_points(self, points_won, points_lost):
+		self.team_points_won += points_won
+		self.team_points_lost += points_lost
+	
 	def update_pinfall(self, handicap, game_scores):
 		scratch_score = 0
 		handicap_score = 0
@@ -33,8 +37,8 @@ class Team(models.Model):
 				
 		self.total_scratch_pins += scratch_score
 		self.total_handicap_pins += handicap_score
-		self.total_pinfall += scratch_score + handicap_score
 		self.save()
+		self.total_pinfall += scratch_score + handicap_score
 		
 	def create_team(league, number):
 		new_team = Team(league=league, number=number,
@@ -66,7 +70,7 @@ class Team(models.Model):
 		return self.name
 		
 class TeamRoster(models.Model):
-	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE)
+	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE, related_name='roster_record')
 	team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='roster_record')
 	games_with_team = models.PositiveSmallIntegerField(default=0)
 	
@@ -77,7 +81,9 @@ class TeamRoster(models.Model):
 	
 	def __str__(self):
 		return self.bowler.first_name + " " + self.bowler.last_name + ", " + self.team.name
-		
+	
+	def get_bowler(self):
+		return self.bowler
 	
 	def create_roster_record(team, bowler):
 		roster_record = TeamRoster(bowler=bowler, team=team)
