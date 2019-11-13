@@ -17,7 +17,13 @@ class TeamRosterForm(forms.ModelForm): #extends BowlerProfile?
 		model = BowlerProfile
 		fields = ('__all__')
 	
+class ViewRosterForm(forms.ModelForm):
 
+	league_average = forms.IntegerField()
+
+	class Meta:
+		model = BowlerProfile
+		fields = ('first_name', 'last_name', 'league_average')
 
 class DeleteRosterForm(forms.ModelForm):
 	

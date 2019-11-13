@@ -9,6 +9,7 @@ from kpbt.games.models import Series
 from kptracker.settings import ROSTEREXPORT_FOLDER as ROSTERS_DIR
 from kpbt.games.forms import CreateSeriesForm, ImportScoresForm
 from kptracker.settings import SCOREFILES_FOLDER as SCOREDIR
+from django.forms import formset_factory
 import math
 
 def create_league(request, center_name=""):
@@ -138,7 +139,109 @@ def view_weekly_tasks(request, center_name="", league_name=""):
 	return render(request, 'leagues/weekly/weekly_tasks.html', {'league' : league})
 	
 
+def view_export_rosters(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)	
+	
+	if request.method == 'POST':
+	
+		export_rosters(request, league.bowling_center.name, league.name)
+		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
+	
+	else:
+		league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+		week_number = league.current_week
+		
+		weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
+		team_numbers = []
+		for pair in weekly_pairs_list:
+			team_numbers.append(pair.team_one.id)
+			team_numbers.append(pair.team_two.id)
 			
+		team_dict = {}
+		bowler_data=[]	
+		roster_dict = {}
+		bowlers_dict = {}
+		for i in team_numbers:
+			team =get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
+			rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
+
+			#roster_dict.clear()
+			team_dict.clear()
+			bowlers_dict.clear()
+			#bowler_data.append(team.name)
+			lineup_spot = 1
+		
+			for roster in rosters:
+		
+				bowlers_dict[lineup_spot] = {}
+				
+				#roster_string = []
+				bowler = get_object_or_404(BowlerProfile, id=roster.bowler.id)
+				league_profile = get_object_or_404(LeagueBowler, league=league, bowler=bowler) 
+				#print(bowler)
+				#print(league_profile)
+				
+				bowlers_dict[lineup_spot]['first_name'] = bowler.first_name
+				bowlers_dict[lineup_spot]['last_name'] = bowler.last_name
+				bowlers_dict[lineup_spot]['league_average'] = league_profile.league_average
+				
+				#print(bowlers_dict[lineup_spot])
+				lineup_spot += 1
+				#roster_dict[i] = {}
+				
+				#roster_dict[i]= bowlers_dict
+				'''
+				team_dict.update({'first_name' : bowler.first_name})
+				team_dict.update({'last_name' : bowler.last_name})
+				
+				
+				
+				
+				#roster_string.append('league_profile.league_average' + ':' +  str(league_profile.league_average))
+				#print(roster_string)
+				team_dict.update({'league_average' : league_profile.league_average})
+				
+				#roster_dict.update({team.name : bowler })
+				#print(team_dict)
+				#roster_string.append(str(league_profile.league_average))
+
+				#bowler_data.append(roster_string)
+				
+				#team_key_values = [ [k,v] for k, v in team_dict.items() ]
+				print('Printing team dictionary', team_dict)
+				
+				temp_dict = {str(lineup_spot) : team_dict}
+				print('Printing temp_dict: ', temp_dict)
+				#bowlers_list.append(temp_dict)
+				#print('Printing bowlers list : ', bowlers_list)
+				#bowlers_list.update({str(lineup_spot) : [team_dict] })
+				print('lineup_spot: ', lineup_spot)
+				bowlers_list[lineup_spot] = temp_dict.copy()
+				print('Printing bowlers list :', bowlers_list)
+				lineup_spot += 1
+				'''
+			
+			#roster_dict.update({team.name : bowlers_list})
+			
+			#print(bowlers_dict.values())
+			roster_dict[i] = {}
+			roster_dict[i]= bowlers_dict.copy()
+			print('Roster dictionary: ', roster_dict)
+			#for item in team_key_values:
+				#print(item)
+		#print(roster_dict.items())
+		#print(roster_dict.items())
+		#for k, v in roster_dict.items():
+			#print(k, ":")
+			
+			#for i in v:
+				#for b in i:
+					#print(b)
+		
+		print('Printing rosters.items(): ' , roster_dict.items())
+		return render(request, 'leagues/weekly/export_rosters.html', {'rosters' : roster_dict})
+	
+	
 def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	week_number = league.current_week
@@ -148,7 +251,7 @@ def export_rosters(request, center_name="", league_name=""):
 	rosterFile = open(ROSTERS_DIR + export_filename, 'w')
 	
 	#weekly_pairs_list = league.schedule.pairings(week_number)[0]
-	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('-lane_pair')
+	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
 	team_numbers = []
 	for pair in weekly_pairs_list:
 		#pairs = pair.strip().split('-')
@@ -156,7 +259,7 @@ def export_rosters(request, center_name="", league_name=""):
 		team_numbers.append(pair.team_one.id)
 		team_numbers.append(pair.team_two.id)
 	
-	print(team_numbers)
+	#print(team_numbers)
 	
 	for i in team_numbers:
 		team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
@@ -169,7 +272,7 @@ def export_rosters(request, center_name="", league_name=""):
 			
 			line = str(roster.bowler.id) + ',' + bowler_name + ',' + str(league_record.league_average)
 			
-			print(line)
+			#print(line)
 			rosterFile.write(line + '\n')
 	rosterFile.close()	
 	return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)

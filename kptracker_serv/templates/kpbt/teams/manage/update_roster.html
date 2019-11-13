@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block page_content %}
-
+<div class="text-white">
 <h2> Update Roster Members of team {{ team.name }} in the league {{ team.league.name }}. </h2>
 <h4> Updating Existing Members</h4>
 <form method="post">
@@ -44,4 +44,5 @@
     
 	<button type="submit">Add To Roster</button>
 </form>
+</div>
 {% endblock %}
