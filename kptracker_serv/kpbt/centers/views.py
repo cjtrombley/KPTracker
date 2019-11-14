@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
-from kpbt.centers.forms import CreateBowlingCenterForm, UpdateManagerForm, CreateCenterAddressForm, UpdateCenterForm, UpdateAddressForm
+from kpbt.centers.forms import CreateBowlingCenterForm, UpdateManagerForm, CreateCenterAddressForm, UpdateCenterForm, UpdateAddressForm, DeleteLeagueForm
 from kpbt.leagues.forms import LeagueCreationForm
 from kpbt.centers.models import BowlingCenter, CenterAddress
 from kpbt.accounts.models import UserProfile
+from kpbt.leagues.models import League
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist
@@ -97,6 +98,30 @@ def update_manager(request, center_name =""):
 def center_locations(request):
     return render(request, 'centers/center_locations.html')
 
+	
+	
+def manage_leagues(request, center_name=""):
+	center = get_object_or_404(BowlingCenter, name=center_name)
+	leagues = League.objects.filter(bowling_center__name=center_name)
+	return render(request, 'centers/manage/manage_leagues.html', {'leagues' : leagues, 'center' : center })
+	
+	
+def delete_league(request, center_name="", league_name=""):
+	center= get_object_or_404(BowlingCenter, name=center_name)
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if request.method == 'POST':
+		form = DeleteLeagueForm(request.POST)
+		
+		if form.is_valid():
+			league.delete()
+			
+			return redirect('center-management-home', center.name)
+	
+	else:
+		form = DeleteLeagueForm()
+	return render(request, 'centers/manage/delete_league.html', {'league' : league, 'center' : center, 'form' : form})
+	
 	
 """	
 @permission_required('kpbt.view_bowlingcenter')

@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+
+<h2> Manage leagues at {{ center.name }} </h2>
+
+<table>
+    
+    {% for league in leagues %}
+    <tr>
+    <td> {{ league.name }}</td><td><a href="{% url 'manage-league' center.name league.name %}"> Manage</a></td><td><a href="{% url 'delete-center-league' center.name league.name %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
