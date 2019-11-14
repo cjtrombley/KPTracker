@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+
+    
+<h2> Change Bowling Center</h2>
+    
+<p> Currently the {{ league.name }} league bowls at {{ league.bowling_center.name }}. Please select a center to move to.</p>
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit"> Move League</button>
+    </form>
+</div>
+{% endblock %}

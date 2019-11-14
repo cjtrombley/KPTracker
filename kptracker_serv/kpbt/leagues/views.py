@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm
+from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
@@ -407,7 +407,7 @@ def manage_league_secretary(request, center_name="", league_name=""):
 			new_secretary.userprofile.save()
 			
 			
-			if old_secretary:
+			if old_secretary: #check to see if old secretary is still a league secretary in another league
 				
 				other_leagues = League.objects.filter(secretary__id=old_secretary.id)
 				if not other_leagues:
@@ -419,3 +419,20 @@ def manage_league_secretary(request, center_name="", league_name=""):
 	else:
 		form = UpdateLeagueSecretaryForm()
 		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })
+		
+def move_league(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if request.method == 'POST':
+		form = MoveLeagueForm(request.POST)
+		if form.is_valid():
+			
+			league.bowling_center = form.cleaned_data['bowling_center']
+			league.save()	
+		return redirect('manage-league', league.bowling_center.name, league.name)
+	
+	
+	else:
+		form = MoveLeagueForm()
+	return render(request, 'leagues/manage/move_league_center.html', {'form' : form, 'league' : league })
+		

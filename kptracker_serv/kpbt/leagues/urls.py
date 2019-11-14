@@ -7,6 +7,7 @@ league_management_paterns = [
 	path('', views.manage_league, name='manage-league'),
 	path('update-league-secretary', views.manage_league_secretary, name='update-league-secretary'),
 	path('update-league', views.update_league, name='update-league'),
+	path('move-league', views.move_league, name='move-league'),
 ]
 
 weekly_patterns = [

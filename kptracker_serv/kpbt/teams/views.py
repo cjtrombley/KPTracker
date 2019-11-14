@@ -67,7 +67,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		#new_formset = new_RosterFormSet(request.POST)
 		#print(new_formset)
 		if formset.is_valid():
-			print('is_valid')
+			
 			formset.save()
 			
 			for new in formset.new_objects:

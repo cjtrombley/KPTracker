@@ -57,3 +57,8 @@ class UpdateLeagueSecretaryForm(forms.ModelForm):
 	class Meta:
 		model = League
 		fields = ('secretary',)
+		
+class MoveLeagueForm(forms.ModelForm):
+	class Meta:
+		model = League
+		fields=('bowling_center',)
