@@ -2,7 +2,7 @@
 
 {% block page_content %}
 <div class="text-white">
-<h2> {{ league.name }} </h2> {% if request.user == secretary %} <p><a href="{% url 'manage-league' league.bowling_center.name league.name %}"> Manage League</a></p> {% endif %}
+<h2> {{ league.name }} </h2> {% if request.user == secretary or request.user.is_superuser %} <p><a href="{% url 'manage-league' league.bowling_center.name league.name %}"> Manage League</a></p> {% endif %}
 
 {% if league.schedule.current_week > 1 %}
     <h4>Last Week's Results</h4>

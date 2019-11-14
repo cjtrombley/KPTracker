@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+    
+    <h2> Update League</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <h4> Rename League</h4>
+        {{ name_form.as_p }}
+        
+        <h4> Update Schedule</h4>
+        {{ schedule_form.as_p }}
+        
+        
+        <h4> Update League Rules</h4>
+        {{ rules_form.as_p }}
+        <button type="submit"> Update League</button>
+    </form>
+</div>
+{% endblock %}

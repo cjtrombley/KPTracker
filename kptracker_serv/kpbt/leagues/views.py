@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm
+from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
@@ -18,9 +18,9 @@ def create_league(request, center_name=""):
 		
 		schedule_form = CreateScheduleForm(request.POST)
 		league_form = LeagueCreationForm(request.POST)
-		print('got here')
+		
 		if schedule_form.is_valid() and league_form.is_valid():
-			print('got_here 2')
+			
 			new_league = League.objects.create(
 				name=league_form.cleaned_data['league_name'], bowling_center=center,)
 			new_league.save()
@@ -70,6 +70,40 @@ def create_league(request, center_name=""):
 		schedule_form = CreateScheduleForm()
 		league_form = LeagueCreationForm()
 	return render(request, 'leagues/manage/create_league.html', {'schedule_form' : schedule_form, 'league_form' : league_form })
+
+def update_league(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	schedule = league.schedule
+	rules = league.leaguerules
+	
+	if request.method == 'POST':
+		name_form = RenameLeagueForm(request.POST, instance=league)
+		rules_form = UpdateLeagueRulesForm(request.POST, instance=rules)
+		schedule_form = UpdateScheduleForm(request.POST, instance=schedule)
+		
+		if name_form.is_valid() and rules_form.is_valid() and schedule_form.is_valid():
+			updated_name = name_form.save(commit=False)
+			updated_rules = rules_form.save(commit=False)
+			updated_schedule = schedule_form.save(commit=False)
+			
+			updated_rules.league = league
+			updated_schedule.league= league
+			
+			updated_name.save()
+			updated_schedule.save()
+			updated_rules.save()
+			#updated_rules.save(updated_fields=['designation', 'gender', 'max_roster_size', 'handicap_scratch', 'handicap_percentage', 'bye_team_point_threshold', 'absentee_score',
+				#'game_point_value', 'series_point_value'])
+		
+			return redirect('update-league', league.bowling_center.name, league.name)
+	
+	else:
+		name_form = RenameLeagueForm(instance=league)
+		rules_form = UpdateLeagueRulesForm(instance=rules)
+		schedule_form = UpdateScheduleForm(instance=schedule)
+	return render(request, 'leagues/manage/update_league.html', {'name_form' : name_form, 'rules_form' : rules_form, 'schedule_form' : schedule_form})
+
+
 
 def view_league(request, center_name = "", league_name=""):
 	if center_name:
@@ -373,7 +407,7 @@ def manage_league_secretary(request, center_name="", league_name=""):
 			new_secretary.userprofile.save()
 			
 			
-			if old_secretary:
+			if old_secretary: #check to see if old secretary is still a league secretary in another league
 				
 				other_leagues = League.objects.filter(secretary__id=old_secretary.id)
 				if not other_leagues:
@@ -385,3 +419,20 @@ def manage_league_secretary(request, center_name="", league_name=""):
 	else:
 		form = UpdateLeagueSecretaryForm()
 		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })
+		
+def move_league(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if request.method == 'POST':
+		form = MoveLeagueForm(request.POST)
+		if form.is_valid():
+			
+			league.bowling_center = form.cleaned_data['bowling_center']
+			league.save()	
+		return redirect('manage-league', league.bowling_center.name, league.name)
+	
+	
+	else:
+		form = MoveLeagueForm()
+	return render(request, 'leagues/manage/move_league_center.html', {'form' : form, 'league' : league })
+		

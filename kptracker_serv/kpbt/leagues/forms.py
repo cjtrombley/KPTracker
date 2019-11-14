@@ -26,6 +26,18 @@ class LeagueCreationForm(forms.ModelForm):
 			'bye_team_point_threshold', 'absentee_score', 'game_point_value', 'series_point_value')
 	
 	
+	
+class UpdateLeagueRulesForm(forms.ModelForm):
+	class Meta:
+		model = LeagueRules
+		fields = ('designation', 'gender', 'max_roster_size', 'handicap_scratch', 'handicap_percentage', 
+			'bye_team_point_threshold', 'absentee_score', 'game_point_value', 'series_point_value')
+			
+class RenameLeagueForm(forms.ModelForm):
+	class Meta:
+		model = League
+		fields = ('name',)
+		
 class CreateScheduleForm(forms.ModelForm):
 	
 	date_starting = forms.DateField(widget= forms.DateInput(attrs={'placeholder':'Start date'}))
@@ -36,7 +48,17 @@ class CreateScheduleForm(forms.ModelForm):
 		model = Schedule
 		fields = ('date_starting', 'date_ending', 'day_of_week', 'start_time')
 		
+class UpdateScheduleForm(forms.ModelForm):
+	class Meta:
+		model = Schedule
+		fields = ('date_starting', 'date_ending', 'day_of_week', 'start_time')
+		
 class UpdateLeagueSecretaryForm(forms.ModelForm):
 	class Meta:
 		model = League
 		fields = ('secretary',)
+		
+class MoveLeagueForm(forms.ModelForm):
+	class Meta:
+		model = League
+		fields=('bowling_center',)

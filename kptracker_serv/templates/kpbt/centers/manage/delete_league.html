@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+
+
+    <p> You are attempting to delete the league {{ league.name }} at {{ center.name }}.</p>
+    
+    <p> Enter "DELETE" in the form below to confirm this action.</p>
+
+
+    <form method="post">
+    
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <button type="submit">Delete League</button>
+    </form>
+</div>
+{% endblock %}
