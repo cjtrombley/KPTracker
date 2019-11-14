@@ -6,6 +6,7 @@ from kpbt.games import views as series_views
 league_management_paterns = [
 	path('', views.manage_league, name='manage-league'),
 	path('update-league-secretary', views.manage_league_secretary, name='update-league-secretary'),
+	path('update-league', views.update_league, name='update-league'),
 ]
 
 weekly_patterns = [
@@ -37,7 +38,7 @@ urlpatterns = [
 	#path('view-league/<str:league_name>', views.view_league, name='view-league-by-name'),
 	#path('<str:league_name>', views.view_league, name='view-league-by-name'),
 	path('weekly/', include(weekly_patterns)),
-	path('management/', include(league_management_paterns)),
+	path('manage/', include(league_management_paterns)),
 	path('', include(team_patterns)),
 	path('scores/', include(series_patterns)),
 ]

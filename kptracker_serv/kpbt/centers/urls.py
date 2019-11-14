@@ -16,7 +16,7 @@ urlpatterns =[
 
 	
 	#path('<str:center_name>', views.view_center_home, name='view-center-by-name'),
-	path('management/', include(center_management_patterns)),
+	path('manage/', include(center_management_patterns)),
 	
 ]
 	
