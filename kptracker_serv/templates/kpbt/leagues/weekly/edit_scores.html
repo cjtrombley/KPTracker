@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div>
+<div class="editscores-column">
+    {% for score in scores %}
+    <p> {{ score.bowler.get_name }}</p>
+    {% endfor %}
+    </div>
+<div class="editscores-column">
+<form method="post">
+    {{ formset.management_form }}
+    
+    
+    {% csrf_token %}
+    
+    
+    <table>
+        
+        <thead>
+            <tr>
+                <td>Bowler Name</td> <td> Applied Average</td> <td> Game1</td> <td>Gam2</td><td>Game3</td>
+            </tr>
+         </thead>
+        
+        <tbody>
+            {% for form in formset %}
+                {{ form.id }}
+                <tr>
+                    <td> {{ form.bowler }}<td> {{form.applied_average }}</td> <td> {{ form.game_one_score }} </td> <td> {{ form.game_two_score }} </td> <td> {{ form.game_three_score }} </td>
+                </tr>
+            {% endfor %}
+        
+        </tbody>
+        
+    </table>
+    
+
+    <button type="submit"> Edit Scores</button>
+</form>
+</div>
+</div>
+{% endblock %}

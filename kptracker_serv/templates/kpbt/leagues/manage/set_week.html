@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+
+<div class="text-white">
+<h2> {{ league.name }}, Week Number {{ league.current_week }}</h2>
+
+<h4> You are currently viewing week {{ league.week_pointer }}. Input a value to view a different week</h4>
+<form method="post">
+    {{ form.name_of_field.errors }}
+    
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit">Set Week</button>
+
+</form>
+{% endblock %}

@@ -138,4 +138,5 @@ LOGIN_REDIRECT_URL = '/'
 
 SCHEDULEFILES_FOLDER = os.path.join(BASE_DIR, 'kpbt\\schedules\\')
 SCOREFILES_FOLDER = os.path.join(BASE_DIR, 'kpbt\\games\\scores\\')
-ROSTEREXPORT_FOLDER = os.path.join(BASE_DIR, 'kpbt\\leagues\weekly\\')
+ROSTEREXPORT_FOLDER = os.path.join(BASE_DIR, 'kpbt\\leagues\weekly\\rosters\\')
+BACKUPS_FOLDER = os.path.join(BASE_DIR, 'kpbt\\leagues\weekly\\backups\\')

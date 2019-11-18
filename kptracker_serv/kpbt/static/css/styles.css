@@ -659,6 +659,7 @@ animation-delay: 0.9s;
   border: 18px solid;
   border-color: #666 transparent transparent #666;
 }    
-    
-    
+
+.editscores-column {
+	display: inline-block
 }
