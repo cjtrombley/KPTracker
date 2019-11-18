@@ -32,10 +32,3 @@ class DeleteRosterForm(forms.ModelForm):
 	class Meta:
 		model = TeamRoster
 		fields = ('bowler',)
-
-
-
-	
-#class TeamRosterForm(forms.Form):
-#	team = forms.ModelChoiceField(queryset=Team.objects.all())
-#	bowlers = forms.ModelChoiceField(queryset=User.objects.all())

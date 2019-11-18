@@ -1,15 +1,14 @@
 {% extends 'index.html' %}
 
 {% block page_content %}
-
-<h2>View Rosters for Export</h2>
-
 <div class="text-white">
-
+    
+    
+<h2>View Rosters for Export</h2>
 <table>
     <thead>
         <tr>
-            <td>Team Name </td> <td> Lineup Position</td><td> Bowler Name</td> <td>League Average</td>
+            <td>Team </td><td> Bowler Name</td> <td>Average</td><td>Hcp</td>
         </tr>
     </thead>
     
@@ -19,40 +18,9 @@
         </tr>
         
        {% for bowler, values in bowlers.items %}
-        <tr> <td></td><td > {{ bowler }} <td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td>
-        {% endfor %}
-
-  
-
-
-                
-                
-                    
-            
-            
-
-      
-        <!---{% for bowler_profiles in roster_list %}
-            {% for bowler in bowler_profiles %}
-                <td></td><td> {{ bowler.first_name }}</td><td>bowler.last_name</td><td>bowler.league_average</td>
-            {% endfor %}
-        {% endfor %}
-         --->   
-    {% endfor %}
-    <!---
-
-    {% regroup rosters by team as team_rosters %}
-    {% for team, rosters in team_rosters %}
-    <tr> 
-        <td> {{ team.name }} </td>
-    </tr>
-        {% for roster in rosters %}
-            <tr>
-                <td> {{ roster.get_name }} </td> <td> {{ roster.league_average }} </td>
-            </tr>
+    <tr> <td></td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td> <td> {{ values.applied_handicap }}</td>
         {% endfor %}
     {% endfor %}
-    --->
 </table>
 </div>
 
