@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block page_content %}
-
+<div class="text-white">
 <h1> {{ league.name }} Management</h1>
 
 <ol>
@@ -9,7 +9,8 @@
     <li><a href="{% url 'update-league' league.bowling_center.name league.name %}"> Update League</a></li>
     <li><a href="{% url 'update-league-secretary' league.bowling_center.name league.name %}"> Manage League Secretary</a> </li>
     <li><a href="{% url 'move-league' league.bowling_center.name league.name %}"> Move League to new Bowling Center</a></li>
-
-
+    <li><a href="{% url 'set-week' league.bowling_center.name league.name %}">View/Edit Previous Weeks</a></li>
 </ol>
+
 {% endblock %}
+</div>

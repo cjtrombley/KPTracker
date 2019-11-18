@@ -5,7 +5,7 @@ from kpbt.accounts.models import BowlerProfile
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.files import File
 from kptracker.settings import SCHEDULEFILES_FOLDER as SCHEDULEDIR
 from kptracker.settings import BACKUPS_FOLDER as BACKUPSDIR
@@ -31,6 +31,7 @@ class League(models.Model):
 	name = models.CharField(max_length=32)
 	current_week = models.PositiveSmallIntegerField(default=1)
 	week_pointer = models.PositiveSmallIntegerField(default=1)
+	
 	
 	def __str__(self):
 		return self.bowling_center.name + ", " + self.name
@@ -82,12 +83,6 @@ class League(models.Model):
 					pair_counter +=1
 				
 				week_number_counter += 1
-		
-
-		#if current_week:
-			#return [pairings[current_week]]
-		#else:
-			#return pairings	
 		
 	def score_week(self, week_number): #needs to be updated to include handicap stuff
 		
@@ -176,7 +171,7 @@ class League(models.Model):
 			team_one.save()
 			team_two.save()
 
-	def create_backup(self):
+	def create_weekly_score_backup(self):
 		week_number = self.current_week
 		backup_filename= str(self.id) + '_' + str(week_number) + '.json'
 		
@@ -260,6 +255,13 @@ class League(models.Model):
 	
 		
 		backup.close()
+		
+	def advance_week(self):
+		self.current_week += 1
+		
+	def set_week_pointer(self, week_selection):
+		self.week_pointer = week_selection
+		
 class LeagueRules(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
 	
@@ -343,6 +345,7 @@ class LeagueBowler(models.Model):
 	def update_average(self):
 		self.league_average = self.league_total_scratch / self.games_bowled
 		
+		
 class Schedule(models.Model):
 	WEEKDAY = (
 		('MO', 'Monday'),
@@ -370,37 +373,6 @@ class Schedule(models.Model):
 		self.num_weeks = weeks.count()
 		
 	
-	def advance_week(self):
-		current_week += 1
-		
-	
-	
-	'''
-	def pairings(self, current_week=""):
-		num_teams = self.league.leaguerules.num_teams
-		num_weeks = self.num_weeks # // 2
-		
-		if num_teams % 2:
-			num_teams += 1
-			
-		filename = str(num_teams) + 'teams'
-		filedir = SCHEDULEDIR + filename + '.csv'
-		
-		pairings = [None] * num_weeks
-		with open(filedir) as schedule:
-			
-			schedule.readline() #skip first line to allow week number to align with list index
-			for i in range(1, num_weeks):
-				weekly_pairings = schedule.readline()
-					
-				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
-				pairings[i] = weekly_pairing_list
-			
-		if current_week:
-			return [pairings[current_week]]
-		else:
-			return pairings
-	'''		
 			
 class WeeklyPairings(models.Model):
 	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='pairings')
@@ -417,43 +389,3 @@ class WeeklyPairings(models.Model):
 		
 	def get_lanes_by_pairnumber(self):
 		return str(self.lane_pair *2 - 1) + ' - ' + str(self.lane_pair*2)
-	'''
-	def create_pairings(self):
-		num_teams = self.league.leaguerules.num_teams
-		num_weeks = self.num_weeks # // 2
-		
-		if num_teams % 2:
-			num_teams += 1
-			
-		filename = str(num_teams) + 'teams'
-		filedir = SCHEDULEDIR + filename + '.csv'
-		
-		pairings = [None] * num_weeks
-		with open(filedir) as schedule:
-			
-			schedule.readline() #skip first line to allow week number to align with list index
-			for i in range(1, num_weeks):
-				weekly_pairings = schedule.readline()
-					
-				weekly_pairing_list = weekly_pairings.strip('\n').split(',')
-				
-				
-				for pair in weekly_pairing_list:
-					teams = pair.split('-')
-					new_pairing = WeeklyPairing(
-				
-				
-				pairings[i] = weekly_pairing_list
-			
-		#if current_week:
-			#return [pairings[current_week]]
-		#else:
-			return pairings
-	
-			
-class WeeklyStandings(models.Model):
-	league = models.ForeignKey(League, on_delete=models.CASCADE)
-	series = models.ForeignKey(Series, on_delete=models.CASCADE)
-	
-	week_number = models.PositiveSmallIntegerField(default=1)
-'''	

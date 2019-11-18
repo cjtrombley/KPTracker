@@ -8,7 +8,8 @@ league_management_paterns = [
 	path('update-league-secretary', views.manage_league_secretary, name='update-league-secretary'),
 	path('move-league', views.move_league, name='move-league'),
 	path('update-league', views.update_league, name='update-league'),
-	path('edit-scores', views.edit_scores, name='edit-weekly-scores'),
+	path('set-week', views.set_week, name='set-week')
+	
 ]
 
 weekly_patterns = [
@@ -16,6 +17,8 @@ weekly_patterns = [
 	path('export-rosters', views.view_export_rosters, name='view-export-rosters'),
 	path('import-scores', views.import_scores, name='import-scores'),
 	path('view-scores/<str:week_number>', series_views.view_scores, name='league-view-scores-by-week'),
+	path('edit-scores', views.edit_scores, name='edit-weekly-scores'),
+	path('finalize-week', views.finalize_week, name='finalize-week'),
 ]
 
 team_patterns = [

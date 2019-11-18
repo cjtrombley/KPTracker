@@ -1,9 +1,9 @@
 {% extends 'index.html' %}
 
 {% block page_content %}
-
+<div class="text-white">
 <h1> {{ league.name }} </h1>
-<h2> Current Week: {{ league.current_week }}</h2>
+<h2> Week: {{ league.week_pointer }}</h2>
 
 <h4>Weekly Tasks</h4>
 
@@ -13,7 +13,11 @@
     <li><a href="{% url 'import-scores' league.bowling_center.name league.name %}">Import Weekly Scores</a></li>
     <li><a href="{% url 'edit-weekly-scores' league.bowling_center.name league.name %}"> Edit Scores </a></li>
     <li><a href="{% url 'league-view-scores-by-week' league.bowling_center.name league.name league.current_week %}"> View Weeks Scores</a></li>
-
-
 </ol>
+
+<p>Click here to finalize week and advance league to next week.</p>
+<form method="post" action="{% url 'finalize-week' league.bowling_center.name league.name %}">
+    {% csrf_token %}
+    <button type="submit">Finalize Week</button></form>
 {% endblock %}
+</div>
