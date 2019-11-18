@@ -8,7 +8,7 @@
 <table>
     <thead>
         <tr>
-            <td>Team </td><td> Bowler Name</td> <td>Average</td><td>Hcp</td>
+            <td>Team </td><td>Lineup</td><td> Bowler Name</td> <td>Average</td><td>Hcp</td>
         </tr>
     </thead>
     
@@ -18,7 +18,7 @@
         </tr>
         
        {% for bowler, values in bowlers.items %}
-    <tr> <td></td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td> <td> {{ values.applied_handicap }}</td>
+    <tr> <td></td><td> {{ bowler }} </td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td> <td> {{ values.applied_handicap }}</td>
         {% endfor %}
     {% endfor %}
 </table>

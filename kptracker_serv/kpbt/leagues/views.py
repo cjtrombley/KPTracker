@@ -281,41 +281,14 @@ def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	rules = league.leaguerules
 	week_number = league.current_week
-	
+	rules = league.leaguerules
 	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
 	
 	team_numbers = []
 	for pair in weekly_pairs_list:
 		team_numbers.append(pair.team_one.id)
 		team_numbers.append(pair.team_two.id)
-	'''
-	if request.method == "POST":
-		export_filename = str(league.id) + '_' + str(week_number) +'.txt'
-		rosterFile = open(ROSTERS_DIR + export_filename, 'w')
 	
-		for i in team_numbers:
-			team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
-			rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
-		
-			rosterFile.write(str(team.number) + '\n')
-			for roster in rosters:
-				league_record = get_object_or_404(LeagueBowler, league=league, bowler=roster.bowler)
-				bowler_name = roster.bowler.get_name()
-				applied_handicap = 0
-				
-				if rules.is_handicap:
-					applied_handicap = int((rules.handicap_percentage/100) * (rules.handicap_scratch - league_record.league_average))
-					if applied_handicap < 0:
-						applied_handicap = 0
-				line = str(roster.bowler.id) + ',' + bowler_name + ',' + str(league_record.league_average) + ',' + str(applied_handicap)
-				rosterFile.write(line + '\n')
-		rosterFile.close()	
-		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
-	
-	else:
-	'''
-	roster_dict = {}
-	rules = league.leaguerules
 
 	team_roster_dict={}
 	for i in team_numbers:
@@ -323,6 +296,7 @@ def export_rosters(request, center_name="", league_name=""):
 		rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
 		
 		roster_dict = {}
+		lineup_counter = 1
 		for roster in rosters:
 			
 			bowler = get_object_or_404(BowlerProfile, id=roster.bowler.id)
@@ -336,7 +310,8 @@ def export_rosters(request, center_name="", league_name=""):
 				if applied_handicap < 0:
 					applied_handicap = 0
 			
-			roster_dict.update({ roster.id : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
+			roster_dict.update({ lineup_counter : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
+			lineup_counter += 1
 		team_roster_dict.update({ team.number : roster_dict})
 		
 		
