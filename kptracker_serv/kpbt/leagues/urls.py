@@ -6,8 +6,9 @@ from kpbt.games import views as series_views
 league_management_paterns = [
 	path('', views.manage_league, name='manage-league'),
 	path('update-league-secretary', views.manage_league_secretary, name='update-league-secretary'),
-	path('update-league', views.update_league, name='update-league'),
 	path('move-league', views.move_league, name='move-league'),
+	path('update-league', views.update_league, name='update-league'),
+	path('edit-scores', views.edit_scores, name='edit-weekly-scores'),
 ]
 
 weekly_patterns = [

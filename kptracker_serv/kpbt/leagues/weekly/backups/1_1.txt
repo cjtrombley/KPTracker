@@ -1,0 +1,75 @@
+MensLeague
+Current week: 1
+TEAMS
+1: Teamone
+total_scratch_pins : 48750
+total_handicap_pins : 115725
+total_pinfall : 129483
+team_points_won : 0
+team_points_lost : 168
+2: Teamtwo
+total_scratch_pins : 50625
+total_handicap_pins : 124200
+total_pinfall : 133353
+team_points_won : 168
+team_points_lost : 0
+3: Teamthree
+total_scratch_pins : 43500
+total_handicap_pins : 109350
+total_pinfall : 119154
+team_points_won : 48
+team_points_lost : 120
+4: Teamfour
+total_scratch_pins : 50250
+total_handicap_pins : 118550
+total_pinfall : 118544
+team_points_won : 120
+team_points_lost : 48
+5: Teamfive
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 72
+team_points_lost : 96
+6: Teamsix
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 72
+team_points_lost : 96
+7: Teamseven
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 72
+team_points_lost : 96
+8: Teameight
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 72
+team_points_lost : 96
+9: Teamnine
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 3
+team_points_lost : 4
+10: Teamten
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 3
+team_points_lost : 4
+11: Teameleven
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 3
+team_points_lost : 4
+12: Teamtwelve
+total_scratch_pins : 0
+total_handicap_pins : 0
+total_pinfall : 0
+team_points_won : 3
+team_points_lost : 4

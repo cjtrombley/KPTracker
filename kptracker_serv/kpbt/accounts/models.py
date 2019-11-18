@@ -47,6 +47,7 @@ class BowlerProfile(models.Model):
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
 	
+	
 	#date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
 	
 	

@@ -3,11 +3,12 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from kpbt.accounts.models import BowlerProfile
 from kpbt.centers.models import BowlingCenter
-from kpbt.teams.models import Team
+from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from kptracker.settings import SCHEDULEFILES_FOLDER as SCHEDULEDIR
+from kptracker.settings import BACKUPS_FOLDER as BACKUPSDIR
 
 
 from collections import deque
@@ -17,7 +18,7 @@ import datetime
 import itertools
 from num2words import num2words
 
-import math
+import math, json
 
 class League(models.Model):
 	
@@ -29,6 +30,7 @@ class League(models.Model):
 	
 	name = models.CharField(max_length=32)
 	current_week = models.PositiveSmallIntegerField(default=1)
+	week_pointer = models.PositiveSmallIntegerField(default=1)
 	
 	def __str__(self):
 		return self.bowling_center.name + ", " + self.name
@@ -87,7 +89,7 @@ class League(models.Model):
 		#else:
 			#return pairings	
 		
-	def score_week(self, week_number):
+	def score_week(self, week_number): #needs to be updated to include handicap stuff
 		
 		#weekly_pairs = self.schedule.pairings()
 		
@@ -174,6 +176,90 @@ class League(models.Model):
 			team_one.save()
 			team_two.save()
 
+	def create_backup(self):
+		week_number = self.current_week
+		backup_filename= str(self.id) + '_' + str(week_number) + '.json'
+		
+		backup = open(BACKUPSDIR + backup_filename, 'w') 
+		backup_dict = {}
+		
+		
+		#Backups file header information
+		header_dict = { "league_name": self.name , "current_week" : str(week_number) } 
+		backup_dict.update( {"header" : header_dict})
+		
+		
+		#Teams Backup Info
+		teams_set = self.teams.all()
+		teams = {}
+		for team in teams_set:
+			team_dict = {team.id :  {"total_scratch_pins" : team.total_scratch_pins, "total_handicap_pins": team.total_handicap_pins, "total_pinfall" : team.total_pinfall, "team_points_won" : team.team_points_won, "team_points_lost" : team.team_points_lost}}
+		
+			teams.update(team_dict)
+		backup_dict.update({"teams" : teams})
+		
+		
+		
+		'''
+		backup.write('TEAMS'+ '\n')
+		for team in teams:
+			backup.write(str(team.number) + ': ' + team.name + '\n')
+			
+			pinfalls_list = []
+			pinfalls_list.append('total_scratch_pins : ' + str(team.total_scratch_pins) + '\n')
+			pinfalls_list.append('total_handicap_pins : ' + str(team.total_handicap_pins) + '\n')
+			pinfalls_list.append('total_pinfall : ' + str(team.total_pinfall) + '\n')
+			
+			backup.write(''.join(pinfalls_list))
+		
+			points_list = []
+			points_list.append('team_points_won : ' + str(team.team_points_won) + '\n')
+			points_list.append('team_points_lost : ' + str(team.team_points_lost) + '\n')
+			
+			backup.write(''.join(points_list))
+		'''
+		
+		#LeagueBowler/TeamRoster Backups
+		lb_records = LeagueBowler.objects.filter(league=self)
+		tr_records = TeamRoster.objects.filter(id__in=teams)
+		
+		team_rosters_dict = {}
+		lb_records_dict = {}
+		
+		for lb in lb_records:
+			lb_dict = {lb.id : {"league_average" : lb.league_average, "games_bowled" : lb.games_bowled, "league_total_scratch" : lb.league_total_scratch, "league_total_handicap" : lb.league_total_handicap, "league_high_scratch_game" : lb.league_high_scratch_game, "league_high_handicap_game" : lb.league_high_handicap_game, "league_high_scratch_series" : lb.league_high_scratch_series, "league_high_handicap_series" : lb.league_high_handicap_series} }
+			lb_records_dict.update(lb_dict)
+		backup_dict.update({"league_bowler_records" : lb_records_dict})
+		
+		
+		for tr in tr_records:
+			tr_dict = {tr.id : { "games_with_team" : tr.games_with_team }}
+			team_rosters_dict.update(tr_dict)
+		backup_dict.update({"team_roster_records" : team_rosters_dict})
+		
+		json.dump(backup_dict, backup, indent=4)
+		
+		with open(BACKUPSDIR + backup_filename) as backup:
+			data = json.load(backup)
+		
+		#print(teams)
+		
+		''' 
+		Example for how to access lists of backup items
+		
+		for items in data['teams'].items():
+			for key, value in items[1].items():
+				print(key, ',', value)
+		'''	
+		
+		
+		#print(data['teams']['1'])
+		#for team in data['teams']:
+			#rint(team.id['total_scratch_pins'])
+		#print(data['header']['league_name'])
+	
+		
+		backup.close()
 class LeagueRules(models.Model):
 	league = models.OneToOneField(League, on_delete=models.CASCADE)
 	
