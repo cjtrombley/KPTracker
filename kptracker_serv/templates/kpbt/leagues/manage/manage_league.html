@@ -12,5 +12,9 @@
     <li><a href="{% url 'set-week' league.bowling_center.name league.name %}">View/Edit Previous Weeks</a></li>
 </ol>
 
+<h4> Manage Teams</h4>
+    {% for team in teams %}
+    <p><a href="{% url 'manage-team' league.bowling_center.name league.name team.name %}"> {{ team.name }}</a></p>
+    {% endfor %}
 {% endblock %}
 </div>

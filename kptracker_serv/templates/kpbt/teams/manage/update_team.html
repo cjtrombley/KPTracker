@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <button type="submit"> Update Team</button>
+    </form>
+</div>
+{% endblock %}

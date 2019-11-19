@@ -16,11 +16,30 @@
         <tr>
         {% for roster in rosterset %}
             {{ roster.id}}
-            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td>
+            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td><td> {{ roster.delete_roster }}</td>
         </tr>
         {% endfor %}
     </table>
 <button type="submit">Update Roster</button>
+</form>
+    
+<h4>Remove Current Member</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ eremov_form.as_p }}
+    
+    <input type="hidden" name="remov_existing" value="true">
+    <button type="submit">Remove from Roster</button>
+</form>
+
+    
+<h4> Add Existing League Bowlers</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ eadd_form.as_p }}
+    
+    <input type="hidden" name="add_existing" value="true">
+    <button type="submit">Add Existing Bowler</button>
 </form>
     
     

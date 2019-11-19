@@ -43,16 +43,17 @@ def create_league(request, center_name=""):
 			for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
 				teami = Team.create_team(new_league, i)
 				teami.save()
-			
-				for _ in range(roster_size):
-					empty_bowler = get_object_or_404(BowlerProfile, id=0)
-					#empty_bowler.save()
-					team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
-					#empty_bowler.save()
-					team_roster_record.save()
 				
-					league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
-					league_bowler.save()
+				
+				#for _ in range(roster_size):
+					#empty_bowler = get_object_or_404(BowlerProfile, id=0)
+					#empty_bowler.save()
+					#team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler, is_active=False)
+					#empty_bowler.save()
+					#team_roster_record.save()
+				
+					#league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
+					#league_bowler.save()
 			
 			
 			
@@ -170,150 +171,57 @@ def view_schedule(request, center_name="", league_name=""):
 
 def view_weekly_tasks(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-	
 	return render(request, 'leagues/weekly/weekly_tasks.html', {'league' : league})
-	
 
-def view_export_rosters(request, center_name="", league_name=""):
-	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)	
-	
-	if request.method == 'POST':
-	
-		export_rosters(request, league.bowling_center.name, league.name)
-		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
-	
-	else:
-		league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-		week_number = league.current_week
-		
-		weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
-		team_numbers = []
-		for pair in weekly_pairs_list:
-			team_numbers.append(pair.team_one.id)
-			team_numbers.append(pair.team_two.id)
-			
-		team_dict = {}
-		bowler_data=[]	
-		roster_dict = {}
-		bowlers_dict = {}
-		for i in team_numbers:
-			team =get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
-			rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
 
-			#roster_dict.clear()
-			team_dict.clear()
-			bowlers_dict.clear()
-			#bowler_data.append(team.name)
-			lineup_spot = 1
-		
-			for roster in rosters:
-		
-				bowlers_dict[lineup_spot] = {}
-				
-				#roster_string = []
-				bowler = get_object_or_404(BowlerProfile, id=roster.bowler.id)
-				league_profile = get_object_or_404(LeagueBowler, league=league, bowler=bowler) 
-				#print(bowler)
-				#print(league_profile)
-				
-				bowlers_dict[lineup_spot]['first_name'] = bowler.first_name
-				bowlers_dict[lineup_spot]['last_name'] = bowler.last_name
-				bowlers_dict[lineup_spot]['league_average'] = league_profile.league_average
-				
-				#print(bowlers_dict[lineup_spot])
-				lineup_spot += 1
-				#roster_dict[i] = {}
-				
-				#roster_dict[i]= bowlers_dict
-				'''
-				team_dict.update({'first_name' : bowler.first_name})
-				team_dict.update({'last_name' : bowler.last_name})
-				
-				
-				
-				
-				#roster_string.append('league_profile.league_average' + ':' +  str(league_profile.league_average))
-				#print(roster_string)
-				team_dict.update({'league_average' : league_profile.league_average})
-				
-				#roster_dict.update({team.name : bowler })
-				#print(team_dict)
-				#roster_string.append(str(league_profile.league_average))
-
-				#bowler_data.append(roster_string)
-				
-				#team_key_values = [ [k,v] for k, v in team_dict.items() ]
-				print('Printing team dictionary', team_dict)
-				
-				temp_dict = {str(lineup_spot) : team_dict}
-				print('Printing temp_dict: ', temp_dict)
-				#bowlers_list.append(temp_dict)
-				#print('Printing bowlers list : ', bowlers_list)
-				#bowlers_list.update({str(lineup_spot) : [team_dict] })
-				print('lineup_spot: ', lineup_spot)
-				bowlers_list[lineup_spot] = temp_dict.copy()
-				print('Printing bowlers list :', bowlers_list)
-				lineup_spot += 1
-				'''
-			
-			#roster_dict.update({team.name : bowlers_list})
-			
-			#print(bowlers_dict.values())
-			roster_dict[i] = {}
-			roster_dict[i]= bowlers_dict.copy()
-			print('Roster dictionary: ', roster_dict)
-			#for item in team_key_values:
-				#print(item)
-		#print(roster_dict.items())
-		#print(roster_dict.items())
-		#for k, v in roster_dict.items():
-			#print(k, ":")
-			
-			#for i in v:
-				#for b in i:
-					#print(b)
-		
-		print('Printing rosters.items(): ' , roster_dict.items())
-		return render(request, 'leagues/weekly/export_rosters.html', {'rosters' : roster_dict})
-	
-	
 def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	rules = league.leaguerules
 	week_number = league.current_week
-	
-	
-	export_filename = str(league.id) + '_' + str(week_number) +'.txt'
-	rosterFile = open(ROSTERS_DIR + export_filename, 'w')
-	
-	#weekly_pairs_list = league.schedule.pairings(week_number)[0]
+	rules = league.leaguerules
 	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
+	
 	team_numbers = []
 	for pair in weekly_pairs_list:
-		#pairs = pair.strip().split('-')
-		
 		team_numbers.append(pair.team_one.id)
 		team_numbers.append(pair.team_two.id)
 	
-	#print(team_numbers)
-	
+
+	team_roster_dict={}
 	for i in team_numbers:
-		team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
+		team =get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
 		rosters = TeamRoster.objects.filter(team=team, is_active=True).order_by('lineup_position')
 		
-		rosterFile.write(str(team.number) + '\n')
+		roster_dict = {}
+		lineup_counter = 1
 		for roster in rosters:
-			league_record = get_object_or_404(LeagueBowler, league=league, bowler=roster.bowler)
-			bowler_name = roster.bowler.get_name()
 			
-			line = str(roster.bowler.id) + ',' + bowler_name + ',' + str(league_record.league_average)
+			bowler = get_object_or_404(BowlerProfile, id=roster.bowler.id)
+			lb_record = get_object_or_404(LeagueBowler, league=league, bowler=bowler)
 			
-			#print(line)
-			rosterFile.write(line + '\n')
-	rosterFile.close()	
-	return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
+			applied_handicap = 0
+			if rules.is_handicap:
+				#print(handicap_percentage)
+				applied_handicap = int((rules.handicap_percentage / 100) * ( rules.handicap_scratch - lb_record.league_average))
+				#print(applied_handicap)
+				if applied_handicap < 0:
+					applied_handicap = 0
+			
+			roster_dict.update({ lineup_counter : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
+			lineup_counter += 1
+		team_roster_dict.update({ team.number : roster_dict})
 		
-#def league_backup(request, center_name="", league_name""):		
-#	if request.method == "POST"
+		
+	if request.method == "POST":
+		export_filename = str(league.id) + '_' + str(week_number) +'.json'
+		with open(ROSTERS_DIR + export_filename, 'w') as rf:
+			dict_data = json.dumps(team_roster_dict)
+			rf.write(dict_data)
+		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
+		
+	else:	
+		return render(request, 'leagues/weekly/export_rosters.html', {'rosters' : team_roster_dict})
+		
 
 def finalize_week(request, center_name="", league_name=""):
 	league= get_object_or_404(League, bowling_center__name=center_name, name=league_name)
@@ -330,71 +238,66 @@ def finalize_week(request, center_name="", league_name=""):
 	return redirect('league-view-weekly-tasks', center_name, league.name)
 		
 def import_scores(request, center_name = "", league_name=""):
+	league = get_object_or_404(League, name=league_name)
+	week_number = league.week_pointer
+	
 	if request.method == 'POST':
-		#import_form = ImportScoresForm(request.POST)
 		
-		#if import_form.is_valid():
-			#week_number = import_form.cleaned_data['week_number']
-		league = get_object_or_404(League, name=league_name)
-		week_number = league.current_week
-			
-		if league and week_number:
-			filename = str(league.id) + '_' + str(week_number)
-			filedir = SCOREDIR + filename + '.txt'
-			
-			with open(filedir) as scores:
-				for i in range(1, 5):  # only importing 4 teams until scores file has been updated to include a leagues worth of scores
-					pair_number = int(math.ceil(i / 2))
-					team_id = scores.readline().strip()
-					team = get_object_or_404(Team, id=team_id, league__name=league_name)
-					game_scores = []
-					for t in range(league.leaguerules.playing_strength):
-						raw_series_data = scores.readline().strip()
-						
-						series_data = raw_series_data.split(',')
+		filename = str(league.id) + '_' + str(week_number)
+		filedir = SCOREDIR + filename + '.txt'
+		
+		with open(filedir) as scores:
+			for i in range(1, 5):  # only importing 4 teams until scores file has been updated to include a leagues worth of scores
+				pair_number = int(math.ceil(i / 2))
+				team_id = scores.readline().strip()
+				team = get_object_or_404(Team, id=team_id, league__name=league_name)
+				game_scores = []
+				for t in range(league.leaguerules.playing_strength):
+					raw_series_data = scores.readline().strip()
 					
-						#[0] BowlerProfile.id
-						#[1] AppliedAverage
-						#[2] AppliedHandicap
-						#[3] GameOneScore
-						#[4] GameTwoScore
-						#[5] GameThreeScore
+					series_data = raw_series_data.split(',')
+				
+					#[0] BowlerProfile.id
+					#[1] AppliedAverage
+					#[2] AppliedHandicap
+					#[3] GameOneScore
+					#[4] GameTwoScore
+					#[5] GameThreeScore
+					
+					bp = get_object_or_404(BowlerProfile, id=series_data[0])
+					app_avg = series_data[1]
+					app_handi = series_data[2]
+					game_one = series_data[3]
+					game_two = series_data[4]
+					game_three = series_data[5]
+					
+					
+					new_series = Series.objects.create(league=league, team=team, bowler=bp, week_number=week_number, pair_number=pair_number, series_date="1900-1-1",
+						applied_average = app_avg, applied_handicap = app_handi,
+						game_one_score = game_one, game_two_score = game_two, game_three_score = game_three)
 						
-						bp = get_object_or_404(BowlerProfile, id=series_data[0])
-						app_avg = series_data[1]
-						app_handi = series_data[2]
-						game_one = series_data[3]
-						game_two = series_data[4]
-						game_three = series_data[5]
 						
+					game_scores = [new_series.game_one_score, new_series.game_two_score, new_series.game_three_score]
+					new_series.save()
+					
+					#Update team pinfall statistics
+					team.update_pinfall(app_handi, game_scores)
+					
+					#Many-to-Many fields that require updating when scores are imported
+					#Update league_bowler record
+					league_bowler_record = get_object_or_404(LeagueBowler, league=league, bowler=bp)
+					league_bowler_record.update(app_avg, app_handi, game_scores)
+					league_bowler_record.save()
+					
+					#Update team_roster record
+					team_roster_record, created = TeamRoster.objects.get_or_create(bowler=bp, team=team)
+					team_roster_record.update_games(game_scores)
+					team_roster_record.save()
 						
-						new_series = Series.objects.create(league=league, team=team, bowler=bp, week_number=week_number, pair_number=pair_number, series_date="1900-1-1",
-							applied_average = app_avg, applied_handicap = app_handi,
-							game_one_score = game_one, game_two_score = game_two, game_three_score = game_three)
-							
-							
-						game_scores = [new_series.game_one_score, new_series.game_two_score, new_series.game_three_score]
-						new_series.save()
-						
-						#Update team pinfall statistics
-						team.update_pinfall(app_handi, game_scores)
-						
-						#Many-to-Many fields that require updating when scores are imported
-						#Update league_bowler record
-						league_bowler_record = get_object_or_404(LeagueBowler, league=league, bowler=bp)
-						league_bowler_record.update(app_avg, app_handi, game_scores)
-						league_bowler_record.save()
-						
-						#Update team_roster record
-						team_roster_record, created = TeamRoster.objects.get_or_create(bowler=bp, team=team)
-						team_roster_record.update_games(game_scores)
-						team_roster_record.save()
-						
-		return redirect('view-league-home', center_name, league_name )
+		return redirect('league-view-weekly-tasks', center_name, league_name )
 								
 							
 	else:
-		league = get_object_or_404(League, name=league_name)
 		import_form = ImportScoresForm()
 		return render(request, 'leagues/weekly/import_scores.html', {'league' : league, 'import_form' : import_form })
 
@@ -411,6 +314,7 @@ def edit_scores(request, center_name="", league_name=""):
 		
 		if edited_scores.is_valid():
 			edited_scores.save()
+			league.rescore(league.week_pointer)
 		return redirect('league-view-weekly-tasks', center.name, league.name)
 		
 	else:
@@ -454,8 +358,8 @@ def edit_scores(request, center_name="", league_name=""):
 
 def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-	
-	return render(request, 'leagues/manage/manage_league.html', {'league' : league })
+	teams = Team.objects.filter(league=league)
+	return render(request, 'leagues/manage/manage_league.html', {'league' : league, 'teams' : teams})
 		
 		
 def manage_league_secretary(request, center_name="", league_name=""):

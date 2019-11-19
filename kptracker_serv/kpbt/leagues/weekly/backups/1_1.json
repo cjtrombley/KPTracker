@@ -5,60 +5,60 @@
     },
     "teams": {
         "1": {
-            "total_scratch_pins": 193050,
-            "total_handicap_pins": 458271,
-            "total_pinfall": 508437,
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
             "team_points_won": 0,
-            "team_points_lost": 700
+            "team_points_lost": 0
         },
         "2": {
-            "total_scratch_pins": 200475,
-            "total_handicap_pins": 491832,
-            "total_pinfall": 522963,
-            "team_points_won": 700,
+            "total_scratch_pins": 206550,
+            "total_handicap_pins": 506736,
+            "total_pinfall": 538758,
+            "team_points_won": 721,
             "team_points_lost": 0
         },
         "3": {
-            "total_scratch_pins": 172260,
-            "total_handicap_pins": 433026,
-            "total_pinfall": 467694,
-            "team_points_won": 200,
-            "team_points_lost": 500
+            "total_scratch_pins": 177480,
+            "total_handicap_pins": 446148,
+            "total_pinfall": 481824,
+            "team_points_won": 206,
+            "team_points_lost": 515
         },
         "4": {
-            "total_scratch_pins": 198990,
-            "total_handicap_pins": 469458,
-            "total_pinfall": 463236,
-            "team_points_won": 500,
-            "team_points_lost": 200
+            "total_scratch_pins": 205020,
+            "total_handicap_pins": 483684,
+            "total_pinfall": 477210,
+            "team_points_won": 515,
+            "team_points_lost": 206
         },
         "5": {
             "total_scratch_pins": 0,
             "total_handicap_pins": 0,
             "total_pinfall": 0,
-            "team_points_won": 300,
-            "team_points_lost": 400
+            "team_points_won": 309,
+            "team_points_lost": 412
         },
         "6": {
             "total_scratch_pins": 0,
             "total_handicap_pins": 0,
             "total_pinfall": 0,
-            "team_points_won": 300,
-            "team_points_lost": 400
+            "team_points_won": 309,
+            "team_points_lost": 412
         },
         "7": {
             "total_scratch_pins": 0,
             "total_handicap_pins": 0,
             "total_pinfall": 0,
-            "team_points_won": 300,
-            "team_points_lost": 400
+            "team_points_won": 309,
+            "team_points_lost": 412
         },
         "8": {
             "total_scratch_pins": 0,
             "total_handicap_pins": 0,
             "total_pinfall": 0,
-            "team_points_won": 300,
-            "team_points_lost": 400
+            "team_points_won": 309,
+            "team_points_lost": 412
         },
         "9": {
             "total_scratch_pins": 0,
@@ -92,9 +92,9 @@
     "league_bowler_records": {
         "73": {
             "league_average": 200,
-            "games_bowled": 297,
-            "league_total_scratch": 59400,
-            "league_total_handicap": 70092,
+            "games_bowled": 306,
+            "league_total_scratch": 61200,
+            "league_total_handicap": 72216,
             "league_high_scratch_game": 200,
             "league_high_handicap_game": 236,
             "league_high_scratch_series": 600,
@@ -102,9 +102,9 @@
         },
         "74": {
             "league_average": 180,
-            "games_bowled": 297,
-            "league_total_scratch": 53460,
-            "league_total_handicap": 72171,
+            "games_bowled": 306,
+            "league_total_scratch": 55080,
+            "league_total_handicap": 74358,
             "league_high_scratch_game": 180,
             "league_high_handicap_game": 243,
             "league_high_scratch_series": 540,
@@ -112,9 +112,9 @@
         },
         "75": {
             "league_average": 120,
-            "games_bowled": 297,
-            "league_total_scratch": 35640,
-            "league_total_handicap": 67716,
+            "games_bowled": 306,
+            "league_total_scratch": 36720,
+            "league_total_handicap": 69768,
             "league_high_scratch_game": 120,
             "league_high_handicap_game": 228,
             "league_high_scratch_series": 360,
@@ -122,9 +122,9 @@
         },
         "76": {
             "league_average": 150,
-            "games_bowled": 297,
-            "league_total_scratch": 44550,
-            "league_total_handicap": 55242,
+            "games_bowled": 306,
+            "league_total_scratch": 45900,
+            "league_total_handicap": 56916,
             "league_high_scratch_game": 150,
             "league_high_handicap_game": 186,
             "league_high_scratch_series": 450,
@@ -142,9 +142,9 @@
         },
         "78": {
             "league_average": 110,
-            "games_bowled": 297,
-            "league_total_scratch": 32670,
-            "league_total_handicap": 59400,
+            "games_bowled": 306,
+            "league_total_scratch": 33660,
+            "league_total_handicap": 61200,
             "league_high_scratch_game": 110,
             "league_high_handicap_game": 200,
             "league_high_scratch_series": 330,
@@ -152,9 +152,9 @@
         },
         "79": {
             "league_average": 200,
-            "games_bowled": 297,
-            "league_total_scratch": 59400,
-            "league_total_handicap": 86130,
+            "games_bowled": 306,
+            "league_total_scratch": 61200,
+            "league_total_handicap": 88740,
             "league_high_scratch_game": 200,
             "league_high_handicap_game": 290,
             "league_high_scratch_series": 600,
@@ -162,9 +162,9 @@
         },
         "80": {
             "league_average": 185,
-            "games_bowled": 297,
-            "league_total_scratch": 54945,
-            "league_total_handicap": 81675,
+            "games_bowled": 306,
+            "league_total_scratch": 56610,
+            "league_total_handicap": 84150,
             "league_high_scratch_game": 185,
             "league_high_handicap_game": 275,
             "league_high_scratch_series": 555,
@@ -172,9 +172,9 @@
         },
         "81": {
             "league_average": 180,
-            "games_bowled": 297,
-            "league_total_scratch": 53460,
-            "league_total_handicap": 64152,
+            "games_bowled": 306,
+            "league_total_scratch": 55080,
+            "league_total_handicap": 66096,
             "league_high_scratch_game": 180,
             "league_high_handicap_game": 216,
             "league_high_scratch_series": 540,
@@ -192,9 +192,9 @@
         },
         "83": {
             "league_average": 100,
-            "games_bowled": 297,
-            "league_total_scratch": 29700,
-            "league_total_handicap": 56430,
+            "games_bowled": 306,
+            "league_total_scratch": 30600,
+            "league_total_handicap": 58140,
             "league_high_scratch_game": 100,
             "league_high_handicap_game": 190,
             "league_high_scratch_series": 300,
@@ -202,9 +202,9 @@
         },
         "84": {
             "league_average": 180,
-            "games_bowled": 297,
-            "league_total_scratch": 53460,
-            "league_total_handicap": 64152,
+            "games_bowled": 306,
+            "league_total_scratch": 55080,
+            "league_total_handicap": 66096,
             "league_high_scratch_game": 180,
             "league_high_handicap_game": 216,
             "league_high_scratch_series": 540,
@@ -212,9 +212,9 @@
         },
         "85": {
             "league_average": 180,
-            "games_bowled": 297,
-            "league_total_scratch": 53460,
-            "league_total_handicap": 72468,
+            "games_bowled": 306,
+            "league_total_scratch": 55080,
+            "league_total_handicap": 74664,
             "league_high_scratch_game": 180,
             "league_high_handicap_game": 244,
             "league_high_scratch_series": 540,
@@ -222,9 +222,9 @@
         },
         "86": {
             "league_average": 120,
-            "games_bowled": 297,
-            "league_total_scratch": 35640,
-            "league_total_handicap": 67716,
+            "games_bowled": 306,
+            "league_total_scratch": 36720,
+            "league_total_handicap": 69768,
             "league_high_scratch_game": 120,
             "league_high_handicap_game": 228,
             "league_high_scratch_series": 360,
@@ -232,9 +232,9 @@
         },
         "87": {
             "league_average": 150,
-            "games_bowled": 297,
-            "league_total_scratch": 44550,
-            "league_total_handicap": 71280,
+            "games_bowled": 306,
+            "league_total_scratch": 45900,
+            "league_total_handicap": 73440,
             "league_high_scratch_game": 200,
             "league_high_handicap_game": 290,
             "league_high_scratch_series": 450,
@@ -242,9 +242,9 @@
         },
         "88": {
             "league_average": 150,
-            "games_bowled": 297,
-            "league_total_scratch": 44550,
-            "league_total_handicap": 71280,
+            "games_bowled": 306,
+            "league_total_scratch": 45900,
+            "league_total_handicap": 73440,
             "league_high_scratch_game": 200,
             "league_high_handicap_game": 290,
             "league_high_scratch_series": 450,
@@ -252,9 +252,9 @@
         },
         "89": {
             "league_average": 143,
-            "games_bowled": 297,
-            "league_total_scratch": 42570,
-            "league_total_handicap": 53262,
+            "games_bowled": 306,
+            "league_total_scratch": 43860,
+            "league_total_handicap": 54876,
             "league_high_scratch_game": 200,
             "league_high_handicap_game": 236,
             "league_high_scratch_series": 430,
@@ -262,9 +262,9 @@
         },
         "90": {
             "league_average": 226,
-            "games_bowled": 297,
-            "league_total_scratch": 67320,
-            "league_total_handicap": 72666,
+            "games_bowled": 306,
+            "league_total_scratch": 69360,
+            "league_total_handicap": 74868,
             "league_high_scratch_game": 240,
             "league_high_handicap_game": 258,
             "league_high_scratch_series": 680,
@@ -273,16 +273,16 @@
     },
     "team_roster_records": {
         "1": {
-            "games_with_team": 294
+            "games_with_team": 303
         },
         "2": {
-            "games_with_team": 294
+            "games_with_team": 303
         },
         "3": {
-            "games_with_team": 294
+            "games_with_team": 303
         },
         "4": {
-            "games_with_team": 294
+            "games_with_team": 303
         },
         "5": {
             "games_with_team": 0

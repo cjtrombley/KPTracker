@@ -84,13 +84,69 @@ class League(models.Model):
 				
 				week_number_counter += 1
 		
-	def score_week(self, week_number): #needs to be updated to include handicap stuff
+	
+
+	def rescore(self, rescore_week):
+		cw = self.current_week
+		
+		
+		#1. Reload league from earlier backup to prepare for rescoring effort
+		reset_week = rescore_week - 1
+		self.reset_weekly_from_backup(reset_week)
+		
+		#2. For ever week between reset_week and current week
+		#	a. Reset series team points values to 0
+		#	b. Call score_league for that week after resetting
+		
+		for i in range (rescore_week, cw+1):
+			series_data = Series.objects.filter(league=self, week_number=i)
+			
+			for series in series_data:
+				series.reset_points()
+				series.save()
+			
+			self.score_week(i)
+
+			
+			#Recalculate league_average and handicap values
+			
+			
+
+
+
+	
+	def reset_weekly_from_backup(self, reset_week):
+		backup_filename= str(self.id) + '_' + str(reset_week) + '.json'
+		with open(BACKUPSDIR + backup_filename, 'r') as bkup:
+			backup = json.load(bkup)
+		
+		for teams in backup['teams'].items():
+			team = get_object_or_404(Team, league=self, number=teams[0])
+			for key,value in teams[1].items():
+				setattr(team, key, value)
+				team.save()
+		
+		for lb_records in backup['league_bowler_records'].items():
+			lb_record = get_object_or_404(LeagueBowler, league=self, id=lb_records[0])
+			for key, value in lb_records[1].items():
+				setattr(lb_record, key, value)
+				lb_record.save()
+		
+		for tr_records in backup['team_roster_records'].items():
+			tr = get_object_or_404(TeamRoster, id=tr_records[0])
+			for key, value in tr_records[1].items():
+				setattr(tr, key, value)
+				tr.save()
+		
+		
+	def score_week(self, week_number): 
 		
 		#weekly_pairs = self.schedule.pairings()
 		
 		#this_week = weekly_pairs[week_number]
 		
 		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number)
+		rules = self.leaguerules
 		
 		for pair in this_week:
 			#teams = pair.split('-')
@@ -103,9 +159,9 @@ class League(models.Model):
 			team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
 			team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
 			
-			game_points = self.leaguerules.game_point_value
-			series_points = self.leaguerules.series_point_value
-			weekly_points = self.leaguerules.total_weekly_points()
+			game_points = rules.game_point_value
+			series_points = rules.series_point_value
+			weekly_points = rules.total_weekly_points()
 			
 			team_one_total_series = 0
 			team_two_total_series = 0
@@ -258,6 +314,7 @@ class League(models.Model):
 		
 	def advance_week(self):
 		self.current_week += 1
+		self.week_pointer = self.current_week
 		
 	def set_week_pointer(self, week_selection):
 		self.week_pointer = week_selection
@@ -307,6 +364,8 @@ class LeagueBowler(models.Model):
 	league_total_scratch = models.PositiveSmallIntegerField(default=0)
 	league_total_handicap = models.PositiveSmallIntegerField(default=0)
 	
+	def __str__(self):
+		return self.bowler.get_name()
 	
 	def update(self, average, handicap, scores):
 		series_scratch_score = 0

@@ -1,0 +1,523 @@
+{
+    "header" : {
+        "league_id" : "1",
+        "league_name" : "MensLeague",
+        "current_week" : "1",
+        "series_date" : "1-1-2019"
+    },
+    "teams" : {
+        "1" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "1" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "2" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "3" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "4" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "2" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "5" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "6" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "7" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "8" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "3" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "9" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "10" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "11" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "12" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "4" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "13" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "14" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "15" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "16" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "5" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "17" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "18" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "19" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "20" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "6" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "21" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "22" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "23" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "24" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "7" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "25" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "26" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "27" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "28" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "8" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "29" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "30" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "31" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "32" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "9" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "33" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "34" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "35" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "36" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "10" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "37" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "38" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "39" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "40" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "11" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "41" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "42" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "43" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "44" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        },
+        "12" : {
+            "team_scratch_pins" : "2000",
+            "team_handicap_pins" :"2300",
+            "bowlers" : {
+                "45" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "46" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "47" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                },
+                "48" : {
+                    "applied_average" : "180",
+                    "applied_handicap" : "36",
+                    "game_one_score" : "200",
+                    "game_two_score" : "200",
+                    "game_three_score" : "200",
+                    "scratch_score" : "600",
+                    "handicap_score" : "708"
+                }
+            }
+        }
+    }
+}
+
+            
+
+    
+    
+    
+    
+            
+                    

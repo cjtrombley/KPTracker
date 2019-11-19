@@ -54,6 +54,10 @@ class Series(models.Model):
 	def set_points_lost(self, points):
 		self.weekly_points_lost = points
 		self.team.team_points_lost += points
+		
+	def reset_points(self):
+		self.weekly_points_won = 0
+		self.weekly_points_lost = 0
 	
 	@staticmethod	
 	def calc_team_handicap_game_score(team, week_number, game_number, team_series):

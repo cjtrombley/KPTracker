@@ -12,7 +12,7 @@
     <li><a href="{% url 'view-export-rosters' league.bowling_center.name league.name%}">Export Team Rosters </a></li>
     <li><a href="{% url 'import-scores' league.bowling_center.name league.name %}">Import Weekly Scores</a></li>
     <li><a href="{% url 'edit-weekly-scores' league.bowling_center.name league.name %}"> Edit Scores </a></li>
-    <li><a href="{% url 'league-view-scores-by-week' league.bowling_center.name league.name league.current_week %}"> View Weeks Scores</a></li>
+    <li><a href="{% url 'league-view-scores-by-week' league.bowling_center.name league.name league.week_pointer %}"> View Weeks Scores</a></li>
 </ol>
 
 <p>Click here to finalize week and advance league to next week.</p>
