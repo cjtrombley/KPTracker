@@ -82,78 +82,7 @@
 
     </ul>
       
-       <ul class="nav navbar-nav ml-auto">
-        {% if request.user.is_authenticated %}
-<!--
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="navbardrop3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="KPBT User account profile" title="KPBT Account profile">
-            KPBT Profile    
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbardrop3">
-            <h5 class="dropdown-header text-center underline">Account info</h5>
-            {% if request.user.is_authenticated %}
-              <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
-            {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser %}
-            <a href="{% url 'admin:index' %}" class="text-center dropdown-item d-block"><i class="fas fa-user-cog"></i> Admin page</a>
-            {% endif %}
-            {% endif %}
-            <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center dropdown-item d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="text-center">Please login to continue.</a>
-            {% endif %}
-            <a class="dropdown-item text-center" href="{% url 'view-profile-by-username' request.user.username %}"><i class="fas fa-user-circle"></i> View Profile</a>
-            <a class="dropdown-item text-center" href="{% url 'update-profile-by-username' request.user.username %}"><i class="fas fa-user-edit"></i> Update Profile</a>
-            </div>    
-            </li>
--->
-<!--
-                      <li> <div class="dropdown">
-           <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
-                <i class="far fa-user fa-2x mx-auto d-block"></i>
-            </button>
-            <div class="dropdown-menu">
-              <h5 class="dropdown-header text-center underline">Account info</h5>
-                {% if request.user.is_authenticated %}
-                <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
-                <a class="text-center d-block" href="{% url 'view-profile-by-username' request.user.username %}"><i class="fas fa-user-circle"></i> View Profile</a>
-                <a class="text-center d-block" href="{% url 'update-profile-by-username' request.user.username %}"><i class="fas fa-user-edit"></i> Update Profile</a>
-                {% if request.user.is_authenticated %}
-                {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="text-center d-block"><i class="fas fa-user-cog"></i> Admin page</a>
-                {% endif %}
-                {% endif %}
-                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                {% else %}
-                <a href="{% url 'login' %}">Please login to continue.</a>
-                {% endif %}
-            </div>
-          </div>
-          </li>
--->
-           
-        {% endif %}       
-         <div class="dropdown">
-            <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
-                <i class="far fa-user fa-2x mx-auto d-block"></i>
-            </button>
-            <div class="dropdown-menu">
-              <h5 class="dropdown-header text-center underline">Account info</h5>
-                {% if request.user.is_authenticated %}
-                <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
-                <a class="text-center d-block mb-2" href="{% url 'view-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="View Profile"><span class="mr-1"><i class="fas fa-user-circle"></i></span> View Profile</a>
-                <a class="text-center d-block mb-2" href="{% url 'update-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="Update Profile"><span class="mr-1"><i class="fas fa-user-edit"></i></span> Update Profile</a>
-                {% if request.user.is_authenticated %}
-                {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Admin page"><span class="mr-1"><i class="fas fa-user-cog"></i></span> Admin page</a>
-                {% endif %}
-                {% endif %}
-                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Logout"><span class="mr-1"><i class="fas fa-sign-out-alt"></i></span> Logout</a>
-                {% else %}
-                <a href="{% url 'login' %}">Please login to continue.</a>
-                {% endif %}
-            </div>
-          </div>                                                                                                  
+       <ul class="nav navbar-nav ml-auto">           
         <li class="grow"><a class="nav-link" href="{% url 'login' %}" title="Login" data-toggle="tooltip" data-placement="bottom" aria-label="Login"><i class="fas fa-sign-in-alt fa-2x"></i></a></li>
         <li class="grow"><a class="nav-link" href="{% url 'register' %}" title="Register" data-toggle="tooltip" data-placement="bottom" aria-label="Register"><i class="fas fa-bowling-ball fa-2x"></i></a></li>    
       </ul>
@@ -167,7 +96,7 @@
       <div class="col-md-12">
       <h1 class="text-center mainhead font-weight-bolder margin-head text-uppercase">Kingpin</h1>
           <hr class="style15">
-          <!---
+
             <div class="dropdown" align="right">
             <button type="button" class="btn dropdown-toggle buttonDrop" data-toggle="dropdown" aria-label="KPBT User account profile" title="KPBT Account profile">
                 <i class="far fa-user fa-2x mx-auto d-block"></i>
@@ -176,19 +105,19 @@
               <h5 class="dropdown-header text-center underline">Account info</h5>
                 {% if request.user.is_authenticated %}
                 <p>Logged in as: <mark>{{ user.get_username }}</mark></p>
-                <a class="text-center d-block mb-2" href="{% url 'view-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="View Profile"><span class="mr-1"><i class="fas fa-user-circle"></i></span> View Profile</a>
-                <a class="text-center d-block mb-2" href="{% url 'update-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="Update Profile"><span class="mr-1"><i class="fas fa-user-edit"></i></span> Update Profile</a>
+                <a class="text-center d-block mb-2 dropDown-link" href="{% url 'view-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="View Profile"><span class="mr-1"><i class="fas fa-user-circle"></i></span> View Profile</a>
+                <a class="text-center d-block mb-2 dropDown-link" href="{% url 'update-profile-by-username' request.user.username %}" data-toggle="tooltip" data-placement="top" title="Update Profile"><span class="mr-1"><i class="fas fa-user-edit"></i></span> Update Profile</a>
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Admin page"><span class="mr-1"><i class="fas fa-user-cog"></i></span> Admin page</a>
+                <a href="{% url 'admin:index' %}" class="text-center d-block mb-2 dropDown-link" data-toggle="tooltip" data-placement="top" title="Admin page"><span class="mr-1"><i class="fas fa-user-cog"></i></span> Admin page</a>
                 {% endif %}
                 {% endif %}
-                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block mb-2" data-toggle="tooltip" data-placement="top" title="Logout"><span class="mr-1"><i class="fas fa-sign-out-alt"></i></span> Logout</a>
+                <a href="{% url 'logout' %}?next={% url 'login' %}" class="text-center d-block mb-2 dropDown-link" data-toggle="tooltip" data-placement="top" title="Logout"><span class="mr-1"><i class="fas fa-sign-out-alt"></i></span> Logout</a>
                 {% else %}
-                <a href="{% url 'login' %}">Please login to continue.</a>
+                <a href="{% url 'login' %}" class="text-center d-block mb-2 dropDown-link">Please login to continue.</a>
                 {% endif %}
             </div>
-          </div> --->
+          </div>
           
           
       </div>

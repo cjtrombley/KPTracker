@@ -1,13 +1,16 @@
 {% extends 'index.html' %}
 
+{% block title %}<title>Kingpin Bowling Tracker - Delete League</title>{% endblock %}
+
 {% block page_content %}
+<div class="container-fluid">  
+<div class="row"> 
+<div class="col-md-12">
 
-<div class="text-white">
 
-
-    <p> You are attempting to delete the league {{ league.name }} at {{ center.name }}.</p>
+    <p class="text-white lead"> You are attempting to delete the league {{ league.name }} at {{ center.name }}!</p>
     
-    <p> Enter "DELETE" in the form below to confirm this action.</p>
+    <p class="text-white lead"> Enter "DELETE" in the form below to confirm this action.</p>
 
 
     <form method="post">
@@ -17,7 +20,9 @@
         {% csrf_token %}
         {{ form.as_p }}
         
-        <button type="submit">Delete League</button>
+        <button type="submit" class="btn btn-univ">Delete League</button>
     </form>
 </div>
+</div>
+</div>    
 {% endblock %}
