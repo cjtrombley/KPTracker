@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from kpbt.games.forms import CreateSeriesForm
+#from kpbt.games.forms import CreateSeriesForm
 from django.contrib.auth.decorators import permission_required
 from kpbt.games.models import Series
 from kpbt.leagues.models import League, LeagueBowler

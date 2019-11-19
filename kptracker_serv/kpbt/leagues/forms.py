@@ -2,6 +2,8 @@ from django import forms
 from kpbt.leagues.models import League, LeagueRules, Schedule
 from kpbt.centers.models import BowlingCenter
 
+
+
 class LeagueCreationForm(forms.ModelForm):
 	
 	league_name = forms.CharField(max_length=32, widget= forms.TextInput(attrs={'placeholder':'League name'}))
@@ -62,3 +64,23 @@ class MoveLeagueForm(forms.ModelForm):
 	class Meta:
 		model = League
 		fields=('bowling_center',)
+		
+class SetWeekForm(forms.Form):
+	week_pointer = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Set Week Number'}))
+	current_week = forms.IntegerField(widget=forms.HiddenInput())
+	
+	def clean(self):
+		cleaned_data = super().clean()
+		
+		week_pointer = cleaned_data.get('week_pointer')
+		current_week = cleaned_data.get('current_week')
+		
+		if (week_pointer <=0):
+			raise forms.ValidationError(
+				"Week must be greater than 0."
+			)
+		elif (week_pointer > current_week):
+			raise forms.ValidationError(
+				"Week must be less than current week number"
+				)
+		

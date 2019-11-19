@@ -26,6 +26,8 @@ class Series(models.Model):
 	
 	
 	
+	def get_bowler_name(self):
+		return self.bowler.get_name()
 	
 	def get_scratch_score(self):
 		scratch_score = 0

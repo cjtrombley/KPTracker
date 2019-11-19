@@ -693,6 +693,7 @@ p + ul {
     caret-color:red;
     transition: width 0.4s linear;
 }    
-    
-    
+
+.editscores-column {
+	display: inline-block
 }

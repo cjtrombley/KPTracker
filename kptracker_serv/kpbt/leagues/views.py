@@ -1,16 +1,17 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm
+from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm, SetWeekForm
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
 from kptracker.settings import ROSTEREXPORT_FOLDER as ROSTERS_DIR
-from kpbt.games.forms import CreateSeriesForm, ImportScoresForm
+from kpbt.games.forms import ImportScoresForm, EditScoresForm
 from kptracker.settings import SCOREFILES_FOLDER as SCOREDIR
-from django.forms import formset_factory
-import math
+from kptracker.settings import BACKUPS_FOLDER as BACKUPSDIR
+from django.forms import modelformset_factory, formset_factory
+import math, json
 
 def create_league(request, center_name=""):
 	if request.method == 'POST':
@@ -311,7 +312,22 @@ def export_rosters(request, center_name="", league_name=""):
 	rosterFile.close()	
 	return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
 		
+#def league_backup(request, center_name="", league_name""):		
+#	if request.method == "POST"
+
+def finalize_week(request, center_name="", league_name=""):
+	league= get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	if request.method == "POST":
+		#print(request.post)
+		league.score_week(league.current_week)
+		league.create_weekly_score_backup()
 		
+		league.advance_week()
+	
+		league.save()
+	
+	return redirect('league-view-weekly-tasks', center_name, league.name)
 		
 def import_scores(request, center_name = "", league_name=""):
 	if request.method == 'POST':
@@ -374,7 +390,6 @@ def import_scores(request, center_name = "", league_name=""):
 						team_roster_record.update_games(game_scores)
 						team_roster_record.save()
 						
-			league.score_week(week_number)				
 		return redirect('view-league-home', center_name, league_name )
 								
 							
@@ -383,7 +398,59 @@ def import_scores(request, center_name = "", league_name=""):
 		import_form = ImportScoresForm()
 		return render(request, 'leagues/weekly/import_scores.html', {'league' : league, 'import_form' : import_form })
 
-
+def edit_scores(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	center = get_object_or_404(BowlingCenter, name=center_name)
+	EditScoreFormset = modelformset_factory(Series, extra=0, fields=('bowler', 'applied_average', 'game_one_score', 'game_two_score', 'game_three_score'))
+	
+	weeks_scores = Series.objects.select_related('bowler').filter(league=league, week_number=league.week_pointer).order_by('pair_number')
+	
+	if request.method == 'POST':
+		#print(request.POST)
+		edited_scores = EditScoreFormset(request.POST)
+		
+		if edited_scores.is_valid():
+			edited_scores.save()
+		return redirect('league-view-weekly-tasks', center.name, league.name)
+		
+	else:
+		weeks_scores = Series.objects.select_related('bowler').filter(league=league, week_number=league.week_pointer).order_by('pair_number')
+		
+		bowler_ids = []
+		for score in weeks_scores:
+			bowler_ids.append(score.bowler.id)
+		#print(bowler_ids)
+		
+		bowlers = BowlerProfile.objects.filter(id__in=bowler_ids)
+		#print(bowlers)
+		#weeks_list = weeks_scores.values()
+		
+		#weeks_scores.union(bowlers)
+		
+		#for score in weeks_scores:
+			#print(score.first_name)
+		#print(weeks_scores)
+		for score in weeks_scores:
+			print(score.bowler.first_name)
+		#scores = []
+		
+		#for score in weeks_scores:
+		#	scores.append('{bowler_id : ' + str(score.bowler.id) + '}')
+		
+		#print(bowlers)
+		#print(scores)
+		
+		
+		EditScoreFormset = modelformset_factory(Series, extra=0, fields=('bowler', 'applied_average', 'game_one_score', 'game_two_score', 'game_three_score'))
+		#EditScoreFormset = formset_factory(EditScoresForm, extra=0)
+		
+		#score_formset = EditScoreFormset(initial=weeks_list)
+		score_formset= EditScoreFormset(queryset=weeks_scores)
+		#print(score_formset)
+		
+		
+	return render(request, 'leagues/weekly/edit_scores.html', {'formset' : score_formset, 'scores' : weeks_scores})
+		
 
 def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
@@ -435,4 +502,25 @@ def move_league(request, center_name="", league_name=""):
 	else:
 		form = MoveLeagueForm()
 	return render(request, 'leagues/manage/move_league_center.html', {'form' : form, 'league' : league })
+	
+def set_week(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+
+	if request.method == "POST":
+		#print(request.POST)
+		form = SetWeekForm(request.POST)
+		
+		#print(set_week)
+		if form.is_valid():
+			#print('is_valid')
+			league.week_pointer = form.cleaned_data['week_pointer']
+			league.save()
+			return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
+		else:
+			return render(request, 'leagues/manage/set_week.html', {'form': form, 'league' : league})
+	
+	else:
+		form = SetWeekForm(initial={'current_week' : league.current_week})
+		
+	return render(request, 'leagues/manage/set_week.html', {'form' : form, 'league' : league})
 		
