@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.forms import modelformset_factory
-from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, AddExistingBowlerForm #RosterFormSet
+from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, ExistingBowlerForm #RosterFormSet
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.leagues.models import League, LeagueBowler
 from kpbt.centers.models import BowlingCenter
@@ -58,7 +58,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 	
 	if request.method == 'POST':
 		formset = existing_RosterFormSet(request.POST)
-		add_existing = AddExistingBowlerForm(request.POST)
+		existing = ExistingBowlerForm(request.POST)
 		
 		if request.POST.get("add_existing", ""):
 			lb = get_object_or_404(LeagueBowler, id=request.POST.get("bowler"))
@@ -67,6 +67,16 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 			team_roster_record.is_active=True
 			team_roster_record.save()
 			
+		elif request.POST.get("remov_existing", ""):
+			print(request.POST.get("bowler"))
+			lb = get_object_or_404(LeagueBowler, bowler=request.POST.get("bowler"))
+			print(lb)
+			bp = lb.bowler
+			print(bp)
+			tr_record = TeamRoster.objects.get(team=team, bowler=bp)
+			tr_record.is_active=False
+			tr_record.save()
+			
 		else:
 			formset = existing_RosterFormSet(request.POST)
 			if formset.is_valid():
@@ -74,7 +84,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 				formset.save()
 				for new in formset.new_objects:
 					TeamRoster.objects.create(bowler=new, team=team, is_active=True)
-				
+					LeagueBowler.objects.create(league=league, bowler=new)
 				#create new team roster record here
 				
 		
@@ -91,10 +101,13 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		bowler_ids = []
 		for roster in league_team_rosters:
 			bowler_ids.append(roster.bowler.id)
-		bowlers = LeagueBowler.objects.filter(bowler__id__in=bowler_ids)
+		inactive_bowlers = LeagueBowler.objects.filter(bowler__id__in=bowler_ids)
 		
-		existing_form = AddExistingBowlerForm()
-		existing_form.fields['bowler'].queryset = bowlers
+		eadd_form = ExistingBowlerForm()
+		eadd_form.fields['bowler'].queryset = inactive_bowlers
 		
-		return render(request, 'teams/manage/update_roster.html', {'team': team, 'rosterset' : rosterset, 'new_formset' : new_formset, 'existing_form' : existing_form})		
+		eremov_form = ExistingBowlerForm()
+		eremov_form.fields['bowler'].queryset = bowlers
+		
+		return render(request, 'teams/manage/update_roster.html', {'team': team, 'rosterset' : rosterset, 'new_formset' : new_formset, 'eadd_form' : eadd_form, 'eremov_form' : eremov_form})		
 	

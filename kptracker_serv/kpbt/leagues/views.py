@@ -43,16 +43,17 @@ def create_league(request, center_name=""):
 			for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
 				teami = Team.create_team(new_league, i)
 				teami.save()
-			
-				for _ in range(roster_size):
-					empty_bowler = get_object_or_404(BowlerProfile, id=0)
-					#empty_bowler.save()
-					team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler)
-					#empty_bowler.save()
-					team_roster_record.save()
 				
-					league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
-					league_bowler.save()
+				
+				#for _ in range(roster_size):
+					#empty_bowler = get_object_or_404(BowlerProfile, id=0)
+					#empty_bowler.save()
+					#team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler, is_active=False)
+					#empty_bowler.save()
+					#team_roster_record.save()
+				
+					#league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
+					#league_bowler.save()
 			
 			
 			

@@ -13,7 +13,6 @@ class CreateTeamForm(forms.ModelForm):
 		
 		
 class TeamRosterForm(forms.ModelForm): #extends BowlerProfile?
-	
 	class Meta:
 		model = BowlerProfile
 		fields = ('__all__')
@@ -34,7 +33,7 @@ class DeleteRosterForm(forms.ModelForm):
 		model = TeamRoster
 		fields = ('bowler',)
 
-class AddExistingBowlerForm(forms.ModelForm):
+class ExistingBowlerForm(forms.ModelForm):
 	
 	#bowler = forms.ChoiceField()
 	

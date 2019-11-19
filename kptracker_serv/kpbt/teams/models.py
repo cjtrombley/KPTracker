@@ -74,7 +74,7 @@ class TeamRoster(models.Model):
 	team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='roster_record')
 	games_with_team = models.PositiveSmallIntegerField(default=0)
 	
-	is_substitute = models.BooleanField(default=False)
+	#is_substitute = models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
 	lineup_position = models.PositiveSmallIntegerField(default=0)
 	
