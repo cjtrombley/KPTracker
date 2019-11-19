@@ -237,15 +237,11 @@ def finalize_week(request, center_name="", league_name=""):
 	return redirect('league-view-weekly-tasks', center_name, league.name)
 		
 def import_scores(request, center_name = "", league_name=""):
+	league = get_object_or_404(League, name=league_name)
+	week_number = league.week_pointer
+	
 	if request.method == 'POST':
-		#import_form = ImportScoresForm(request.POST)
 		
-		#if import_form.is_valid():
-			#week_number = import_form.cleaned_data['week_number']
-		league = get_object_or_404(League, name=league_name)
-		week_number = league.current_week
-			
-
 		filename = str(league.id) + '_' + str(week_number)
 		filedir = SCOREDIR + filename + '.txt'
 		
@@ -297,11 +293,10 @@ def import_scores(request, center_name = "", league_name=""):
 					team_roster_record.update_games(game_scores)
 					team_roster_record.save()
 						
-		return redirect('view-league-home', center_name, league_name )
+		return redirect('league-view-weekly-tasks', center_name, league_name )
 								
 							
 	else:
-		league = get_object_or_404(League, name=league_name)
 		import_form = ImportScoresForm()
 		return render(request, 'leagues/weekly/import_scores.html', {'league' : league, 'import_form' : import_form })
 
@@ -318,6 +313,7 @@ def edit_scores(request, center_name="", league_name=""):
 		
 		if edited_scores.is_valid():
 			edited_scores.save()
+			league.rescore(league.week_pointer)
 		return redirect('league-view-weekly-tasks', center.name, league.name)
 		
 	else:

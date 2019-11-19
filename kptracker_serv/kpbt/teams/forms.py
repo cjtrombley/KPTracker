@@ -1,6 +1,7 @@
 from django import forms
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.accounts.models import BowlerProfile
+from kpbt.leagues.models import LeagueBowler
 from django.contrib.auth.models import User
 from django.forms import formset_factory
 from kpbt.accounts.forms import CreateUserBowlerProfileForm, UpdateUserBowlerProfileForm
@@ -31,4 +32,12 @@ class DeleteRosterForm(forms.ModelForm):
 	
 	class Meta:
 		model = TeamRoster
+		fields = ('bowler',)
+
+class AddExistingBowlerForm(forms.ModelForm):
+	
+	#bowler = forms.ChoiceField()
+	
+	class Meta:
+		model = LeagueBowler
 		fields = ('bowler',)

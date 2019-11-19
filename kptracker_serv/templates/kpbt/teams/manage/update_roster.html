@@ -23,6 +23,16 @@
 <button type="submit">Update Roster</button>
 </form>
     
+ 
+<h4> Add Existing League Bowlers</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ existing_form.as_p }}
+    
+    <input type="hidden" name="add_existing" value="true">
+    <button type="submit">Add Existing Bowler</button>
+</form>
+    
     
 <h4>Create New Roster Members </h4>
 <form method="post">
