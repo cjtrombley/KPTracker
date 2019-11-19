@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.forms import modelformset_factory
-from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, ExistingBowlerForm #RosterFormSet
+from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, ExistingBowlerForm, UpdateTeamForm #RosterFormSet
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.leagues.models import League, LeagueBowler
 from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import BowlerProfile
 from num2words import num2words
 
+'''
 def create_team(request, center_name="", league_name="", team_number=""):
 	if request.method == 'POST':
 		team_form = CreateTeamForm(request.POST)
@@ -19,6 +20,9 @@ def create_team(request, center_name="", league_name="", team_number=""):
 	else:
 		team_form = CreateTeamForm()
 	return render(request, 'teams/manage/create_team.html', {'form' : team_form})
+'''
+
+
 
 def view_team(request, center_name= "", league_name="", team_name=""):
 	if center_name:
@@ -42,7 +46,26 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 		print(teams)
 		return render(request, 'teams/team_home.html', {'teams' : teams})
 	
-#previously create_roster		
+
+def manage_team(request, center_name="", league_name="", team_name=""):
+	team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+	return render(request, 'teams/manage/manage_team.html.', {'team' : team})
+
+		
+def update_team(request, center_name="", league_name="", team_name=""):
+	team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+	
+	if request.method == "POST":
+		form = UpdateTeamForm(request.POST, instance=team)
+		if form.is_valid():
+			updated = form.save()
+			
+			return redirect('manage-team', updated.league.bowling_center.name, updated.league.name, updated.name)
+	else:
+		form = UpdateTeamForm(instance=team)
+	return render(request, 'teams/manage/update_team.html', {'form': form, 'team' : team})
+
+		
 def update_roster(request, center_name= "", league_name="", team_name=""):
 	league = get_object_or_404(League, bowling_center__name= center_name, name=league_name)
 	team = get_object_or_404(Team, league=league, name=team_name)

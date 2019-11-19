@@ -358,8 +358,8 @@ def edit_scores(request, center_name="", league_name=""):
 
 def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-	
-	return render(request, 'leagues/manage/manage_league.html', {'league' : league })
+	teams = Team.objects.filter(league=league)
+	return render(request, 'leagues/manage/manage_league.html', {'league' : league, 'teams' : teams})
 		
 		
 def manage_league_secretary(request, center_name="", league_name=""):

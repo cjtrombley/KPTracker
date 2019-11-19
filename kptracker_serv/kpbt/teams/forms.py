@@ -40,3 +40,8 @@ class ExistingBowlerForm(forms.ModelForm):
 	class Meta:
 		model = LeagueBowler
 		fields = ('bowler',)
+		
+class UpdateTeamForm(forms.ModelForm):
+	class Meta:
+		model = Team
+		fields = ('name',)
