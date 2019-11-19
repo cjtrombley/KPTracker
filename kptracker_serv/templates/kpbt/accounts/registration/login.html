@@ -28,7 +28,7 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 
-<table>
+<table class="mb-3">
     <div class="form-group">
 	<tr>
 		<td><div class="username-row row">{{ form.username }}</div></td>

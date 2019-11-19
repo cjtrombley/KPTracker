@@ -1,10 +1,14 @@
 {% extends 'index.html' %}
 
+{% block title %}<title>Kingpin Bowling Tracker - Manage Leagues</title>{% endblock %}
+
 {% block page_content %}
 
-<div class="text-white">
+ <div class="container-fluid">  
+ <div class="row"> 
+ <div class="col-md-12">    
 
-<h2> Manage leagues at {{ center.name }} </h2>
+<h2 class="form-head mb-3"> Manage leagues at {{ center.name }} </h2>
 
 <table>
     
@@ -14,5 +18,7 @@
     </tr>
     {% endfor %}
 </table>
+</div>
+</div>
 </div>
 {% endblock %}
