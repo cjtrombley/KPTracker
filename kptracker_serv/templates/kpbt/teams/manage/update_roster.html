@@ -15,12 +15,12 @@
          </thead>
         <tr>
         {% for roster in rosterset %}
-            {{ roster.id}}
+            {{ roster.id }}
             <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td><td> {{ roster.average }}</td> <td> Link Bowler</td>
         </tr>
         {% endfor %}
     </table>
-<input type="hidden" name="id" value={{roster.id}}>
+<input type="hidden" name="update" value="true">
 <button type="submit">Update Roster</button>
 </form>
     
@@ -56,12 +56,12 @@
          </thead>
         <tr>
         {% for roster in new_formset %}
-            {{ roster.id}}
+            {{ roster.id }}
             <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td> <td> {{ roster.average }} </td>
         </tr>
         {% endfor %}
     </table>
-    <input type="hidden" name="id" value="0">
+    <input type="hidden" name="new" value="true">
 	<button type="submit">Add To Roster</button>
 </form>
 </div>

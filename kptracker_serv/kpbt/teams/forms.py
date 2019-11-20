@@ -24,13 +24,22 @@ class UpdateRosterForm(forms.Form):
 	last_name = forms.CharField(max_length=32)
 	hand = forms.ChoiceField(choices= (('R', 'Right'), ('L', 'Left')))
 	designation = forms.ChoiceField(choices=(('A', 'Adult'), ('J', 'Junior'), ('S', 'Senior')))
+	gender = forms.ChoiceField(choices= (('M', 'Male'), ('F', 'Female')))
+	average = forms.IntegerField(min_value=0, max_value=300)
+	
+	def clean(self):
+		cleaned_data = super().clean()
+		
+class NewRosterForm(forms.Form):
+	first_name = forms.CharField(max_length=32)
+	last_name = forms.CharField(max_length=32)
+	hand = forms.ChoiceField(choices= (('R', 'Right'), ('L', 'Left')))
+	designation = forms.ChoiceField(choices=(('A', 'Adult'), ('J', 'Junior'), ('S', 'Senior')))
 	gender = forms.ChoiceField(choices= (('M', 'Men'), ('W', 'Women'), ('X', 'Men/Women')))
 	average = forms.IntegerField(min_value=0, max_value=300)
 	
 	def clean(self):
-		print('cleaning')
 		cleaned_data = super().clean()
-		
 		
 	
 class ViewRosterForm(forms.ModelForm):
