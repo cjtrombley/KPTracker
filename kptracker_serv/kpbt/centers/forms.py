@@ -4,8 +4,7 @@ from kpbt.centers.models import BowlingCenter, CenterAddress
 class CreateBowlingCenterForm(forms.ModelForm):
 	class Meta:
 		model= BowlingCenter
-		exclude = ['manager']
-		fields=('name', 'num_lanes')
+		fields=('name', 'num_lanes', 'manager')
 		
 class CreateCenterAddressForm(forms.ModelForm):
 	class Meta:
