@@ -10,16 +10,17 @@
     <table> 
         <thead>
             <tr>
-                <td>First Name</td><td>Last Name</td> <td> Hand</td> <td>Designation</td> <td>Gender</td>
+                <td>First Name</td><td>Last Name</td> <td> Hand</td> <td>Designation</td> <td>Gender</td><td>Avg</td>
             </tr>
          </thead>
         <tr>
         {% for roster in rosterset %}
-            {{ roster.id}}
-            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td><td> {{ roster.delete_roster }}</td>
+            {{ roster.id }}
+            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td><td> {{ roster.average }}</td> <td> Link Bowler</td>
         </tr>
         {% endfor %}
     </table>
+<input type="hidden" name="update" value="true">
 <button type="submit">Update Roster</button>
 </form>
     
@@ -50,17 +51,17 @@
     <table> 
         <thead>
             <tr>
-                <td>First Name</td><td>Last Name</td> <td> Hand</td> <td>Designation</td> <td>Gender</td>
+                <td>First Name</td><td>Last Name</td> <td> Hand</td> <td>Designation</td> <td>Gender</td> <td> Avg </td>
             </tr>
          </thead>
         <tr>
         {% for roster in new_formset %}
-            {{ roster.id}}
-            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td>
+            {{ roster.id }}
+            <td>{{ roster.first_name }} </td> <td> {{ roster.last_name }} </td> <td> {{ roster.hand }} </td> <td> {{ roster.designation }}</td> <td> {{ roster.gender }} </td> <td> {{ roster.average }} </td>
         </tr>
         {% endfor %}
     </table>
-    
+    <input type="hidden" name="new" value="true">
 	<button type="submit">Add To Roster</button>
 </form>
 </div>

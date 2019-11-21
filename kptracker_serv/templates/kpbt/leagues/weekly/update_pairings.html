@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+
+{% block page_content %}
+
+<div class="text-white">
+    <h2> Update Weekly Pairings</h2>
+    <h4> Week Number: {{ league.week_pointer }}</h4>
+    
+    
+    {{ formset.non_form_errors }}
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+            <thead>
+                <tr><td>Lane Pair</td> <td> Team One</td> <td>Team Two</td></tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                    {{ form.non_field_errors }}
+                    {{ form.id }}
+                    <tr><td> {{forloop.counter }}</td><td> {{ form.team_one }} </td> <td> {{ form.team_two }}</td></tr>
+                {% endfor %}
+            </tbody>
+        
+        </table>
+        
+        <button type="submit"> Update Pairings</button>
+    </form>
+
+
+</div>
+{% endblock %}

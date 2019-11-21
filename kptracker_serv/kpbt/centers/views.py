@@ -37,8 +37,10 @@ def create_bowling_center(request):
 def view_center_home(request, center_name=""):
 	if center_name:	
 		center = get_object_or_404(BowlingCenter, name=center_name)
+		manager = center.manager.username
+		print(manager)
 		leagues = center.leagues.all()
-		return render(request, 'centers/view_center.html', {'center' : center, 'leagues' : leagues})
+		return render(request, 'centers/view_center.html', {'center' : center, 'leagues' : leagues, 'manager' : manager})
 	else:
 		centers = BowlingCenter.objects.all()
 		return render(request, 'centers/center_home.html', {'centers' : centers })

@@ -1,5 +1,6 @@
 from django import forms
-from kpbt.leagues.models import League, LeagueRules, Schedule
+from django.forms.formsets import BaseFormSet
+from kpbt.leagues.models import League, LeagueRules, Schedule, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
 
 
@@ -14,6 +15,7 @@ class LeagueCreationForm(forms.ModelForm):
 	
 	playing_strength = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Playing strength'}))
 	max_roster_size = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Maximum roster size'}))
+	entering_average = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Entering average'}))
 	handicap_scratch = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Scratch figure'}))
 	handicap_percentage = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Handicap percentage'}))
 	bye_team_point_threshold = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Bye-Team point diff'}))
@@ -83,4 +85,33 @@ class SetWeekForm(forms.Form):
 			raise forms.ValidationError(
 				"Week must be less than current week number"
 				)
-		
+
+class WeeklyPairingsForm(forms.Form):
+	team_one = forms.IntegerField()
+	team_two= forms.IntegerField()
+	
+	def clean(self):
+		cleaned_data = super().clean()
+	
+				
+class WeeklyPairingsFormSet(BaseFormSet):
+		def clean(self):
+			if any(self.errors):
+				print('formset_error')
+				return
+			teams = []
+			for form in self.forms:
+				t_one = form.cleaned_data.get('team_one')
+				if t_one in teams:
+					raise forms.ValidationError("Team cannot bowl on two lanes.")
+				teams.append(t_one)
+				print(t_one)
+				t_two = form.cleaned_data.get('team_two')
+				if t_two in teams:
+					raise forms.ValidationError("Team cannot bowl on two lanes.")
+				print(t_two)
+				teams.append(t_two)
+				
+				
+				
+			

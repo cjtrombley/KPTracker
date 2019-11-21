@@ -15,10 +15,12 @@ league_management_paterns = [
 weekly_patterns = [
 	path('', views.view_weekly_tasks, name='league-view-weekly-tasks'),
 	path('export-rosters', views.export_rosters, name='view-export-rosters'),
+	path('update-pairings', views.update_weekly_pairings, name='update-weekly-pairings'),
 	path('import-scores', views.import_scores, name='import-scores'),
 	path('view-scores/<str:week_number>', series_views.view_scores, name='league-view-scores-by-week'),
 	path('edit-scores', views.edit_scores, name='edit-weekly-scores'),
 	path('finalize-week', views.finalize_week, name='finalize-week'),
+	
 ]
 
 team_patterns = [

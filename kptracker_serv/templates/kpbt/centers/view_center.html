@@ -15,10 +15,6 @@
 			<td> Number of lanes </td>
 			<td> {{ center.num_lanes }} </td>
 		</tr>
-		<tr>
-			<td> Manager </td>
-			<td><a href=" {% url 'view-profile-by-username' center.manager.username %} "> {{ center.manager.username }} </a>
-		</tr>
 		{% for league in leagues %}
 		<tr>
 			<td><a href=" {% url 'view-center-league-by-name' center.name league.name %}"> {{ league.name }} </td></a>

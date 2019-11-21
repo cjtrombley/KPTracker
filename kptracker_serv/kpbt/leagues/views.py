@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm, SetWeekForm
+from kpbt.leagues.forms import WeeklyPairingsForm, WeeklyPairingsFormSet
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
 from kpbt.centers.models import BowlingCenter
@@ -19,20 +20,15 @@ def create_league(request, center_name=""):
 		
 		schedule_form = CreateScheduleForm(request.POST)
 		league_form = LeagueCreationForm(request.POST)
-		
 		if schedule_form.is_valid() and league_form.is_valid():
-			
 			new_league = League.objects.create(
 				name=league_form.cleaned_data['league_name'], bowling_center=center,)
 			new_league.save()
-			
 			
 			#create and save league schedule
 			schedule = schedule_form.save(commit=False)
 			schedule.league = new_league
 			schedule.calc_num_weeks()
-			
-		
 			
 			#create and save league rules
 			leaguerules = league_form.save(commit=False)
@@ -42,20 +38,7 @@ def create_league(request, center_name=""):
 			roster_size = leaguerules.playing_strength
 			for i in range(1,league_form.cleaned_data['num_teams'] +1 ):
 				teami = Team.create_team(new_league, i)
-				teami.save()
-				
-				
-				#for _ in range(roster_size):
-					#empty_bowler = get_object_or_404(BowlerProfile, id=0)
-					#empty_bowler.save()
-					#team_roster_record = TeamRoster.create_roster_record(teami, empty_bowler, is_active=False)
-					#empty_bowler.save()
-					#team_roster_record.save()
-				
-					#league_bowler = LeagueBowler.objects.create(bowler=empty_bowler, league=new_league)
-					#league_bowler.save()
-			
-			
+				teami.save()	
 			
 			#generate weekly lane pairings
 			new_league.create_pairings()
@@ -94,9 +77,7 @@ def update_league(request, center_name="", league_name=""):
 			updated_name.save()
 			updated_schedule.save()
 			updated_rules.save()
-			#updated_rules.save(updated_fields=['designation', 'gender', 'max_roster_size', 'handicap_scratch', 'handicap_percentage', 'bye_team_point_threshold', 'absentee_score',
-				#'game_point_value', 'series_point_value'])
-		
+			
 			return redirect('update-league', league.bowling_center.name, league.name)
 	
 	else:
@@ -112,7 +93,6 @@ def view_league(request, center_name = "", league_name=""):
 		if league_name:
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 			
-			
 			#standings = Series.objects.filter(league__name=league_name).order_by('-team__team_points_won')
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
@@ -122,19 +102,6 @@ def view_league(request, center_name = "", league_name=""):
 			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
 			last_week_scores=[]
 			secretary = league.secretary
-			'''
-			if league.schedule.current_week > 1:
-				
-				for pairing in weekly_pairings:
-					teams = pairing.strip().split('-')
-					for team in teams:
-				
-				
-						scores = Series.objects.filter(league__name=league_name, team__number = team, week_number=league.schedule.current_week -1)
-						if scores:
-							last_week_scores.append(scores)
-			'''
-			
 			return render(request, 'leagues/view_league.html', 
 				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores,
 					'secretary' : secretary})
@@ -153,7 +120,6 @@ def view_schedule(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	weekly_schedule = []
 	schedule = WeeklyPairings.objects.filter(league=league).order_by('week_number')
-	#print(weekly_schedule)
 	
 	for i in range(1, league.schedule.num_weeks):
 		week_pairs = WeeklyPairings.objects.filter(league=league, week_number=i)
@@ -162,7 +128,6 @@ def view_schedule(request, center_name="", league_name=""):
 			for pair in week_pairs:
 				teams = str(pair)
 				week_list.append(teams)
-			#print(week_list)
 			weekly_schedule.append(week_list)
 	
 	return render(request, 'leagues/view_schedule.html', {'schedule' : weekly_schedule })
@@ -186,7 +151,6 @@ def export_rosters(request, center_name="", league_name=""):
 		team_numbers.append(pair.team_one.id)
 		team_numbers.append(pair.team_two.id)
 	
-
 	team_roster_dict={}
 	for i in team_numbers:
 		team =get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, number=i)
@@ -201,16 +165,13 @@ def export_rosters(request, center_name="", league_name=""):
 			
 			applied_handicap = 0
 			if rules.is_handicap:
-				#print(handicap_percentage)
 				applied_handicap = int((rules.handicap_percentage / 100) * ( rules.handicap_scratch - lb_record.league_average))
-				#print(applied_handicap)
 				if applied_handicap < 0:
 					applied_handicap = 0
 			
 			roster_dict.update({ lineup_counter : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
 			lineup_counter += 1
 		team_roster_dict.update({ team.number : roster_dict})
-		
 		
 	if request.method == "POST":
 		export_filename = str(league.id) + '_' + str(week_number) +'.json'
@@ -227,14 +188,11 @@ def finalize_week(request, center_name="", league_name=""):
 	league= get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	
 	if request.method == "POST":
-		#print(request.post)
 		league.score_week(league.current_week)
 		league.create_weekly_score_backup()
 		
 		league.advance_week()
-	
 		league.save()
-	
 	return redirect('league-view-weekly-tasks', center_name, league.name)
 		
 def import_scores(request, center_name = "", league_name=""):
@@ -276,7 +234,6 @@ def import_scores(request, center_name = "", league_name=""):
 						applied_average = app_avg, applied_handicap = app_handi,
 						game_one_score = game_one, game_two_score = game_two, game_three_score = game_three)
 						
-						
 					game_scores = [new_series.game_one_score, new_series.game_two_score, new_series.game_three_score]
 					new_series.save()
 					
@@ -294,9 +251,7 @@ def import_scores(request, center_name = "", league_name=""):
 					team_roster_record.update_games(game_scores)
 					team_roster_record.save()
 						
-		return redirect('league-view-weekly-tasks', center_name, league_name )
-								
-							
+		return redirect('league-view-weekly-tasks', center_name, league_name )		
 	else:
 		import_form = ImportScoresForm()
 		return render(request, 'leagues/weekly/import_scores.html', {'league' : league, 'import_form' : import_form })
@@ -309,7 +264,6 @@ def edit_scores(request, center_name="", league_name=""):
 	weeks_scores = Series.objects.select_related('bowler').filter(league=league, week_number=league.week_pointer).order_by('pair_number')
 	
 	if request.method == 'POST':
-		#print(request.POST)
 		edited_scores = EditScoreFormset(request.POST)
 		
 		if edited_scores.is_valid():
@@ -323,35 +277,10 @@ def edit_scores(request, center_name="", league_name=""):
 		bowler_ids = []
 		for score in weeks_scores:
 			bowler_ids.append(score.bowler.id)
-		#print(bowler_ids)
-		
 		bowlers = BowlerProfile.objects.filter(id__in=bowler_ids)
-		#print(bowlers)
-		#weeks_list = weeks_scores.values()
-		
-		#weeks_scores.union(bowlers)
-		
-		#for score in weeks_scores:
-			#print(score.first_name)
-		#print(weeks_scores)
-		for score in weeks_scores:
-			print(score.bowler.first_name)
-		#scores = []
-		
-		#for score in weeks_scores:
-		#	scores.append('{bowler_id : ' + str(score.bowler.id) + '}')
-		
-		#print(bowlers)
-		#print(scores)
-		
-		
+	
 		EditScoreFormset = modelformset_factory(Series, extra=0, fields=('bowler', 'applied_average', 'game_one_score', 'game_two_score', 'game_three_score'))
-		#EditScoreFormset = formset_factory(EditScoresForm, extra=0)
-		
-		#score_formset = EditScoreFormset(initial=weeks_list)
 		score_formset= EditScoreFormset(queryset=weeks_scores)
-		#print(score_formset)
-		
 		
 	return render(request, 'leagues/weekly/edit_scores.html', {'formset' : score_formset, 'scores' : weeks_scores})
 		
@@ -385,7 +314,6 @@ def manage_league_secretary(request, center_name="", league_name=""):
 					old_secretary.userprofile.set_league_secretary(False)
 					old_secretary.userprofile.save()
 			
-			
 		return redirect('manage-league', league.bowling_center.name, league.name)
 	else:
 		form = UpdateLeagueSecretaryForm()
@@ -401,8 +329,6 @@ def move_league(request, center_name="", league_name=""):
 			league.bowling_center = form.cleaned_data['bowling_center']
 			league.save()	
 		return redirect('manage-league', league.bowling_center.name, league.name)
-	
-	
 	else:
 		form = MoveLeagueForm()
 	return render(request, 'leagues/manage/move_league_center.html', {'form' : form, 'league' : league })
@@ -411,20 +337,52 @@ def set_week(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 
 	if request.method == "POST":
-		#print(request.POST)
 		form = SetWeekForm(request.POST)
-		
-		#print(set_week)
 		if form.is_valid():
-			#print('is_valid')
 			league.week_pointer = form.cleaned_data['week_pointer']
 			league.save()
 			return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
 		else:
 			return render(request, 'leagues/manage/set_week.html', {'form': form, 'league' : league})
-	
 	else:
 		form = SetWeekForm(initial={'current_week' : league.current_week})
-		
 	return render(request, 'leagues/manage/set_week.html', {'form' : form, 'league' : league})
+	
+	
+def update_weekly_pairings(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	
+	PairingsFormSet = formset_factory(WeeklyPairingsForm, formset=WeeklyPairingsFormSet, extra=0)
+	pairs = WeeklyPairings.objects.filter(league=league, week_number=league.week_pointer).order_by('lane_pair')
+	
+	teams = {}
+	for pair in pairs:
+		
+		key = pair.lane_pair - 1 #In order to use pair number as key, have to shift left to make first index 0
+		teams.update({key : {'team_one' : pair.team_one.number, 'team_two' : pair.team_two.number}})
+	
+	if request.method == 'POST':
+		formset = PairingsFormSet(request.POST)
+		
+		if formset.is_valid():
+			lane_pair = 1;
+			for form in formset:
+				pairings = WeeklyPairings.objects.get(league=league, week_number=league.week_pointer, lane_pair=lane_pair)
+				
+				pairings.team_one = Team.objects.get(league=league, number=form.cleaned_data.get('team_one'))
+				pairings.team_two = Team.objects.get(league=league, number=form.cleaned_data.get('team_two'))
+				
+				pairings.save()
+				lane_pair += 1
+				
+			return redirect('update-weekly-pairings', league.bowling_center.name, league.name)
+		
+		else: #re-render page with validation errors in formset
+			return render(request, 'leagues/weekly/update_pairings.html', {'league' : league, 'formset' : formset})
+	else:		
+		pairs_formset = PairingsFormSet(initial = teams)
+		return render(request, 'leagues/weekly/update_pairings.html', {'league' : league, 'formset' : pairs_formset})
+	
+	
+	
 		

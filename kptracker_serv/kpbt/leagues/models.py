@@ -325,7 +325,8 @@ class LeagueRules(models.Model):
 	DESIGNATION = (
 		('A', 'Adult'),
 		('S', 'Senior'),
-		('J', 'Junior')
+		('J', 'Junior'),
+		('N', 'Any'),
 	)
 	
 	GENDER = (
@@ -339,6 +340,7 @@ class LeagueRules(models.Model):
 	gender = models.CharField(max_length=1, choices=GENDER)
 	playing_strength = models.PositiveSmallIntegerField(default=1)
 	max_roster_size = models.PositiveSmallIntegerField(default=9)
+	entering_average = models.PositiveSmallIntegerField(default=0)
 	is_handicap = models.BooleanField(default=False)
 	handicap_scratch = models.PositiveSmallIntegerField(default=0)
 	handicap_percentage = models.PositiveSmallIntegerField(default=0)
