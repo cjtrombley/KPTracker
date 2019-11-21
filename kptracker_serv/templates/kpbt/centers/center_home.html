@@ -26,6 +26,7 @@
         </tr>
     </thead>
     {% for center in centers %}
+    <tbody class="text-justify table-info font-weight-bolder">
     <tr>
 		<td><a href="{% url 'center-home' center.name %}"> {{ center.name }} </a></td>
 		<td> {{ center.num_lanes }} </td>
@@ -36,10 +37,8 @@
                 <li><a href="{% url 'view-center-league-by-name' league.bowling_center.name league.name %}"> {{ league.name }} </a></li></ul></td>
         {% endfor %}
     </tr>
+    </tbody>
 	{% endfor %}
-    <!-- This is just a dummy row! -->
-    <tr class="text-justify table-info font-weight-bolder"><td>HangLoose Lanes</td> <td>16</td> <td>Evan Hassan</td></tr>
-    <tr class="text-justify table-info font-weight-bolder"><td>Luxury Lanes</td> <td>20</td> <td>Bob McGuire</td></tr>
 </table>
 </div>
 </div>

@@ -12,15 +12,16 @@ class Series(models.Model):
 	league = models.ForeignKey('League', on_delete=models.SET_NULL, null=True)
 
 	
-	series_date = models.DateField()
-	week_number = models.PositiveSmallIntegerField()
-	pair_number = models.PositiveSmallIntegerField()
-	applied_average = models.PositiveSmallIntegerField()
-	applied_handicap = models.PositiveSmallIntegerField()
-	game_one_score = models.CharField(max_length=4)
-	game_two_score = models.CharField(max_length=4)
-	game_three_score = models.CharField(max_length=4)
-	
+	series_date = models.DateField(default='1900-01-01')
+	week_number = models.PositiveSmallIntegerField(default=0)
+	pair_number = models.PositiveSmallIntegerField(default=0)
+	applied_average = models.PositiveSmallIntegerField(default=0)
+	applied_handicap = models.PositiveSmallIntegerField(default=0)
+	game_one_score = models.CharField(max_length=4, blank=True)
+	game_two_score = models.CharField(max_length=4, blank=True)
+	game_three_score = models.CharField(max_length=4, blank=True)
+	scratch_score = models.IntegerField(default=0)
+	handicap_score = models.IntegerField(default=0)
 	weekly_points_won = models.PositiveSmallIntegerField(default=0)
 	weekly_points_lost = models.PositiveSmallIntegerField(default=0)
 	

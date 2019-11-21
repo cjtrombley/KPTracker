@@ -73,6 +73,20 @@
             "total_pinfall": 0,
             "team_points_won": 0,
             "team_points_lost": 0
+        },
+        "11": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "12": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
         }
     },
     "league_bowler_records": {
@@ -86,8 +100,8 @@
             "league_high_scratch_series": 0,
             "league_high_handicap_series": 0
         },
-        "112": {
-            "league_average": 1,
+        "2": {
+            "league_average": 169,
             "games_bowled": 0,
             "league_total_scratch": 0,
             "league_total_handicap": 0,
@@ -96,8 +110,8 @@
             "league_high_scratch_series": 0,
             "league_high_handicap_series": 0
         },
-        "113": {
-            "league_average": 200,
+        "3": {
+            "league_average": 192,
             "games_bowled": 0,
             "league_total_scratch": 0,
             "league_total_handicap": 0,
@@ -106,8 +120,8 @@
             "league_high_scratch_series": 0,
             "league_high_handicap_series": 0
         },
-        "114": {
-            "league_average": 2,
+        "4": {
+            "league_average": 180,
             "games_bowled": 0,
             "league_total_scratch": 0,
             "league_total_handicap": 0,
@@ -116,8 +130,118 @@
             "league_high_scratch_series": 0,
             "league_high_handicap_series": 0
         },
-        "115": {
+        "5": {
+            "league_average": 219,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "6": {
             "league_average": 178,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "7": {
+            "league_average": 192,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "8": {
+            "league_average": 207,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "9": {
+            "league_average": 133,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "10": {
+            "league_average": 150,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "11": {
+            "league_average": 162,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "12": {
+            "league_average": 187,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "13": {
+            "league_average": 180,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "14": {
+            "league_average": 191,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "15": {
+            "league_average": 177,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "16": {
+            "league_average": 166,
             "games_bowled": 0,
             "league_total_scratch": 0,
             "league_total_handicap": 0,
@@ -129,6 +253,39 @@
     },
     "team_roster_records": {
         "1": {
+            "games_with_team": 0
+        },
+        "2": {
+            "games_with_team": 0
+        },
+        "3": {
+            "games_with_team": 0
+        },
+        "4": {
+            "games_with_team": 0
+        },
+        "5": {
+            "games_with_team": 0
+        },
+        "6": {
+            "games_with_team": 0
+        },
+        "7": {
+            "games_with_team": 0
+        },
+        "8": {
+            "games_with_team": 0
+        },
+        "9": {
+            "games_with_team": 0
+        },
+        "10": {
+            "games_with_team": 0
+        },
+        "11": {
+            "games_with_team": 0
+        },
+        "12": {
             "games_with_team": 0
         }
     }

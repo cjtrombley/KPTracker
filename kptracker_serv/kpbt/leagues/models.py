@@ -90,6 +90,7 @@ class League(models.Model):
 		
 		#1. Reload league from earlier backup to prepare for rescoring effort
 		reset_week = rescore_week - 1
+		print('reset week: ', reset_week)
 		self.reset_weekly_from_backup(reset_week)
 		
 		#2. For ever week between reset_week and current week
@@ -104,21 +105,23 @@ class League(models.Model):
 				series.reset_points()
 				
 				#Recalculate league_average and handicap values
-				lb = get_object_or_404(LeagueBowler, league=self, bowler=series.bowler)
+				lb = get_object_or_404(LeagueBowler, league=self, bowler=series.bowler.id)
 				
 				if self.current_week == 1:
-					average = rules.entering_average
+					average = lb.league_average
 				else:
 					average = lb.calc_average()
 				if rules.is_handicap:
-					handicap = (rules.handicap_percentage * 100) * (rules.handicap_scratch - average)
+					handicap = (rules.handicap_percentage / 100) * (rules.handicap_scratch - average)
+					if handicap < 0:
+						handicap = 0
 				else:
 					handicap = 0
 				
 				series.applied_average = average
 				series.applied_handicap = handicap
 				series.save()
-			self.score_week(i)
+			#self.score_week(i)
 
 	
 	def reset_weekly_from_backup(self, reset_week):
@@ -327,6 +330,8 @@ class LeagueBowler(models.Model):
 		series_handicap_score = 0
 		games_played_counter = 0
 		
+		if not scores:
+			scores = Series.objects.filter(league=self.league, bowler=self.bowler, week_number=self.league.week_pointer)
 		for score in scores:
 			if score[0] == 'A':
 				#Bowler was absent for this game, does not count toward league stats

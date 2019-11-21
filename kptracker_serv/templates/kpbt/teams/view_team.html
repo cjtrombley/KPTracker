@@ -34,10 +34,9 @@
     {% endif %}
 	{% endfor %}
 
-    {% if bowlers|length < team.league.leaguerules.max_roster_size %}
     <tr>
-        <td><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Add Bowler To Roster</a></td>
-    {% endif %}
+        <td><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Update Roster</a></td>
+
     </tr>
                     
 </table>
