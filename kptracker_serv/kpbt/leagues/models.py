@@ -47,8 +47,7 @@ class League(models.Model):
 		self.secretary = user
 		self.save()
 		
-	#def current_week(self):
-		#return self.schedule.current_week
+	
 		
 	def create_pairings(self):
 		num_teams = self.leaguerules.num_teams
@@ -84,11 +83,10 @@ class League(models.Model):
 				
 				week_number_counter += 1
 		
-	
 
 	def rescore(self, rescore_week):
 		cw = self.current_week
-		
+		rules = self.leaguerules
 		
 		#1. Reload league from earlier backup to prepare for rescoring effort
 		reset_week = rescore_week - 1
@@ -96,23 +94,31 @@ class League(models.Model):
 		
 		#2. For ever week between reset_week and current week
 		#	a. Reset series team points values to 0
-		#	b. Call score_league for that week after resetting
+		#	b. recalculate the applied average/handicap for that series
+		#	c. Call score_league for that week after resetting
 		
 		for i in range (rescore_week, cw+1):
 			series_data = Series.objects.filter(league=self, week_number=i)
 			
 			for series in series_data:
 				series.reset_points()
+				
+				#Recalculate league_average and handicap values
+				lb = get_object_or_404(LeagueBowler, league=self, bowler=series.bowler)
+				
+				if self.current_week == 1:
+					average = rules.entering_average
+				else:
+					average = lb.calc_average()
+				if rules.is_handicap:
+					handicap = (rules.handicap_percentage * 100) * (rules.handicap_scratch - average)
+				else:
+					handicap = 0
+				
+				series.applied_average = average
+				series.applied_handicap = handicap
 				series.save()
-			
 			self.score_week(i)
-
-			
-			#Recalculate league_average and handicap values
-			
-			
-
-
 
 	
 	def reset_weekly_from_backup(self, reset_week):
@@ -140,19 +146,10 @@ class League(models.Model):
 		
 		
 	def score_week(self, week_number): 
-		
-		#weekly_pairs = self.schedule.pairings()
-		
-		#this_week = weekly_pairs[week_number]
-		
 		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number)
 		rules = self.leaguerules
 		
 		for pair in this_week:
-			#teams = pair.split('-')
-			
-			#team_one = get_object_or_404(Team, league=self, number=teams[0])
-			#team_two = get_object_or_404(Team, league=self, number=teams[1])
 			team_one = pair.team_one
 			team_two = pair.team_two
 			
@@ -170,53 +167,29 @@ class League(models.Model):
 			team_two_points = 0
 			
 			for i in range(1, 4): #Games number 1-3
-				
 				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i, team_one_series)
 				team_one_total_series += t1_hc_score
 				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i, team_two_series)
 				team_two_total_series += t2_hc_score
 				
 				if t1_hc_score > t2_hc_score:
-					#team_one.team_points_won += game_points
 					team_one_points += game_points
-					#team_two.team_points_lost += game_points
-					
 				elif t1_hc_score < t2_hc_score:
-					#team_one.team_points_lost += game_points
-					#team_two.team_points_won += game_points
 					team_two_points += game_points
 				else:
 					team_one_points += game_points / 2
 					team_two_points += game_points / 2
-					#team_one.team_points_won += game_points / 2
-					#team_one.team_points_lost += game_points / 2
-					#team_two.team_points_won += game_points / 2
-					#team_two.team_points_lost += game_points / 2
-			
+					
 			if team_one_total_series > team_two_total_series:
 				team_one_points += series_points
-				#team_one.team_points_won += series_points
-				#team_two.team_points_lost += series_points
 			elif team_one_total_series < team_two_total_series:
 				team_two_points += series_points
-				#team_one.team_points_lost += series_points
-				#team_two.team_points_won += series_points
-			#else:
-				#team_one.team_points_lost += series_points
-				#team_two.team_points_lost += series_points
-			
-			
-			
-			#team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
-			#team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
-			
+						
 			for series_one in team_one_series:
 				series_one.set_points_won(team_one_points)
 				series_one.set_points_lost(weekly_points - team_one_points)
 				series_one.save()
 				
-				
-			
 			for series_two in team_two_series:
 				series_two.set_points_won(team_two_points)
 				series_two.set_points_lost(weekly_points - team_two_points)
@@ -227,8 +200,8 @@ class League(models.Model):
 			team_one.save()
 			team_two.save()
 
-	def create_weekly_score_backup(self):
-		week_number = self.current_week
+	def create_weekly_score_backup(self, week_number):
+		#week_number = self.week_pointer
 		backup_filename= str(self.id) + '_' + str(week_number) + '.json'
 		
 		backup = open(BACKUPSDIR + backup_filename, 'w') 
@@ -236,7 +209,7 @@ class League(models.Model):
 		
 		
 		#Backups file header information
-		header_dict = { "league_name": self.name , "current_week" : str(week_number) } 
+		header_dict = { "league_name": self.name , "week" : str(week_number) } 
 		backup_dict.update( {"header" : header_dict})
 		
 		
@@ -249,26 +222,6 @@ class League(models.Model):
 			teams.update(team_dict)
 		backup_dict.update({"teams" : teams})
 		
-		
-		
-		'''
-		backup.write('TEAMS'+ '\n')
-		for team in teams:
-			backup.write(str(team.number) + ': ' + team.name + '\n')
-			
-			pinfalls_list = []
-			pinfalls_list.append('total_scratch_pins : ' + str(team.total_scratch_pins) + '\n')
-			pinfalls_list.append('total_handicap_pins : ' + str(team.total_handicap_pins) + '\n')
-			pinfalls_list.append('total_pinfall : ' + str(team.total_pinfall) + '\n')
-			
-			backup.write(''.join(pinfalls_list))
-		
-			points_list = []
-			points_list.append('team_points_won : ' + str(team.team_points_won) + '\n')
-			points_list.append('team_points_lost : ' + str(team.team_points_lost) + '\n')
-			
-			backup.write(''.join(points_list))
-		'''
 		
 		#LeagueBowler/TeamRoster Backups
 		lb_records = LeagueBowler.objects.filter(league=self)
@@ -405,7 +358,9 @@ class LeagueBowler(models.Model):
 	
 	def update_average(self):
 		self.league_average = self.league_total_scratch / self.games_bowled
-		
+	
+	def calc_average(self):
+		return self.league_total_scratch / self.games_bowled
 		
 class Schedule(models.Model):
 	WEEKDAY = (

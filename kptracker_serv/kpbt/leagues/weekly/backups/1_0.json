@@ -1,0 +1,135 @@
+{
+    "header": {
+        "league_name": "Blue Water Mens",
+        "week": "0"
+    },
+    "teams": {
+        "1": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "2": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "3": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "4": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "5": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "6": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "7": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "8": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "9": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        },
+        "10": {
+            "total_scratch_pins": 0,
+            "total_handicap_pins": 0,
+            "total_pinfall": 0,
+            "team_points_won": 0,
+            "team_points_lost": 0
+        }
+    },
+    "league_bowler_records": {
+        "1": {
+            "league_average": 188,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "112": {
+            "league_average": 1,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "113": {
+            "league_average": 200,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "114": {
+            "league_average": 2,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        },
+        "115": {
+            "league_average": 178,
+            "games_bowled": 0,
+            "league_total_scratch": 0,
+            "league_total_handicap": 0,
+            "league_high_scratch_game": 0,
+            "league_high_handicap_game": 0,
+            "league_high_scratch_series": 0,
+            "league_high_handicap_series": 0
+        }
+    },
+    "team_roster_records": {
+        "1": {
+            "games_with_team": 0
+        }
+    }
+}
