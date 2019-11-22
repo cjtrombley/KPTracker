@@ -15,7 +15,7 @@ class LeagueCreationForm(forms.ModelForm):
     
 	playing_strength = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Playing strength', 'class':'text-center', 'aria-label':'Playing Strength'}))
 	max_roster_size = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Maximum roster size', 'class':'text-center', 'aria-label':'Max Roster Size'}))
-    entering_average = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Entering average'}))
+	entering_average = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Entering average'}))
 	handicap_scratch = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Scratch figure', 'class':'text-center', 'aria-label':'Scratch Figure'}))
 	handicap_percentage = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Handicap percentage', 'class':'text-center', 'aria-label':'Handicap Percentage'}))
 	bye_team_point_threshold = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Bye-Team point diff', 'class':'text-center', 'aria-label':'Bye-Team Point Difference'}))
