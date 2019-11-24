@@ -228,7 +228,7 @@ class League(models.Model):
 		
 		#LeagueBowler/TeamRoster Backups
 		lb_records = LeagueBowler.objects.filter(league=self)
-		tr_records = TeamRoster.objects.filter(id__in=teams)
+		tr_records = TeamRoster.objects.filter(team_id__in=teams)
 		
 		team_rosters_dict = {}
 		lb_records_dict = {}
