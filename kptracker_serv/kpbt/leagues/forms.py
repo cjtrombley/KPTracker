@@ -7,21 +7,21 @@ from kpbt.centers.models import BowlingCenter
 
 class LeagueCreationForm(forms.ModelForm):
 	
-	league_name = forms.CharField(max_length=32, widget= forms.TextInput(attrs={'placeholder':'League name'}))
+	league_name = forms.CharField(max_length=32, widget= forms.TextInput(attrs={'placeholder':'League name', 'class':'text-center', 'aria-label':'League Name'}))
 	#bowling_center = ModelChoiceField(queryset=BowlingCenter
 	
-	num_teams = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Number of teams'}))
+	num_teams = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Number of teams', 'class':'text-center', 'aria-label':'Number of Teams'}))
 	#designation = forms.ChoiceField(widget = forms.RadioSelect())
-	
-	playing_strength = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Playing strength'}))
-	max_roster_size = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Maximum roster size'}))
+    
+	playing_strength = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Playing strength', 'class':'text-center', 'aria-label':'Playing Strength'}))
+	max_roster_size = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Maximum roster size', 'class':'text-center', 'aria-label':'Max Roster Size'}))
 	entering_average = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Entering average'}))
-	handicap_scratch = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Scratch figure'}))
-	handicap_percentage = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Handicap percentage'}))
-	bye_team_point_threshold = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Bye-Team point diff'}))
-	absentee_score = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Blind score'}))
-	game_point_value = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Game point value'}))
-	series_point_value = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Series point value'}))
+	handicap_scratch = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Scratch figure', 'class':'text-center', 'aria-label':'Scratch Figure'}))
+	handicap_percentage = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Handicap percentage', 'class':'text-center', 'aria-label':'Handicap Percentage'}))
+	bye_team_point_threshold = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Bye-Team point diff', 'class':'text-center', 'aria-label':'Bye-Team Point Difference'}))
+	absentee_score = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Blind score', 'class':'text-center', 'aria-label':'Blind Score'}))
+	game_point_value = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Game point value', 'class':'text-center', 'aria-label':'Game Point Value'}))
+	series_point_value = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Series point value', 'class':'text-center', 'aria-label':'Series Point Value'}))
 	
 	class Meta:
 		model = LeagueRules
@@ -44,9 +44,9 @@ class RenameLeagueForm(forms.ModelForm):
 		
 class CreateScheduleForm(forms.ModelForm):
 	
-	date_starting = forms.DateField(widget= forms.DateInput(attrs={'placeholder':'Start date'}))
-	date_ending = forms.DateField(widget=forms.DateInput(attrs={'placeholder':'End date'}))
-	start_time = forms.TimeField(widget=forms.TimeInput(attrs={'placeholder':'Starting time'}))
+	date_starting = forms.DateField(widget= forms.DateInput(attrs={'placeholder':'Start date', 'class':'text-center', 'aria-label':'Start Date'}))
+	date_ending = forms.DateField(widget=forms.DateInput(attrs={'placeholder':'End date', 'class':'text-center', 'aria-label':'End Date'}))
+	start_time = forms.TimeField(widget=forms.TimeInput(attrs={'placeholder':'Starting time', 'class':'text-center', 'aria-label':'Start Time'}))
 	
 	class Meta:
 		model = Schedule
