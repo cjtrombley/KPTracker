@@ -1,1 +1,114 @@
-{"1": {"1": {"first_name": "Abba", "last_name": "Babba", "league_average": 178, "applied_handicap": 35}, "2": {"first_name": "Cody", "last_name": "Trombley", "league_average": 188, "applied_handicap": 27}}, "2": {}, "3": {}, "4": {}, "5": {}, "6": {}, "7": {}, "8": {}, "9": {}, "10": {}}
+{
+    "1": {
+        "2": {
+            "first_name": "Mario",
+            "last_name": "Jumpman",
+            "league_average": 188,
+            "applied_handicap": 27
+        },
+        "3": {
+            "first_name": "Bowser",
+            "last_name": "Koopa",
+            "league_average": 169,
+            "applied_handicap": 43
+        },
+        "4": {
+            "first_name": "Princess",
+            "last_name": "Peach",
+            "league_average": 192,
+            "applied_handicap": 23
+        },
+        "1": {
+            "first_name": "Corey",
+            "last_name": "Trombls",
+            "league_average": 180,
+            "applied_handicap": 34
+        }
+    },
+    "2": {
+        "5": {
+            "first_name": "Clark",
+            "last_name": "Kent",
+            "league_average": 219,
+            "applied_handicap": 0
+        },
+        "6": {
+            "first_name": "Bruce",
+            "last_name": "Wayne",
+            "league_average": 178,
+            "applied_handicap": 35
+        },
+        "7": {
+            "first_name": "Wonder",
+            "last_name": "Woman",
+            "league_average": 192,
+            "applied_handicap": 23
+        },
+        "8": {
+            "first_name": "Peter",
+            "last_name": "Parker",
+            "league_average": 207,
+            "applied_handicap": 11
+        }
+    },
+    "3": {
+        "9": {
+            "first_name": "SpongeBob",
+            "last_name": "SquarePants",
+            "league_average": 133,
+            "applied_handicap": 73
+        },
+        "10": {
+            "first_name": "Patrick",
+            "last_name": "Star",
+            "league_average": 150,
+            "applied_handicap": 59
+        },
+        "11": {
+            "first_name": "Squidward",
+            "last_name": "Tentacles",
+            "league_average": 162,
+            "applied_handicap": 49
+        },
+        "12": {
+            "first_name": "Sandy",
+            "last_name": "Cheeks",
+            "league_average": 187,
+            "applied_handicap": 28
+        }
+    },
+    "4": {
+        "13": {
+            "first_name": "Perry",
+            "last_name": "Cox",
+            "league_average": 180,
+            "applied_handicap": 34
+        },
+        "14": {
+            "first_name": "Johnathan",
+            "last_name": "Dorian",
+            "league_average": 191,
+            "applied_handicap": 24
+        },
+        "15": {
+            "first_name": "Eliott",
+            "last_name": "Reid",
+            "league_average": 177,
+            "applied_handicap": 36
+        },
+        "16": {
+            "first_name": "Christopher",
+            "last_name": "Turk",
+            "league_average": 166,
+            "applied_handicap": 45
+        }
+    },
+    "5": {},
+    "6": {},
+    "7": {},
+    "8": {},
+    "9": {},
+    "10": {},
+    "11": {},
+    "12": {}
+}

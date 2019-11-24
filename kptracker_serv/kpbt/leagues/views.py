@@ -169,18 +169,18 @@ def export_rosters(request, center_name="", league_name=""):
 				if applied_handicap < 0:
 					applied_handicap = 0
 			
-			roster_dict.update({ lineup_counter : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
+			roster_dict.update({ bowler.id : {'first_name' : bowler.first_name, 'last_name' : bowler.last_name, 'league_average' : lb_record.league_average, 'applied_handicap' : applied_handicap}})
 			lineup_counter += 1
 		team_roster_dict.update({ team.number : roster_dict})
 		
 	if request.method == "POST":
 		if league.current_week == 1: # Create a backup with blank scores for potential rescoring
-			week_number = 0
-			league.create_weekly_score_backup(week_number)
+			backup_week_number = 0
+			league.create_weekly_score_backup(backup_week_number)
 	
 		export_filename = str(league.id) + '_' + str(week_number) +'.json'
 		with open(ROSTERS_DIR + export_filename, 'w') as rf:
-			dict_data = json.dumps(team_roster_dict)
+			dict_data = json.dumps(team_roster_dict, indent=4)
 			rf.write(dict_data)
 			
 		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)

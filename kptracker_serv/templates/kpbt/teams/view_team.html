@@ -2,9 +2,8 @@
 
 {% block title %}<title>Kingpin Bowling Tracker - View Teams</title>{% endblock %}
 
-<div class="text-white">
 {% block page_content %}
-
+<div class="text-white">
 <h2> Viewing {{ team.name }} in the {{ team.league.name }} league</h2>
 
 <h4> Team Stats</h4>
@@ -33,13 +32,15 @@
     </tr>
     {% endif %}
 	{% endfor %}
-
-    <tr>
-        <td><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Update Roster</a></td>
-
-    </tr>
-                    
-</table>
+    </table>
+    
+    
+    <div>
+    <h2> Team Management</h2>
+    <p><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Update Roster</a></p>
+    <p><a href="{% url 'update-team' team.league.bowling_center.name team.league.name team.name %}"> Update Team</a></p>
+    </div>   
+ 
 
 </div>
 {% endblock %}
