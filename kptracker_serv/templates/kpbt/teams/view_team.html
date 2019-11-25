@@ -70,20 +70,21 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <script>
+console.log('test1');
 var ctxL = document.getElementById("myChart").getContext('2d');
-
-var data = {"xAxisLabels": [ {{ num_weeks }} ], "datasets":  
+  
+var data = {"xAxisLabels": {% autoescape off %} {{ num_weeks }} {% endautoescape%} , "datasets":  
     [
         {
             label: "Points Won",
-            data: [ {{ points_won }} ],
+            data:  {{ points_won }} ,
             backgroundColor: ['rgba(0, 137, 132, .2)'],
             borderColor: ['rgba(0, 10, 130, .7)'],
             borderWidth: 2
         },
          {
             label: "Points Lost",
-            data: [ {{ points_lost }} ],
+            data:  {{ points_lost }} ,
             backgroundColor: ['rgba(0, 137, 132, .2)'],
             borderColor: ['rgba(130, 10, 0, .7)'],
             borderWidth: 2

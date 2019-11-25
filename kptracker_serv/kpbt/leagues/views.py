@@ -120,7 +120,8 @@ def view_league(request, center_name = "", league_name=""):
 				#for i in range(1, int((center.num_lanes /2)) + 1):
 					#lw = WeeklyResults.objects.filter(league=league, week_number=last_week, lane_pair=i)
 					
-				
+			else:
+				results = []
 				
 			'''
 			if league.week_pointer > 1:
