@@ -24,9 +24,9 @@
     <tbody>  
     {% for team in teams %}
     <tr class="text-justify table-info font-weight-bolder">
-        <td><a href="{% url 'view-center-league-team-by-name' team.league.bowling_center.name team.league.name team.name %}"> {{ team.name }} </a></td>
-        <td><a href="{% url 'view-center-league-by-name' team.league.bowling_center.name team.league.name %}"> {{ team.league.name }}</a></td>
-        <td><a href="{% url 'center-home' team.league.bowling_center.name %}"> {{ team.league.bowling_center.name }} </a></td>
+        <td><a href="{% url 'view-center-league-team-by-name' team.league.bowling_center.name team.league.name team.name %}" class="table-txt-lnk-style"> {{ team.name }} </a></td>
+        <td><a href="{% url 'view-center-league-by-name' team.league.bowling_center.name team.league.name %}" class="table-txt-lnk-style"> {{ team.league.name }}</a></td>
+        <td><a href="{% url 'center-home' team.league.bowling_center.name %}" class="table-txt-lnk-style"> {{ team.league.bowling_center.name }} </a></td>
     </tr>
     {% endfor %}
 
