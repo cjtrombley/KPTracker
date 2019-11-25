@@ -148,12 +148,18 @@ class League(models.Model):
 		
 		
 	def score_week(self, week_number): 
-		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number)
+		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number).order_by('lane_pair')
 		rules = self.leaguerules
 		
 		for pair in this_week:
 			team_one = pair.team_one
 			team_two = pair.team_two
+			
+			results_one = WeeklyResults.objects.create(league=self, team=team_one, week_number=week_number, lane_pair=pair.lane_pair, opponent=team_two)
+			results_two = WeeklyResults.objects.create(league=self, team=team_two, week_number=week_number, lane_pair=pair.lane_pair, opponent=team_one)
+			
+			results_one.opponent = team_two
+			results_two.opponent = team_one
 			
 			team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
 			team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
@@ -168,10 +174,64 @@ class League(models.Model):
 			team_one_points = 0
 			team_two_points = 0
 			
+			'''
+			#Game One
+			t1_g1_hc = Series.calc_team_handicap_game_score(team_one, week_number, 1, team_one_series)
+			results.t1_g1 = t1_g1_hc
+			team_one_total_series += t1_g1_hc
+			t2_g2_hc = Series.calc_team_handicap_game_score(team_two, week_number, 1, team_two_series)
+			results.t2_g1 = t2_g1_hc
+			team_two_total_series += t2_g1_hc
+			
+			if t1_g1_hc > t2_g1_hc:
+				team_one_points += game_points
+			elif t1_g1_hc < t2_g1_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points /2
+				team_two_poitns += game_points /2
+			
+			#Game Two
+			t1_g2_hc = Series.calc_team_handicap_game_score(team_one, week_number, 2, team_one_series)
+			results.t1_g2 = t1_g2_hc
+			team_one_total_series += t1_g2_hc
+			t2_g2_hc = Series.calc_team_handicap_game_score(team_two, week_number, 2, team_two_series)
+			results.t2_g2 = t2_g2_hc
+			team_two_total_series += t2_g2_hc
+			
+			if t1_g2_hc > t2_g2_hc:
+				team_one_points += game_points
+			elif t1_g2_hc < t2_g2_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points / 2
+				team_two_points += game_points / 2
+				
+			#Game Three
+			t1_g3_hc = Series.calc_team_handicap_game_score(team_one, week_number, 3, team_one_series)
+			results.t1_g3 = t1_g3_hc
+			team_one_total_series += t1_g3_hc
+			t2_g3_hc = Series.calc_team_handicap_game_score(team_two, week_number, 3, team_two_series)
+			results.t2_g3 = t2_g3_hc
+			team_two_total_series += t2_g3_hc
+			
+			if t1_g3_hc > t2_g3_hc:
+				team_one_points += game_points
+			elif t1_g3_hc < t2_g3_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points / 2
+				team_two_points += game_points /2
+			
+			'''
 			for i in range(1, 4): #Games number 1-3
+				game = 'g' + str(i)
+				
 				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i, team_one_series)
+				setattr(results_one, game, t1_hc_score)
 				team_one_total_series += t1_hc_score
 				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i, team_two_series)
+				setattr(results_two, game, t2_hc_score)
 				team_two_total_series += t2_hc_score
 				
 				if t1_hc_score > t2_hc_score:
@@ -181,21 +241,32 @@ class League(models.Model):
 				else:
 					team_one_points += game_points / 2
 					team_two_points += game_points / 2
-					
+			
+			results_one.series = team_one_total_series
+			results_two.series = team_two_total_series
+			
 			if team_one_total_series > team_two_total_series:
 				team_one_points += series_points
 			elif team_one_total_series < team_two_total_series:
 				team_two_points += series_points
-						
-			for series_one in team_one_series:
-				series_one.set_points_won(team_one_points)
-				series_one.set_points_lost(weekly_points - team_one_points)
-				series_one.save()
+			
+			results_one.points_won = team_one_points
+			results_one.points_lost = weekly_points - team_one_points
+			
+			results_two.points_won = team_two_points
+			results_two.points_lost = weekly_points - team_two_points
+
+			results_one.save()
+			results_two.save()
+			#for series_one in team_one_series:
+				#series_one.set_points_won(team_one_points)
+				#series_one.set_points_lost(weekly_points - team_one_points)
+				#series_one.save()
 				
-			for series_two in team_two_series:
-				series_two.set_points_won(team_two_points)
-				series_two.set_points_lost(weekly_points - team_two_points)
-				series_two.save()
+			#for series_two in team_two_series:
+			#	series_two.set_points_won(team_two_points)
+			#	series_two.set_points_lost(weekly_points - team_two_points)
+			#	series_two.save()
 			
 			team_one.update_points(team_one_points, weekly_points - team_one_points)
 			team_two.update_points(team_two_points, weekly_points - team_two_points)
@@ -418,6 +489,56 @@ class Schedule(models.Model):
 		weeks = rrule.rrule(rrule.WEEKLY, dtstart=self.date_starting, until=self.date_ending)
 		self.num_weeks = weeks.count()
 		
+	
+class WeeklyResults(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='results')
+	
+	week_number = models.PositiveSmallIntegerField(default=0)
+	lane_pair = models.PositiveSmallIntegerField(default=0)
+	
+	team = models.ForeignKey(Team, on_delete=models.CASCADE)
+	opponent = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='opponent')
+	
+	average = models.PositiveSmallIntegerField(default=0)
+	handicap = models.PositiveSmallIntegerField(default=0)
+	
+	g1 = models.PositiveSmallIntegerField(default=0)
+	g2 = models.PositiveSmallIntegerField(default=0)
+	g3 = models.PositiveSmallIntegerField(default=0)
+	series = models.PositiveSmallIntegerField(default=0)
+	points_won = models.PositiveSmallIntegerField(default=0)
+	points_lost = models.PositiveSmallIntegerField(default=0)
+	
+		
+'''		
+class WeeklyResults(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='results')
+	
+	week_number = models.PositiveSmallIntegerField(default=1)
+	lane_pair = models.PositiveSmallIntegerField(default=1)
+	
+	team_one = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='first_team')
+	team_two = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='second_team')
+	
+	t1_average = models.PositiveSmallIntegerField(default=0)
+	t1_handicap = models.PositiveSmallIntegerField(default=0)
+	t1_g1 = models.PositiveSmallIntegerField(default=0)
+	t1_g2 = models.PositiveSmallIntegerField(default=0)
+	t1_g3 = models.PositiveSmallIntegerField(default=0)
+	t1_series = models.PositiveSmallIntegerField(default=0)
+	
+	t2_average = models.PositiveSmallIntegerField(default=0)
+	t2_handicap = models.PositiveSmallIntegerField(default=0)
+	t2_g1 = models.PositiveSmallIntegerField(default=0)
+	t2_g2 = models.PositiveSmallIntegerField(default=0)
+	t3_g3 = models.PositiveSmallIntegerField(default=0)
+	t2_series = models.PositiveSmallIntegerField(default=0)
+	
+	t1_points_won = models.PositiveSmallIntegerField(default=0)
+	t1_points_lost = models.PositiveSmallIntegerField(default=0)
+	t2_points_won = models.PositiveSmallIntegerField(default=0)
+	t2_points_lost = models.PositiveSmallIntegerField(default=0)
+'''	
 	
 			
 class WeeklyPairings(models.Model):

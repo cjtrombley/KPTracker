@@ -4,7 +4,7 @@ from django.contrib import messages
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm, SetWeekForm
 from kpbt.leagues.forms import WeeklyPairingsForm, WeeklyPairingsFormSet
 from kpbt.accounts.models import BowlerProfile
-from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings
+from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings, WeeklyResults
 from kpbt.centers.models import BowlingCenter
 from kpbt.teams.models import Team, TeamRoster
 from kpbt.games.models import Series
@@ -93,20 +93,83 @@ def update_league(request, center_name="", league_name=""):
 def view_league(request, center_name = "", league_name=""):
 	if center_name:
 		if league_name:
+			center = get_object_or_404(BowlingCenter, name=center_name)
 			league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 			
-			#standings = Series.objects.filter(league__name=league_name).order_by('-team__team_points_won')
+			
 			rulesform = LeagueCreationForm(instance = league.leaguerules)
 			scheduleform = CreateScheduleForm(instance = league.schedule)
 			
-			weekly_pairings = WeeklyPairings.objects.filter(league=league, week_number = league.current_week)
+			weekly_pairings = WeeklyPairings.objects.filter(league=league, week_number=league.week_pointer)
 			teams = league.teams.all().order_by('-team_points_won')
 			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
 			last_week_scores=[]
 			secretary = league.secretary
+			
+			league_standings = {}
+			if league.week_pointer > 1:
+				last_week = league.week_pointer - 1
+				
+				
+
+				
+				
+				results = WeeklyResults.objects.filter(league=league, week_number=last_week).order_by('lane_pair')
+				
+				#pair_list = []
+				#for i in range(1, int((center.num_lanes /2)) + 1):
+					#lw = WeeklyResults.objects.filter(league=league, week_number=last_week, lane_pair=i)
+					
+				
+				
+			'''
+			if league.week_pointer > 1:
+				last_week = league.week_pointer - 1
+				last_weeks_pairs = WeeklyPairings.objects.filter(league=league, week_number=last_week).order_by('lane_pair')
+				
+				pair_counter = 1
+				pair_d = {}
+				for pair in last_weeks_pairs:
+					team_one = get_object_or_404(Team, id=pair.team_one_id)
+					team_two = get_object_or_404(Team, id=pair.team_two_id)
+					
+					team_one_series = Series.objects.filter(league=league, team=team_one, week_number=last_week)
+					team_two_series = Series.objects.filter(league=league, team=team_two, week_number=last_week)
+			
+					team_one_d = {}
+					team_two_d = {}
+					
+					t1_series_score = 0
+					t2_series_score = 0
+					for i in range(1, 4):
+						t1_score = Series.calc_team_handicap_game_score(team_one, last_week, i, team_one_series)
+						t2_score = Series.calc_team_handicap_game_score(team_two, last_week, i, team_two_series)
+						
+						team_one_d.update({i : t1_score})
+						team_two_d.update({i : t2_score})
+						t1_series_score += t1_score
+					
+						t2_series_score += t2_score
+					team_one_d.update({'series' : t1_series_score})
+					team_two_d.update({'series' : t2_series_score})
+					
+					league_standings.update({pair_counter : { team_one.name : team_one_d, team_two.name : team_two_d}})
+					pair_counter += 1
+				#print(league_standings.items())
+				
+				print(league_standings.values())
+				
+				for item, value in league_standings.items():
+					print(item, value)
+					for key, value in value.items():
+						print(key, value)
+						for game, series in value.items():
+							print(game, series)
+			'''
+			
 			return render(request, 'leagues/view_league.html', 
 				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores,
-					'secretary' : secretary})
+					'secretary' : secretary, 'results' : results})
 		else:
 			center = get_object_or_404(BowlingCenter, name=center_name)
 			leagues = center.leagues.all()

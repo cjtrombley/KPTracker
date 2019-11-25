@@ -22,8 +22,8 @@ class Series(models.Model):
 	game_three_score = models.CharField(max_length=4, blank=True)
 	scratch_score = models.IntegerField(default=0)
 	handicap_score = models.IntegerField(default=0)
-	weekly_points_won = models.PositiveSmallIntegerField(default=0)
-	weekly_points_lost = models.PositiveSmallIntegerField(default=0)
+	#weekly_points_won = models.PositiveSmallIntegerField(default=0)
+	#weekly_points_lost = models.PositiveSmallIntegerField(default=0)
 	
 	
 	
