@@ -30,7 +30,9 @@
             
           {title: 'Alley 59', location: {lat: 42.62717042, lng: -82.8766906}, address: '44925 N Groesbeck Hwy, Clinton Township, MI 48036', phonenumber: '(586)-469-6411', site: 'http://alley59.com'},
             
-          {title: 'Pinz Bowling Center', location: {lat: 42.56319583, lng: -83.34228516}, address: '700 N. Lafayette, South Lyon, MI 48178', phonenumber: '(248)-437-0700', site: 'https://pinzsouthlyon.com'},    
+          {title: 'Pinz Bowling Center', location: {lat: 42.56319583, lng: -83.34228516}, address: '700 N. Lafayette, South Lyon, MI 48178', phonenumber: '(248)-437-0700', site: 'https://pinzsouthlyon.com'},
+            
+          {title: 'The Voyageur', location: {lat: 42.8217204, lng: -82.4861555}, address: '525 S. Riverside Ave, Saint Clair, MI 48079', phonenumber: '(810)-329-3331', site: 'https://www.thevoyageur.com'},     
         ];
 
         let largeInfowindow = new google.maps.InfoWindow();

@@ -20,11 +20,11 @@
     {% regroup scores by team as scores_list %}
     
     {% for team, scores in scores_list %}
-        <tr class="text-justify table-info font-weight-bolder">
+        <tr class="text-justify table-info font-weight-bolder table-txt-lnk-style">
             <td> {{ team.name }} </td>
         </tr>
         {% for score in scores %}
-        <tr class="text-justify table-info font-weight-bolder"> <td> </td>
+        <tr class="text-justify table-info font-weight-bolder table-txt-lnk-style"> <td> </td>
            <td> {{ score.bowler.get_name }} </td> <td> {{ score.applied_average }} </td> <td> {{ score.applied_handicap }} </td>
             <td> {{ score.game_one_score }} </td> <td> {{ score.game_two_score }} </td> <td> {{ score.game_three_score }} </td>
         </tr>

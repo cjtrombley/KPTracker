@@ -175,6 +175,18 @@ min-height: 100%;
     text-decoration: underline;
 }
 
+.table-txt-lnk-style {
+    color: midnightblue;
+}
+
+.link-style {
+    color: ghostwhite;
+}
+
+.link-style:hover {
+    color: #00ff7f;
+}
+
 #kpmission {
     font-size: 2rem;
     color: ghostwhite;
@@ -251,6 +263,10 @@ input {
     border-radius: 10px;
     background-color: #00CED1;
     padding: 3px;
+}
+
+select {
+    font-weight: 800;
 }
 
 .bg-trans {
@@ -347,8 +363,8 @@ p + ul {
 
 .btn-univ {
   display: block;
-  width: 200px;
-  height: 40px;
+  width: 220px;
+  height: 50px;
   padding: 0;
   margin: 10px 20px 10px;
   font-weight: 700;
@@ -469,8 +485,12 @@ label {
     color: #ffc107;
 }
 
-.text-label {
-	color: #ffc107
+#about-head {
+    text-shadow: 2px 2px tomato;
+}
+
+.text-Special {
+	color: #ffc107;
 }
 
 .buttonDrop {
@@ -532,6 +552,10 @@ label {
 -webkit-animation-delay: 0.9s;
 -moz-animation-delay: 0.9s;
 animation-delay: 0.9s;
+}
+
+.editscores-column {
+	display: inline-block;
 }
 
 #map {
@@ -693,7 +717,3 @@ p + ul {
     caret-color:red;
     transition: width 0.4s linear;
 }    
-
-.editscores-column {
-	display: inline-block
-}

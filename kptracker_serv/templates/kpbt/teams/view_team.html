@@ -19,9 +19,9 @@
 
     </tr>
     </thead>    
-    <tr class="text-justify table-info font-weight-bolder">
-    <td> {{ team.team_points_won }} </td> <td> {{ team.team_points_lost }}</td><td> {{ team.total_scratch_pins }} </td><td> {{ team.total_handicap_pins }} </td>
-	   <td> {{ team.total_pinfall }} </td>
+
+    <tr class="text-justify table-info font-weight-bolder table-txt-lnk-style">
+    <td> {{ team.team_points_won }} </td> <td> {{ team.team_points_lost }}</td><td> {{ team.total_scratch_pins }} </td><td> {{ team.total_handicap_pins }} </td> <td> {{ team.total_pinfall }} </td>
 	</tr>
 </table>
 </div>    
@@ -32,17 +32,22 @@
 	{% for bowler in bowlers %}
     
     {% if bowler.user.username %}
-	   <tr>	
-            <td><a href="{% url 'view-profile-by-username' bowler.user.username %}">{{ bowler.first_name }} {{ bowler.last_name }} </a></td>
+	   <tr class="font-weight-bolder table-info">	
+            <td><a href="{% url 'view-profile-by-username' bowler.user.username %}" class="table-txt-lnk-style">{{ bowler.first_name }} {{ bowler.last_name }} </a></td>
 		
 	   </tr>
     {% else %}
-        <tr>
+        <tr class="table-info table-txt-lnk-style">
             <td> {{bowler.first_name }}</td>
     </tr>
     {% endif %}
-	{% endfor %}
-    </table>
+	{% endfor %}                    
+</table>
+    
+    {% if bowlers|length < team.league.leaguerules.max_roster_size %}
+    <a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}" class="btn btn-secondary mt-3 mb-3"> Add Bowler To Roster</a>
+    {% endif %}
+    
 </div>
     
 <div>

@@ -19,12 +19,12 @@
     </thead>
     <tbody class="text-justify table-info font-weight-bolder">
     {% for team, bowlers in rosters.items %}
-        <tr> 
-            <td> {{ team }} </td>
+        <tr class="table-txt-lnk-style"> 
+            <td class="text-center"> &#35;{{ team }} </td>
         </tr>
         
        {% for bowler, values in bowlers.items %}
-    <tr> <td></td><td> {{ bowler }} </td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td> <td> {{ values.applied_handicap }}</td>
+    <tr class="table-txt-lnk-style"> <td></td><td> {{ bowler }} </td><td> {{ values.first_name }} {{ values.last_name }} </td> <td>{{ values.league_average }}</td> <td> {{ values.applied_handicap }}</td>
         {% endfor %}
     {% endfor %}
     </tbody>    
