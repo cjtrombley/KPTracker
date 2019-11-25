@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from django.forms import modelformset_factory, formset_factory
 from kpbt.teams.forms import CreateTeamForm, TeamRosterForm, ExistingBowlerForm, UpdateTeamForm, NewRosterForm, UpdateRosterForm #RosterFormSet
 from kpbt.teams.models import Team, TeamRoster
-from kpbt.leagues.models import League, LeagueBowler
+from kpbt.leagues.models import League, LeagueBowler, WeeklyResults
 from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import BowlerProfile
 from num2words import num2words
@@ -32,12 +32,25 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 			if team_name:
 				team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
 				bowlers = team.roster.filter(roster_record__is_active=True)
-				#bp = request.user.bowlerprofile
-				#bowlers = bp.teamroster_set.all()
-				#print(bowlers)
-				#for roster in bowlers:
-				#	print(roster)
-				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers })
+				
+				
+				results = WeeklyResults.objects.filter(team=team, league=league).order_by('week_number')
+				
+				
+				
+				num_weeks = ["Week " + str(n) for n in range(1, league.schedule.num_weeks+1)]
+				
+				points_won = []
+				points_lost = []
+				for result in results:
+					points_won.append(result.points_won)
+					points_lost.append(result.points_lost)
+				
+				print(num_weeks)
+				print(points_won)
+				print(points_lost)
+				
+				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers, 'num_weeks' : num_weeks, 'points_won' : points_won, 'points_lost': points_lost })
 			else:
 				teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
 				return render(request, 'teams/team_home.html', {'teams' : teams })
