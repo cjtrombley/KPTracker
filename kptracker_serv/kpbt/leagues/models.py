@@ -48,7 +48,6 @@ class League(models.Model):
 		self.save()
 		
 	
-		
 	def create_pairings(self):
 		num_teams = self.leaguerules.num_teams
 		num_weeks = self.schedule.num_weeks # // 2
@@ -200,8 +199,25 @@ class League(models.Model):
 			
 			team_one.update_points(team_one_points, weekly_points - team_one_points)
 			team_two.update_points(team_two_points, weekly_points - team_two_points)
-			team_one.save()
-			team_two.save()
+			
+			team_one.update_team_pinfall(team_one_series)
+			team_two.update_team_pinfall(team_two_series)
+			
+			for series1 in team_one_series:
+				lb_record = get_object_or_404(LeagueBowler, league=self, bowler= series1.bowler)
+				lb_record.update(series1)
+				
+				tr_record = get_object_or_404(TeamRoster, bowler=series1.bowler, team=series1.team)
+				tr_record.update_games(series1)
+			
+			for series2 in team_two_series:
+				lb_record = get_object_or_404(LeagueBowler, league=self, bowler= series2.bowler)
+				lb_record.update(series2)
+				
+				tr_record = get_object_or_404(TeamRoster, bowler=series2.bowler, team=series2.team)
+				tr_record.update_games(series2)
+				
+		
 
 	def create_weekly_score_backup(self, week_number):
 		#week_number = self.week_pointer
@@ -325,13 +341,21 @@ class LeagueBowler(models.Model):
 	def __str__(self):
 		return self.bowler.get_name()
 	
-	def update(self, average, handicap, scores):
+	
+		
+	
+	
+	def update(self, series):
 		series_scratch_score = 0
 		series_handicap_score = 0
 		games_played_counter = 0
 		
-		if not scores:
-			scores = Series.objects.filter(league=self.league, bowler=self.bowler, week_number=self.league.week_pointer)
+		handicap = series.applied_handicap
+		average = series.applied_average
+		#if not scores:
+			#scores = Series.objects.filter(league=self.league, bowler=self.bowler, week_number=self.league.week_pointer)
+		scores = series.get_scores_list()
+		
 		for score in scores:
 			if score[0] == 'A':
 				#Bowler was absent for this game, does not count toward league stats
@@ -360,6 +384,7 @@ class LeagueBowler(models.Model):
 	
 
 		self.update_average()
+		self.save()
 	
 	def update_average(self):
 		self.league_average = self.league_total_scratch / self.games_bowled

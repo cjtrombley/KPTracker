@@ -23,22 +23,32 @@ class Team(models.Model):
 	def update_points(self, points_won, points_lost):
 		self.team_points_won += points_won
 		self.team_points_lost += points_lost
-	
-	def update_pinfall(self, handicap, game_scores):
-		scratch_score = 0
-		handicap_score = 0
-		
-		for score in game_scores:
-			if score[0] == 'A':
-				scratch_score += int(score[1:])
-			else:
-				scratch_score += int(score)
-				handicap_score += scratch_score + int(handicap)
-				
-		self.total_scratch_pins += scratch_score
-		self.total_handicap_pins += handicap_score
 		self.save()
-		self.total_pinfall += scratch_score + handicap_score
+	
+	
+	def update_team_pinfall(self, series_list):
+		for series in series_list:
+			scratch_score = 0
+			handicap_score = 0
+		
+			scores = series.get_scores_list()
+			handicap = series.applied_handicap
+			
+			for score in scores:
+				if score[0] == 'A':
+					scratch_score += int(score[1:])
+				else:
+					scratch_score += int(score)
+					handicap_score += int(handicap)
+				
+			self.total_scratch_pins += scratch_score
+			
+			print(self.name, ': ', self.total_scratch_pins)
+			
+			self.total_handicap_pins += handicap_score
+			print(self.name, ': ', self.total_handicap_pins)
+			self.total_pinfall += scratch_score + handicap_score
+		self.save()
 		
 	def create_team(league, number):
 		new_team = Team(league=league, number=number,
@@ -98,12 +108,15 @@ class TeamRoster(models.Model):
 	def set_lineup_position(self, position):
 		self.lineup_position = position
 	
-	def update_games(self, game_scores):
+	def update_games(self, series):
 		counter = 0
+		
+		game_scores = series.get_scores_list()
 		for score in game_scores:
 			if score[0] is 'A':
 				pass
 			else:
 				counter += 1
 		self.games_with_team += counter
+		self.save()
 		

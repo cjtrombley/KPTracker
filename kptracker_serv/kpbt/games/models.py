@@ -60,6 +60,14 @@ class Series(models.Model):
 		self.weekly_points_won = 0
 		self.weekly_points_lost = 0
 	
+	
+	def get_scores_list(self):
+		scores = []
+		scores.append(self.game_one_score)
+		scores.append(self.game_two_score)
+		scores.append(self.game_three_score)
+		return scores
+	
 	@staticmethod	
 	def calc_team_handicap_game_score(team, week_number, game_number, team_series):
 		handicap_score = 0
