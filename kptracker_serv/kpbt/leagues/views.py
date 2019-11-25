@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm, SetWeekForm
 from kpbt.leagues.forms import WeeklyPairingsForm, WeeklyPairingsFormSet
 from kpbt.accounts.models import BowlerProfile
@@ -225,7 +226,8 @@ def import_scores(request, center_name="", league_name=""):
 				for k,v in bowler[1].items():
 					setattr(new_series, k, v)
 					new_series.save()
-			
+		
+		messages.success(request, 'Scores imported successfully.')
 		return redirect('edit-weekly-scores', league.bowling_center.name, league.name)
 	else:
 		import_form = ImportScoresForm()

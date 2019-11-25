@@ -140,3 +140,14 @@ SCHEDULEFILES_FOLDER = os.path.join(BASE_DIR, 'kpbt\\schedules\\')
 SCOREFILES_FOLDER = os.path.join(BASE_DIR, 'kpbt\\games\\scores\\')
 ROSTEREXPORT_FOLDER = os.path.join(BASE_DIR, 'kpbt\\leagues\weekly\\rosters\\')
 BACKUPS_FOLDER = os.path.join(BASE_DIR, 'kpbt\\leagues\weekly\\backups\\')
+
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

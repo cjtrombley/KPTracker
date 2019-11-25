@@ -3,12 +3,13 @@
         "league_id" : "1",
         "league_name" : "MensLeague",
         "current_week" : "1",
-        "series_date" : "1-1-2019"
+        "series_date" : "2019-01-01"
     },
     "teams" : {
         "1" : {
             "team_scratch_pins" : "2262",
             "team_handicap_pins" :"2766",
+            "pair_number" : "1",
             "bowlers" : {
                 "1" : {
                     "applied_average" : "180",
@@ -51,6 +52,7 @@
         "2" : {
             "team_scratch_pins" : "2348",
             "team_handicap_pins" :"2561",
+            "pair_number" : "1",
             "bowlers" : {
                 "5" : {
                     "applied_average" : "219",
@@ -93,6 +95,7 @@
         "3" : {
             "team_scratch_pins" : "1869",
             "team_handicap_pins" :"2502",
+            "pair_number" : "2",
             "bowlers" : {
                 "9" : {
                     "applied_average" : "133",
@@ -135,6 +138,7 @@
         "4" : {
             "team_scratch_pins" : "2378",
             "team_handicap_pins" :"2810",
+            "pair_number" : "2",
             "bowlers" : {
                 "13" : {
                     "applied_average" : "180",
@@ -177,6 +181,7 @@
         "5" : {
             "team_scratch_pins" : "2081",
             "team_handicap_pins" :"2615",
+            "pair_number" : "3",
             "bowlers" : {
                 "17" : {
                     "applied_average" : "139",
@@ -219,6 +224,7 @@
         "6" : {
             "team_scratch_pins" : "2715",
             "team_handicap_pins" :"2763",
+            "pair_number" : "3",
             "bowlers" : {
                 "21" : {
                     "applied_average" : "218",
@@ -261,6 +267,7 @@
         "7" : {
             "team_scratch_pins" : "2454",
             "team_handicap_pins" :"2772",
+            "pair_number" : "4",
             "bowlers" : {
                 "25" : {
                     "applied_average" : "178",
@@ -303,6 +310,7 @@
         "8" : {
             "team_scratch_pins" : "2132",
             "team_handicap_pins" :"2546",
+            "pair_number" : "4",
             "bowlers" : {
                 "29" : {
                     "applied_average" : "169",
@@ -345,6 +353,7 @@
         "9" : {
             "team_scratch_pins" : "2651",
             "team_handicap_pins" :"2786",
+            "pair_number" : "5",
             "bowlers" : {
                 "33" : {
                     "applied_average" : "215",
@@ -387,6 +396,7 @@
         "10" : {
             "team_scratch_pins" : "2472",
             "team_handicap_pins" :"2727",
+            "pair_number" : "5",
             "bowlers" : {
                 "37" : {
                     "applied_average" : "194",
@@ -429,6 +439,7 @@
         "11" : {
             "team_scratch_pins" : "2590",
             "team_handicap_pins" :"2809",
+            "pair_number" : "6",
             "bowlers" : {
                 "41" : {
                     "applied_average" : "193",
@@ -471,6 +482,7 @@
         "12" : {
             "team_scratch_pins" : "2382",
             "team_handicap_pins" :"2709",
+            "pair_number" : "6",
             "bowlers" : {
                 "45" : {
                     "applied_average" : "176",
