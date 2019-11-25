@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 from kpbt.centers.forms import CreateBowlingCenterForm, UpdateManagerForm, CreateCenterAddressForm, UpdateCenterForm, UpdateAddressForm, DeleteLeagueForm
 from kpbt.leagues.forms import LeagueCreationForm
 from kpbt.centers.models import BowlingCenter, CenterAddress
@@ -26,7 +27,8 @@ def create_bowling_center(request):
 			address.bowling_center = new_center
 			address.save()
 			
-			return redirect('center-home')
+			messages.success(request,'Center created.')
+			return redirect('view-center-by-name', new_center.name)
 	else:
 		center_form = CreateBowlingCenterForm()
 		address_form = CreateCenterAddressForm()
@@ -70,8 +72,11 @@ def update_center(request, center_name=""):
 		if update_center_form.is_valid() and update_address_form.is_valid():
 			update_center_form.save()
 			update_address_form.save()
+			messages.success(request, 'Center updated.')
 			return redirect('center-management-home', center.name)
-	
+		else:
+			messages.warning(request, 'Please fix form error.')
+			
 	else:
 		update_center_form = UpdateCenterForm(instance=center)
 		update_address_form = UpdateAddressForm(instance=address)
@@ -91,6 +96,7 @@ def update_manager(request, center_name =""):
 			new_manager.userprofile.save()
 			
 			center.save()
+			messages.success(request, 'Manager updated.')
 			return redirect('center-management-home', center.name)
 				
 	else:
@@ -117,9 +123,8 @@ def delete_league(request, center_name="", league_name=""):
 		
 		if form.is_valid():
 			league.delete()
-			
+			messages.success(request, 'League deleted')
 			return redirect('center-management-home', center.name)
-	
 	else:
 		form = DeleteLeagueForm()
 	return render(request, 'centers/manage/delete_league.html', {'league' : league, 'center' : center, 'form' : form})

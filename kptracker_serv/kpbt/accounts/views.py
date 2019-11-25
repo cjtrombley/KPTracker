@@ -125,8 +125,9 @@ def view_kpbt_user_bowler_profile(request, username= ""):
 		except ObjectDoesNotExist:
 			return redirect('create-profile')
 		else:
-			bp_form = UpdateUserBowlerProfileForm(instance=bp)
-		return render(request, 'accounts/view_profile.html', {'bp_form' : bp_form})
+			#bp_form = UpdateUserBowlerProfileForm(instance=bp)
+			bp = get_object_or_404(BowlerProfile, user__username=username)
+		return render(request, 'accounts/view_profile.html', {'bp' : bp})
 	'''
 	try:
 		if identifier:

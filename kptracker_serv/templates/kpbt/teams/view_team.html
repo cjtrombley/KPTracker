@@ -15,11 +15,12 @@
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-danger">
 	<tr class="text-center font-weight-bolder">
-		<th> Team Points </th> <th> Total Scratch Pins </th> <th> Total Handicap Pins</th> <th> Total Pinfall</th>
+		<th> Points Won</th> <th>Points Lost</th> <th> Scratch Pins </th> <th> Handicap Pins</th> <th> Total Pinfall</th>
+
     </tr>
     </thead>    
     <tr class="text-justify table-info font-weight-bolder">
-    <td> {{ team.team_points }} </td> <td> {{ team.total_scratch_pins }} </td><td> {{ team.total_handicap_pins }} </td>
+    <td> {{ team.team_points_won }} </td> <td> {{ team.team_points_lost }}</td><td> {{ team.total_scratch_pins }} </td><td> {{ team.total_handicap_pins }} </td>
 	   <td> {{ team.total_pinfall }} </td>
 	</tr>
 </table>
@@ -41,15 +42,15 @@
     </tr>
     {% endif %}
 	{% endfor %}
-
-    {% if bowlers|length < team.league.leaguerules.max_roster_size %}
-    <tr>
-        <td><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Add Bowler To Roster</a></td>
-    {% endif %}
-    </tr>
-                    
-</table>
+    </table>
 </div>
+    
+<div>
+<h2> Team Management</h2>
+<p><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Update Roster</a></p>
+<p><a href="{% url 'update-team' team.league.bowling_center.name team.league.name team.name %}"> Update Team</a></p>
+</div>   
+ 
 </div>
 </div>
 </div>

@@ -47,9 +47,7 @@ class League(models.Model):
 		self.secretary = user
 		self.save()
 		
-	#def current_week(self):
-		#return self.schedule.current_week
-		
+	
 	def create_pairings(self):
 		num_teams = self.leaguerules.num_teams
 		num_weeks = self.schedule.num_weeks # // 2
@@ -84,35 +82,45 @@ class League(models.Model):
 				
 				week_number_counter += 1
 		
-	
 
 	def rescore(self, rescore_week):
 		cw = self.current_week
-		
+		rules = self.leaguerules
 		
 		#1. Reload league from earlier backup to prepare for rescoring effort
 		reset_week = rescore_week - 1
+		print('reset week: ', reset_week)
 		self.reset_weekly_from_backup(reset_week)
 		
 		#2. For ever week between reset_week and current week
 		#	a. Reset series team points values to 0
-		#	b. Call score_league for that week after resetting
+		#	b. recalculate the applied average/handicap for that series
+		#	c. Call score_league for that week after resetting
 		
 		for i in range (rescore_week, cw+1):
 			series_data = Series.objects.filter(league=self, week_number=i)
 			
 			for series in series_data:
 				series.reset_points()
+				
+				#Recalculate league_average and handicap values
+				lb = get_object_or_404(LeagueBowler, league=self, bowler=series.bowler.id)
+				
+				if self.current_week == 1:
+					average = lb.league_average
+				else:
+					average = lb.calc_average()
+				if rules.is_handicap:
+					handicap = (rules.handicap_percentage / 100) * (rules.handicap_scratch - average)
+					if handicap < 0:
+						handicap = 0
+				else:
+					handicap = 0
+				
+				series.applied_average = average
+				series.applied_handicap = handicap
 				series.save()
-			
-			self.score_week(i)
-
-			
-			#Recalculate league_average and handicap values
-			
-			
-
-
+			#self.score_week(i)
 
 	
 	def reset_weekly_from_backup(self, reset_week):
@@ -140,21 +148,18 @@ class League(models.Model):
 		
 		
 	def score_week(self, week_number): 
-		
-		#weekly_pairs = self.schedule.pairings()
-		
-		#this_week = weekly_pairs[week_number]
-		
-		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number)
+		this_week = WeeklyPairings.objects.filter(league=self, week_number=week_number).order_by('lane_pair')
 		rules = self.leaguerules
 		
 		for pair in this_week:
-			#teams = pair.split('-')
-			
-			#team_one = get_object_or_404(Team, league=self, number=teams[0])
-			#team_two = get_object_or_404(Team, league=self, number=teams[1])
 			team_one = pair.team_one
 			team_two = pair.team_two
+			
+			results_one = WeeklyResults.objects.create(league=self, team=team_one, week_number=week_number, lane_pair=pair.lane_pair, opponent=team_two)
+			results_two = WeeklyResults.objects.create(league=self, team=team_two, week_number=week_number, lane_pair=pair.lane_pair, opponent=team_one)
+			
+			results_one.opponent = team_two
+			results_two.opponent = team_one
 			
 			team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
 			team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
@@ -169,66 +174,124 @@ class League(models.Model):
 			team_one_points = 0
 			team_two_points = 0
 			
+			'''
+			#Game One
+			t1_g1_hc = Series.calc_team_handicap_game_score(team_one, week_number, 1, team_one_series)
+			results.t1_g1 = t1_g1_hc
+			team_one_total_series += t1_g1_hc
+			t2_g2_hc = Series.calc_team_handicap_game_score(team_two, week_number, 1, team_two_series)
+			results.t2_g1 = t2_g1_hc
+			team_two_total_series += t2_g1_hc
+			
+			if t1_g1_hc > t2_g1_hc:
+				team_one_points += game_points
+			elif t1_g1_hc < t2_g1_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points /2
+				team_two_poitns += game_points /2
+			
+			#Game Two
+			t1_g2_hc = Series.calc_team_handicap_game_score(team_one, week_number, 2, team_one_series)
+			results.t1_g2 = t1_g2_hc
+			team_one_total_series += t1_g2_hc
+			t2_g2_hc = Series.calc_team_handicap_game_score(team_two, week_number, 2, team_two_series)
+			results.t2_g2 = t2_g2_hc
+			team_two_total_series += t2_g2_hc
+			
+			if t1_g2_hc > t2_g2_hc:
+				team_one_points += game_points
+			elif t1_g2_hc < t2_g2_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points / 2
+				team_two_points += game_points / 2
+				
+			#Game Three
+			t1_g3_hc = Series.calc_team_handicap_game_score(team_one, week_number, 3, team_one_series)
+			results.t1_g3 = t1_g3_hc
+			team_one_total_series += t1_g3_hc
+			t2_g3_hc = Series.calc_team_handicap_game_score(team_two, week_number, 3, team_two_series)
+			results.t2_g3 = t2_g3_hc
+			team_two_total_series += t2_g3_hc
+			
+			if t1_g3_hc > t2_g3_hc:
+				team_one_points += game_points
+			elif t1_g3_hc < t2_g3_hc:
+				team_two_points += game_points
+			else:
+				team_one_points += game_points / 2
+				team_two_points += game_points /2
+			
+			'''
 			for i in range(1, 4): #Games number 1-3
+				game = 'g' + str(i)
 				
 				t1_hc_score = Series.calc_team_handicap_game_score(team_one, week_number, i, team_one_series)
+				setattr(results_one, game, t1_hc_score)
 				team_one_total_series += t1_hc_score
 				t2_hc_score = Series.calc_team_handicap_game_score(team_two, week_number, i, team_two_series)
+				setattr(results_two, game, t2_hc_score)
 				team_two_total_series += t2_hc_score
 				
 				if t1_hc_score > t2_hc_score:
-					#team_one.team_points_won += game_points
 					team_one_points += game_points
-					#team_two.team_points_lost += game_points
-					
 				elif t1_hc_score < t2_hc_score:
-					#team_one.team_points_lost += game_points
-					#team_two.team_points_won += game_points
 					team_two_points += game_points
 				else:
 					team_one_points += game_points / 2
 					team_two_points += game_points / 2
-					#team_one.team_points_won += game_points / 2
-					#team_one.team_points_lost += game_points / 2
-					#team_two.team_points_won += game_points / 2
-					#team_two.team_points_lost += game_points / 2
+			
+			results_one.series = team_one_total_series
+			results_two.series = team_two_total_series
 			
 			if team_one_total_series > team_two_total_series:
 				team_one_points += series_points
-				#team_one.team_points_won += series_points
-				#team_two.team_points_lost += series_points
 			elif team_one_total_series < team_two_total_series:
 				team_two_points += series_points
-				#team_one.team_points_lost += series_points
-				#team_two.team_points_won += series_points
-			#else:
-				#team_one.team_points_lost += series_points
-				#team_two.team_points_lost += series_points
 			
+			results_one.points_won = team_one_points
+			results_one.points_lost = weekly_points - team_one_points
 			
-			
-			#team_one_series = Series.objects.filter(league=self, team=team_one, week_number=week_number)
-			#team_two_series = Series.objects.filter(league=self, team=team_two, week_number=week_number)
-			
-			for series_one in team_one_series:
-				series_one.set_points_won(team_one_points)
-				series_one.set_points_lost(weekly_points - team_one_points)
-				series_one.save()
+			results_two.points_won = team_two_points
+			results_two.points_lost = weekly_points - team_two_points
+
+			results_one.save()
+			results_two.save()
+			#for series_one in team_one_series:
+				#series_one.set_points_won(team_one_points)
+				#series_one.set_points_lost(weekly_points - team_one_points)
+				#series_one.save()
 				
-				
-			
-			for series_two in team_two_series:
-				series_two.set_points_won(team_two_points)
-				series_two.set_points_lost(weekly_points - team_two_points)
-				series_two.save()
+			#for series_two in team_two_series:
+			#	series_two.set_points_won(team_two_points)
+			#	series_two.set_points_lost(weekly_points - team_two_points)
+			#	series_two.save()
 			
 			team_one.update_points(team_one_points, weekly_points - team_one_points)
 			team_two.update_points(team_two_points, weekly_points - team_two_points)
-			team_one.save()
-			team_two.save()
+			
+			team_one.update_team_pinfall(team_one_series)
+			team_two.update_team_pinfall(team_two_series)
+			
+			for series1 in team_one_series:
+				lb_record = get_object_or_404(LeagueBowler, league=self, bowler= series1.bowler)
+				lb_record.update(series1)
+				
+				tr_record = get_object_or_404(TeamRoster, bowler=series1.bowler, team=series1.team)
+				tr_record.update_games(series1)
+			
+			for series2 in team_two_series:
+				lb_record = get_object_or_404(LeagueBowler, league=self, bowler= series2.bowler)
+				lb_record.update(series2)
+				
+				tr_record = get_object_or_404(TeamRoster, bowler=series2.bowler, team=series2.team)
+				tr_record.update_games(series2)
+				
+		
 
-	def create_weekly_score_backup(self):
-		week_number = self.current_week
+	def create_weekly_score_backup(self, week_number):
+		#week_number = self.week_pointer
 		backup_filename= str(self.id) + '_' + str(week_number) + '.json'
 		
 		backup = open(BACKUPSDIR + backup_filename, 'w') 
@@ -236,7 +299,7 @@ class League(models.Model):
 		
 		
 		#Backups file header information
-		header_dict = { "league_name": self.name , "current_week" : str(week_number) } 
+		header_dict = { "league_name": self.name , "week" : str(week_number) } 
 		backup_dict.update( {"header" : header_dict})
 		
 		
@@ -250,29 +313,9 @@ class League(models.Model):
 		backup_dict.update({"teams" : teams})
 		
 		
-		
-		'''
-		backup.write('TEAMS'+ '\n')
-		for team in teams:
-			backup.write(str(team.number) + ': ' + team.name + '\n')
-			
-			pinfalls_list = []
-			pinfalls_list.append('total_scratch_pins : ' + str(team.total_scratch_pins) + '\n')
-			pinfalls_list.append('total_handicap_pins : ' + str(team.total_handicap_pins) + '\n')
-			pinfalls_list.append('total_pinfall : ' + str(team.total_pinfall) + '\n')
-			
-			backup.write(''.join(pinfalls_list))
-		
-			points_list = []
-			points_list.append('team_points_won : ' + str(team.team_points_won) + '\n')
-			points_list.append('team_points_lost : ' + str(team.team_points_lost) + '\n')
-			
-			backup.write(''.join(points_list))
-		'''
-		
 		#LeagueBowler/TeamRoster Backups
 		lb_records = LeagueBowler.objects.filter(league=self)
-		tr_records = TeamRoster.objects.filter(id__in=teams)
+		tr_records = TeamRoster.objects.filter(team_id__in=teams)
 		
 		team_rosters_dict = {}
 		lb_records_dict = {}
@@ -369,10 +412,20 @@ class LeagueBowler(models.Model):
 	def __str__(self):
 		return self.bowler.get_name()
 	
-	def update(self, average, handicap, scores):
+	
+		
+	
+	
+	def update(self, series):
 		series_scratch_score = 0
 		series_handicap_score = 0
 		games_played_counter = 0
+		
+		handicap = series.applied_handicap
+		average = series.applied_average
+		#if not scores:
+			#scores = Series.objects.filter(league=self.league, bowler=self.bowler, week_number=self.league.week_pointer)
+		scores = series.get_scores_list()
 		
 		for score in scores:
 			if score[0] == 'A':
@@ -402,10 +455,13 @@ class LeagueBowler(models.Model):
 	
 
 		self.update_average()
+		self.save()
 	
 	def update_average(self):
 		self.league_average = self.league_total_scratch / self.games_bowled
-		
+	
+	def calc_average(self):
+		return self.league_total_scratch / self.games_bowled
 		
 class Schedule(models.Model):
 	WEEKDAY = (
@@ -433,6 +489,56 @@ class Schedule(models.Model):
 		weeks = rrule.rrule(rrule.WEEKLY, dtstart=self.date_starting, until=self.date_ending)
 		self.num_weeks = weeks.count()
 		
+	
+class WeeklyResults(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='results')
+	
+	week_number = models.PositiveSmallIntegerField(default=0)
+	lane_pair = models.PositiveSmallIntegerField(default=0)
+	
+	team = models.ForeignKey(Team, on_delete=models.CASCADE)
+	opponent = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='opponent')
+	
+	average = models.PositiveSmallIntegerField(default=0)
+	handicap = models.PositiveSmallIntegerField(default=0)
+	
+	g1 = models.PositiveSmallIntegerField(default=0)
+	g2 = models.PositiveSmallIntegerField(default=0)
+	g3 = models.PositiveSmallIntegerField(default=0)
+	series = models.PositiveSmallIntegerField(default=0)
+	points_won = models.PositiveSmallIntegerField(default=0)
+	points_lost = models.PositiveSmallIntegerField(default=0)
+	
+		
+'''		
+class WeeklyResults(models.Model):
+	league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='results')
+	
+	week_number = models.PositiveSmallIntegerField(default=1)
+	lane_pair = models.PositiveSmallIntegerField(default=1)
+	
+	team_one = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='first_team')
+	team_two = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='second_team')
+	
+	t1_average = models.PositiveSmallIntegerField(default=0)
+	t1_handicap = models.PositiveSmallIntegerField(default=0)
+	t1_g1 = models.PositiveSmallIntegerField(default=0)
+	t1_g2 = models.PositiveSmallIntegerField(default=0)
+	t1_g3 = models.PositiveSmallIntegerField(default=0)
+	t1_series = models.PositiveSmallIntegerField(default=0)
+	
+	t2_average = models.PositiveSmallIntegerField(default=0)
+	t2_handicap = models.PositiveSmallIntegerField(default=0)
+	t2_g1 = models.PositiveSmallIntegerField(default=0)
+	t2_g2 = models.PositiveSmallIntegerField(default=0)
+	t3_g3 = models.PositiveSmallIntegerField(default=0)
+	t2_series = models.PositiveSmallIntegerField(default=0)
+	
+	t1_points_won = models.PositiveSmallIntegerField(default=0)
+	t1_points_lost = models.PositiveSmallIntegerField(default=0)
+	t2_points_won = models.PositiveSmallIntegerField(default=0)
+	t2_points_lost = models.PositiveSmallIntegerField(default=0)
+'''	
 	
 			
 class WeeklyPairings(models.Model):

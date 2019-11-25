@@ -8,7 +8,6 @@ class BowlingCenter(models.Model):
 	manager= models.OneToOneField(User, on_delete=models.SET_NULL, null=True,
 		related_name='center_managed', verbose_name=('manager'))
 	
-	
 	def __str__(self):
 		return self.name
 		

@@ -22,7 +22,17 @@
      <div class="table-responsive mt-5">
 	<table class="table table-striped table-bordered table-hover">
 		<thead class="table-danger">
+            <tr class = "text-center font-weight-bolder"><td> First name</td> <td> Last name</td> <td> Hand</td> <td> Designation</td><td>Gender</td></tr>
+        </thead>
+        <tbody>
+            <tr class="text-justify table-info font-weight-bolder">
+                <td> {{ bp.first_name }} </td> <td> {{ bp.last_name }}</td> <td> {{ bp.get_hand_display }} </td> <td> {{ bp.get_designation_display}} </td> <td> {{ bp.get_gender_display }} </td>
+            </tr>
+        </tbody>
 			
+        <!---
+            changed context from form to instance dictionary
+
 			{% for field in bp_form %}
 				<th class="text-center font-weight-bolder"> {{ field.label }} </th>
 			{% endfor %}
@@ -35,6 +45,7 @@
 				{% endfor %}
 			</tr>
 		</tbody>
+        --->
 	</table>
      </div>     
      </div>

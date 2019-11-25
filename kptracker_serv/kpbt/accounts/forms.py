@@ -27,7 +27,7 @@ class UpdateUserBowlerProfileForm(forms.ModelForm):
 	class Meta:
 		model = BowlerProfile
 		exclude = ['user', 'is_linked']
-		fields = ('__all__')
+		fields = ('first_name', 'last_name', 'hand', 'designation', 'gender',)
 		
 '''		
 class UpdateLeagueBowlerProfileForm(forms.ModelForm):
