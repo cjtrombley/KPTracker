@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from kpbt.leagues.forms import LeagueCreationForm, CreateScheduleForm, UpdateLeagueSecretaryForm, UpdateLeagueRulesForm, UpdateScheduleForm, RenameLeagueForm, MoveLeagueForm, SetWeekForm
-from kpbt.leagues.forms import WeeklyPairingsForm, WeeklyPairingsFormSet
+from kpbt.leagues.forms import WeeklyPairingsForm, WeeklyPairingsFormSet, RestartLeagueForm
 from kpbt.accounts.models import BowlerProfile
 from kpbt.leagues.models import League, LeagueBowler, WeeklyPairings, WeeklyResults
 from kpbt.centers.models import BowlingCenter
@@ -141,6 +141,8 @@ def view_schedule(request, center_name="", league_name=""):
 			weekly_schedule.append(week_list)
 	
 	return render(request, 'leagues/view_schedule.html', {'league' : league, 'schedule' : weekly_schedule })
+
+
 			
 
 def view_weekly_tasks(request, center_name="", league_name=""):
@@ -151,7 +153,7 @@ def view_weekly_tasks(request, center_name="", league_name=""):
 def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	rules = league.leaguerules
-	week_number = league.current_week
+	week_number = league.week_pointer
 	rules = league.leaguerules
 	weekly_pairs_list = WeeklyPairings.objects.filter(league=league, week_number=week_number).order_by('lane_pair')
 	
@@ -195,7 +197,7 @@ def export_rosters(request, center_name="", league_name=""):
 		return redirect('league-view-weekly-tasks', league.bowling_center.name, league.name)
 		
 	else:	
-		return render(request, 'leagues/weekly/export_rosters.html', {'rosters' : team_roster_dict})
+		return render(request, 'leagues/weekly/export_rosters.html', {'league': league, 'rosters' : team_roster_dict})
 		
 
 def finalize_week(request, center_name="", league_name=""):
@@ -276,6 +278,7 @@ def edit_scores(request, center_name="", league_name=""):
 				series.save()
 				
 		league.rescore(league.week_pointer)
+		messages.success(request, 'Scores edited')
 		return redirect('edit-weekly-scores', center.name, league.name)
 		
 	else:
@@ -400,5 +403,21 @@ def update_weekly_pairings(request, center_name="", league_name="", week=""):
 		return render(request, 'leagues/weekly/update_pairings.html', {'week' : week_number, 'league' : league, 'formset' : pairs_formset})
 	
 	
+def restart_league(request, center_name="", league_name=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	
+	if request.method == 'POST':
+		form = RestartLeagueForm(request.POST)
+		if form.is_valid():
+			league.reset_weekly_from_backup(0)
+			league.current_week = 1;
+			league.week_pointer = 1;
+			league.save()
+			WeeklyResults.objects.filter(league=league).delete()
+			Series.objects.filter(league=league).delete()
+			messages.success(request, 'League successfully restarted.')
+			return redirect('manage-league', league.bowling_center.name, league.name)
+	else:
+		form = RestartLeagueForm()
+	return render(request, 'leagues/manage/restart_league.html', {'league' : league, 'form' : form})
 		
