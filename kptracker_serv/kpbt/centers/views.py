@@ -10,6 +10,7 @@ from kpbt.leagues.models import League
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 
 @permission_required('kpbt.add_bowlingcenter')
 def create_bowling_center(request):
@@ -39,13 +40,16 @@ def create_bowling_center(request):
 def view_center_home(request, center_name=""):
 	if center_name:	
 		center = get_object_or_404(BowlingCenter, name=center_name)
+		address = get_object_or_404(CenterAddress, bowling_center=center)
 		manager = center.manager.username
-		print(manager)
+		
+		
 		leagues = center.leagues.all()
-		return render(request, 'centers/view_center.html', {'center' : center, 'leagues' : leagues, 'manager' : manager})
+		return render(request, 'centers/view_center.html', {'center' : center, 'leagues' : leagues, 'address' : address, 'manager' : manager})
 	else:
-		centers = BowlingCenter.objects.all()
-		return render(request, 'centers/center_home.html', {'centers' : centers })
+		centers = BowlingCenter.objects.all().annotate(num_leagues=Count('leagues'))
+		league_c = BowlingCenter.objects.annotate(num_leagues=Count('leagues'))
+		return render(request, 'centers/center_home.html', {'centers' : centers, 'leagues' : league_c})
 		
 		#try:
 		#	center = BowlingCenter.objects.get(name=identifier)

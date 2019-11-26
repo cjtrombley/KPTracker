@@ -109,65 +109,10 @@ def view_league(request, center_name = "", league_name=""):
 			league_standings = {}
 			if league.week_pointer > 1:
 				last_week = league.week_pointer - 1
-				
-				
-
-				
-				
 				results = WeeklyResults.objects.filter(league=league, week_number=last_week).order_by('lane_pair')
-				
-				#pair_list = []
-				#for i in range(1, int((center.num_lanes /2)) + 1):
-					#lw = WeeklyResults.objects.filter(league=league, week_number=last_week, lane_pair=i)
-					
 			else:
 				results = {}
 				
-			'''
-			if league.week_pointer > 1:
-				last_week = league.week_pointer - 1
-				last_weeks_pairs = WeeklyPairings.objects.filter(league=league, week_number=last_week).order_by('lane_pair')
-				
-				pair_counter = 1
-				pair_d = {}
-				for pair in last_weeks_pairs:
-					team_one = get_object_or_404(Team, id=pair.team_one_id)
-					team_two = get_object_or_404(Team, id=pair.team_two_id)
-					
-					team_one_series = Series.objects.filter(league=league, team=team_one, week_number=last_week)
-					team_two_series = Series.objects.filter(league=league, team=team_two, week_number=last_week)
-			
-					team_one_d = {}
-					team_two_d = {}
-					
-					t1_series_score = 0
-					t2_series_score = 0
-					for i in range(1, 4):
-						t1_score = Series.calc_team_handicap_game_score(team_one, last_week, i, team_one_series)
-						t2_score = Series.calc_team_handicap_game_score(team_two, last_week, i, team_two_series)
-						
-						team_one_d.update({i : t1_score})
-						team_two_d.update({i : t2_score})
-						t1_series_score += t1_score
-					
-						t2_series_score += t2_score
-					team_one_d.update({'series' : t1_series_score})
-					team_two_d.update({'series' : t2_series_score})
-					
-					league_standings.update({pair_counter : { team_one.name : team_one_d, team_two.name : team_two_d}})
-					pair_counter += 1
-				#print(league_standings.items())
-				
-				print(league_standings.values())
-				
-				for item, value in league_standings.items():
-					print(item, value)
-					for key, value in value.items():
-						print(key, value)
-						for game, series in value.items():
-							print(game, series)
-			'''
-			
 			return render(request, 'leagues/view_league.html', 
 				{'league' : league, 'rules' : rulesform, 'schedule': scheduleform, 'teams' : teams, 'weekly_pairings' : weekly_pairings, 'bowlers' : league_bowlers, 'last_week' : last_week_scores,
 					'secretary' : secretary, 'results' : results})
@@ -177,7 +122,6 @@ def view_league(request, center_name = "", league_name=""):
 			return render(request, 'centers/view_center.html', {'leagues' : leagues, 'center' : center })
 	else:
 		leagues = League.objects.all()
-			
 		return render(request, 'leagues/league_home.html', {'leagues' : leagues})
 
 
@@ -303,7 +247,6 @@ def edit_scores(request, center_name="", league_name=""):
 	center = get_object_or_404(BowlingCenter, name=center_name)
 
 	EditScoreFormSet = formset_factory(EditScoresForm, extra=0)
-	
 	
 	weeks_scores = Series.objects.filter(league=league, week_number=league.week_pointer).order_by('pair_number')
 	bowler_ids = []
