@@ -97,16 +97,17 @@ class League(models.Model):
 		#	b. recalculate the applied average/handicap for that series
 		#	c. Call score_league for that week after resetting
 		
-		for i in range (rescore_week, cw+1):
+		for i in range (rescore_week, cw):
 			series_data = Series.objects.filter(league=self, week_number=i)
 			
+			#Delete week's results records
+			WeeklyResults.objects.filter(league=self, week_number=i).delete()
+			
 			for series in series_data:
-				series.reset_points()
-				
 				#Recalculate league_average and handicap values
 				lb = get_object_or_404(LeagueBowler, league=self, bowler=series.bowler.id)
 				
-				if self.current_week == 1:
+				if self.week_pointer == 1:
 					average = lb.league_average
 				else:
 					average = lb.calc_average()
@@ -120,7 +121,7 @@ class League(models.Model):
 				series.applied_average = average
 				series.applied_handicap = handicap
 				series.save()
-			#self.score_week(i)
+			self.score_week(i)
 
 	
 	def reset_weekly_from_backup(self, reset_week):
