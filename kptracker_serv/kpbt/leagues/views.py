@@ -13,6 +13,7 @@ from kpbt.games.forms import ImportScoresForm, EditScoresForm
 from kptracker.settings import SCOREFILES_FOLDER as SCOREDIR
 from kptracker.settings import BACKUPS_FOLDER as BACKUPSDIR
 from django.forms import modelformset_factory, formset_factory
+from django.core.paginator import Paginator
 import math, json
 
 
@@ -102,7 +103,13 @@ def view_league(request, center_name = "", league_name=""):
 			
 			weekly_pairings = WeeklyPairings.objects.filter(league=league, week_number=league.week_pointer)
 			teams = league.teams.all().order_by('-team_points_won')
-			league_bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
+			bowlers = LeagueBowler.objects.filter(league__name=league_name).exclude(bowler__id=0)
+			
+			paginator = Paginator(bowlers, 25) # show 25 bowlers per page
+			page = request.GET.get('page')
+			league_bowlers = paginator.get_page(page)
+			
+			
 			last_week_scores=[]
 			secretary = league.secretary
 			
