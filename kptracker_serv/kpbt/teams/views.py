@@ -60,9 +60,9 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 		return render(request, 'teams/team_home.html', {'teams' : teams})
 	
 
-def manage_team(request, center_name="", league_name="", team_name=""):
-	team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-	return render(request, 'teams/manage/manage_team.html.', {'team' : team})
+#def manage_team(request, center_name="", league_name="", team_name=""):
+	#team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
+	#return render(request, 'teams/manage/manage_team.html.', {'team' : team})
 
 		
 def update_team(request, center_name="", league_name="", team_name=""):
@@ -79,7 +79,7 @@ def update_team(request, center_name="", league_name="", team_name=""):
 	return render(request, 'teams/manage/update_team.html', {'form': form, 'team' : team})
 
 		
-def update_roster(request, center_name= "", league_name="", team_name=""):
+def manage_team(request, center_name= "", league_name="", team_name=""):
 	league = get_object_or_404(League, bowling_center__name= center_name, name=league_name)
 	team = get_object_or_404(Team, league=league, name=team_name)
 	team_rosters = TeamRoster.objects.filter(team_id=team.id, is_active=True)
@@ -98,7 +98,13 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 	NewRosterFormSet = formset_factory(NewRosterForm, extra=4)
 	
 	if request.method == 'POST':
-		if request.POST.get("add_existing", ""):
+		if request.POST.get("update_name", ""):
+			name_form = UpdateTeamForm(request.POST, instance=team)
+			if name_form.is_valid():
+				name_form.save()
+				team = get_object_or_404(Team, name=name_form.cleaned_data.get('name'))
+				
+		elif request.POST.get("add_existing", ""):
 			lb = get_object_or_404(LeagueBowler, id=request.POST.get("bowler"))
 			bp = lb.bowler
 			team_roster_record, created = TeamRoster.objects.get_or_create(bowler=bp, team=team)
@@ -146,10 +152,14 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 						lb = get_object_or_404(LeagueBowler, league=league, bowler=id)
 						lb.league_average = average
 						lb.save()
-					
-		return redirect('update-roster', center_name, league_name, team_name)
+		print(team)			
+		return redirect('manage-team', center_name, league_name, team.name)
 	
 	else:
+	
+		team_name_form = UpdateTeamForm(instance=team)
+	
+	
 		rosterset = ExistingRosterFormSet(initial = bowlers)
 		new_formset = NewRosterFormSet()
 		
@@ -168,5 +178,5 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		eremov_form = ExistingBowlerForm()
 		eremov_form.fields['bowler'].queryset = current
 		
-		return render(request, 'teams/manage/update_roster.html', {'league': league, 'team': team, 'rosterset' : rosterset, 'new_formset' : new_formset, 'eadd_form' : eadd_form, 'eremov_form' : eremov_form})		
+		return render(request, 'teams/manage/manage_team.html', {'league': league, 'team': team, 'name_form' : team_name_form, 'rosterset' : rosterset, 'new_formset' : new_formset, 'eadd_form' : eadd_form, 'eremov_form' : eremov_form})		
 	
