@@ -37,7 +37,7 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 				for bowler in bowlers:
 					lb = LeagueBowler.objects.get(bowler=bowler)
 					bowler.__dict__.update({'games_bowled' : lb.games_bowled, 'league_average' : lb.league_average, 'league_high_scratch_game' : lb.league_high_scratch_game, 'league_high_handicap_game' : lb.league_high_handicap_game, 'league_high_handicap_series' : lb.league_high_handicap_series, 'league_high_scratch_series' : lb.league_high_scratch_series, 'league_total_scratch' : lb.league_total_scratch, 'league_total_handicap' : lb.league_total_handicap})
-					print(bowler.league_average)
+					
 					
 				results = WeeklyResults.objects.filter(team=team, league=league).order_by('week_number')
 				num_weeks = ["Week " + str(n) for n in range(1, league.schedule.num_weeks+1)]
@@ -115,10 +115,8 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		
 		else:
 			if request.POST.get("new", ""):
-				print('new')
 				formset = NewRosterFormSet(request.POST)
 			elif request.POST.get("update", ""):
-				print('update')
 				formset = ExistingRosterFormSet(request.POST)
 			
 			for form in formset:
