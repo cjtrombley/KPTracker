@@ -72,7 +72,7 @@ class CenterAddress(models.Model):
 		('WY', 'Wyoming'),
 	)
 	
-	bowling_center = models.OneToOneField(BowlingCenter, on_delete=models.CASCADE)
+	bowling_center = models.OneToOneField(BowlingCenter, on_delete=models.CASCADE, related_name="address")
 	
 	street_addr = models.CharField(max_length=64)
 	city = models.CharField(max_length=64)

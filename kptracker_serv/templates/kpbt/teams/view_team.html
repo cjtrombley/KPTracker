@@ -8,14 +8,14 @@
  <div class="row"> 
  <div class="col-md-12">
 <header>  
-  <h2 class="form-head mb-3"> Viewing {{ team.name }} in the {{ team.league.name }} league</h2>
+  <h2 class="form-head mb-3"> Viewing {{ team.name }} in the {{ team.league.name }} league</h2> <a href="{% url 'view-center-league-by-name' team.league.bowling_center.name team.league.name %}">Back to League</a>
 </header>  
 <h4 class="form-head mb-3">Team Stats:</h4>
 <div class="table-responsive">     
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-danger">
 	<tr class="text-center font-weight-bolder">
-		<th> Points Won</th> <th>Points Lost</th> <th> Scratch Pins </th> <th> Handicap Pins</th> <th> Total Pinfall</th>
+		<th> Total Points Won</th> <th> Total Points Lost</th> <th> Total Scratch Pins </th> <th> Total Handicap Pins</th> <th> Total Pinfall</th>
 
     </tr>
     </thead>    
@@ -36,32 +36,39 @@
 <h4 class="form-head mb-3">Bowler Roster:</h4>
 <div class="table-responsive">        
 <table class="table table-striped table-bordered table-hover">
-	{% for bowler in bowlers %}
+	<thead class="table-danger">
+    
+        <th>Name</th> <th> Games</th> <th>Avg</th> <th> Hi Scratch G</th> <th> Hi Hdcp G</th> <th> Hi Scratch S</th> <th> Hi Hdcp S</th> <th> Scratch Pins</th> <th> Hdcp Pins</th>
+    
+    </thead>
+    {% for bowler in bowlers %}
     
     {% if bowler.user.username %}
 	   <tr class="font-weight-bolder table-info">	
             <td><a href="{% url 'view-profile-by-username' bowler.user.username %}" class="table-txt-lnk-style">{{ bowler.first_name }} {{ bowler.last_name }} </a></td>
 		
-	   </tr>
+	   
     {% else %}
         <tr class="table-info table-txt-lnk-style">
-            <td> {{bowler.first_name }}</td>
-    </tr>
+            <td> {{bowler.first_name }} {{ bowler.last_name }}</td>
     {% endif %}
+        <td> {{ bowler.games_bowled }} </td> <td> {{ bowler.league_average }} </td> <td> {{ bowler.league_high_scratch_game }} </td> <td> {{ bowler.league_high_handicap_game }} </td> <td> {{ bowler.league_high_scratch_series }}</td> <td> {{ bowler.league_high_handicap_series }}</td> <td> {{ bowler.league_total_scratch }} </td> <td> {{ bowler.league_total_handicap }}</td>
+    </tr>
 	{% endfor %}                    
 </table>
     
-    {% if bowlers|length < team.league.leaguerules.max_roster_size %}
-    <a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}" class="btn btn-secondary mt-3 mb-3"> Add Bowler To Roster</a>
+    {% if request.user.is_authenticated %}
+    
+    {% if request.user.userprofile.is_league_secretary %}
+    {% if team.league.secretary.username == request.user.username %}
+    
+    <a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}" class="btn btn-secondary mt-3 mb-3">Manage Roster</a>
+    {% endif %}
+    {% endif %}
     {% endif %}
     
 </div>
-    
-<div>
-<h2> Team Management</h2>
-<p><a href="{% url 'update-roster' team.league.bowling_center.name team.league.name team.name %}"> Update Roster</a></p>
-<p><a href="{% url 'update-team' team.league.bowling_center.name team.league.name team.name %}"> Update Team</a></p>
-</div>   
+
  
 </div>
 </div>
@@ -104,7 +111,4 @@ var myLineChart = new Chart(ctxL, {
 });
 </script>
 
-
 {% endblock %}
-	
-	

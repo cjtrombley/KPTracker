@@ -7,7 +7,6 @@ center_management_patterns = [
 	path('update-center', views.update_center, name='update-center'),
 	path('manage-leagues', views.manage_leagues, name='manage-center-leagues'),
 	path('delete-league/<str:league_name>', views.delete_league, name='delete-center-league'),
-	
 ]
 
 urlpatterns =[

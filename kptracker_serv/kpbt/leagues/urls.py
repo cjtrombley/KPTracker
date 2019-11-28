@@ -8,7 +8,8 @@ league_management_paterns = [
 	path('update-league-secretary', views.manage_league_secretary, name='update-league-secretary'),
 	path('move-league', views.move_league, name='move-league'),
 	path('update-league', views.update_league, name='update-league'),
-	path('set-week', views.set_week, name='set-week')
+	path('set-week', views.set_week, name='set-week'),
+	path('restart-league', views.restart_league, name='restart-league'),
 	
 ]
 

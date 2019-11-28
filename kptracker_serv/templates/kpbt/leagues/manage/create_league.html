@@ -22,8 +22,8 @@
         <p class="lead"> The league will be limited to {{ league_form.designation }} bowlers only.</p>
         <p class="lead"> The league will consist of {{ league_form.gender }}.</p>
         <p class="lead"> The league will consist of {{ league_form.num_teams }} with a playing strength of {{ league_form.playing_strength }}. <br><br> Rosters will be limited to {{ league_form.max_roster_size }} members per team.</p>
-        <p> class="lead">League bowlers without a prior season's average will enter the league with an average of {{ league_form.entering_average }} </p>
-        <p class="lead"> Check if this league will have wins and losses determined on a handicap basis {{ league_form.is_handicap }}. <br><br> If so, the handicap shall be {{ league_form.handicap_percentage}}% of the difference between a bowler's average and a scratch figure of {{ league_form.handicap_scratch }}.</p>
+        <p class="lead">League bowlers without a prior season's average will enter the league with an average of {{ league_form.entering_average }} </p>
+        <p class="lead" id="handicap-toggle"> Check if this league will have wins and losses determined on a handicap basis {{ league_form.is_handicap }}. <br><p class="lead" style="margin-left: 3em; display: none" id="handicap-view"> The handicap shall be {{ league_form.handicap_percentage}}% of the difference between a bowler's average and a scratch figure of {{ league_form.handicap_scratch }}.</p>
         <p class="lead">If a team has a legal lineup, but less than a full one, at the start of any game of the series, an absentee score will be used in place for the missing members. The absentee score will be the absent member's average minus {{ league_form.absentee_score }}.</p>
         <p class="lead">Collectively each member of a team bowling against a bye team must average within {{ league_form.bye_team_point_threshold }} points of their average to win.</p>
         <p class="lead"> Team position standings shall be determined on a point basis, with {{ league_form.game_point_value }} point(s) awarded for each game won and {{ league_form.series_point_value }} point(s) awarded for the high team series in each match.</p>
@@ -38,5 +38,16 @@
      </div>
      </div> 
      </div> 
-    
+ 
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$("#handicap-toggle").click(function(){
+     $("#handicap-view").toggle();
+});
+
+</script>
+
+
 {% endblock %}

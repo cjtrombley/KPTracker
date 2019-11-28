@@ -1,13 +1,19 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% load static %}
+
 
 {% block title %}<title>Kingpin Bowling Tracker - View Leagues</title>{% endblock %}
 
 {% block page_content %}
+
+<link rel=stylesheet href="{% static 'tablesorter-master/dist/css/theme.bootstrap_4.min.css' %}">
+
+
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-12">
 <header>
-  <h2 class="form-head mb-3"> {{ league.name }} </h2>
+  <h2 class="form-head mb-3"> {{ league.name }} - Week {{ league.week_pointer }} </h2>
+    <a href="{% url 'view-center-by-name' league.bowling_center.name %}"> Back to Center</a>
 </header>   
 
 <div class="btn-group mb-3"> 
@@ -15,6 +21,8 @@
 <a href="{% url 'view-center-league-schedule' league.bowling_center.name league.name %}" class="btn btn-secondary mb-2"><span class="mr-2"><i class="fas fa-calendar-alt"></i></span>View Schedule</a>
 </div>    
 
+{% include "leagues/weekly/weekly_tasks_stub.html" %}    
+    
 {% if league.week_pointer > 1 %}
     <h4 class="form-head mb-3">Last Week's Results</h4>
     <div class="table-responsive">
@@ -87,13 +95,15 @@
     </tbody>
 </table>
 </div>
+  
     
+
 <h2 class="form-head mb-3">League Bowlers</h2>
 <div class="table-responsive">    
-<table class="table table-striped table-bordered table-hover">
+<table id="bowlertable" class="table table-striped table-bordered table-hover">
     <thead class="table-danger">
         <tr class="text-center font-weight-bolder">
-            <td>First Name</td><td>Last Name</td><td>League Average</td><td>Games Bowled</td><td>High Scratch Game</td><td>High Handicap Game</td><td>High Scratch Series</td><td>High Handicap Series</td><td>Total Scratch Pins</td><td>Total Handicap Pins</td>
+            <th>First Name</th><th>Last Name</th><th>League Average</th><th>Games Bowled</th><th>High Scratch Game</th><th>High Handicap Game</th><th>High Scratch Series</th><th>High Handicap Series</th><th>Total Scratch Pins</th><th>Total Handicap Pins</th>
         </tr>
     </thead>
     <tbody class="table-info">
@@ -139,4 +149,20 @@
 </div>
 </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'tablesorter-master/dist/js/jquery.tablesorter.min.js' %}"></script>
+<script src="{% static 'tablesorter-master/dist/js/jquery.tablesorter.widgets.js' %}"></script>
+
+<script>
+    
+   $(document).ready(function(){
+       $("#bowlertable").tablesorter( {
+           theme :"bootstrap",
+           widgets : [ "colums"],
+       });
+    });
+    
+
+</script>
 {% endblock %}

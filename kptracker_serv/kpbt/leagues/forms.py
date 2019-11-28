@@ -113,5 +113,18 @@ class WeeklyPairingsFormSet(BaseFormSet):
 				teams.append(t_two)
 				
 				
-				
+class RestartLeagueForm(forms.Form):
+	restart_confirmation = forms.CharField(max_length=7)
+	
+	def clean(self):
+		cleaned_data=super().clean()
+		
+		confirmation = cleaned_data.get("restart_confirmation")
+		
+		if confirmation:
+			if confirmation != "RESTART":
+				raise forms.ValidationError(
+					"Please enter RESTART to confirm league restart."
+				)
+	
 			

@@ -34,10 +34,12 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 				bowlers = team.roster.filter(roster_record__is_active=True)
 				
 				
+				for bowler in bowlers:
+					lb = LeagueBowler.objects.get(bowler=bowler)
+					bowler.__dict__.update({'games_bowled' : lb.games_bowled, 'league_average' : lb.league_average, 'league_high_scratch_game' : lb.league_high_scratch_game, 'league_high_handicap_game' : lb.league_high_handicap_game, 'league_high_handicap_series' : lb.league_high_handicap_series, 'league_high_scratch_series' : lb.league_high_scratch_series, 'league_total_scratch' : lb.league_total_scratch, 'league_total_handicap' : lb.league_total_handicap})
+					
+					
 				results = WeeklyResults.objects.filter(team=team, league=league).order_by('week_number')
-				
-				
-				
 				num_weeks = ["Week " + str(n) for n in range(1, league.schedule.num_weeks+1)]
 				
 				points_won = []
@@ -46,10 +48,8 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 					points_won.append(result.points_won)
 					points_lost.append(result.points_lost)
 				
-				print(num_weeks)
-				print(points_won)
-				print(points_lost)
 				
+			
 				return render(request, 'teams/view_team.html', {'team' : team, 'bowlers' : bowlers, 'num_weeks' : num_weeks, 'points_won' : points_won, 'points_lost': points_lost })
 			else:
 				teams = Team.objects.filter(league__bowling_center__name=center_name, league__name=league_name)
@@ -94,7 +94,7 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		lb = get_object_or_404(LeagueBowler, league=league, bowler=bowler['id'])
 		bowler.update({'average' : lb.league_average})
 	
-	ExistingRosterFormSet= formset_factory(UpdateRosterForm)
+	ExistingRosterFormSet= formset_factory(UpdateRosterForm, extra=0)
 	NewRosterFormSet = formset_factory(NewRosterForm, extra=4)
 	
 	if request.method == 'POST':
@@ -115,10 +115,8 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		
 		else:
 			if request.POST.get("new", ""):
-				print('new')
 				formset = NewRosterFormSet(request.POST)
 			elif request.POST.get("update", ""):
-				print('update')
 				formset = ExistingRosterFormSet(request.POST)
 			
 			for form in formset:
@@ -170,5 +168,5 @@ def update_roster(request, center_name= "", league_name="", team_name=""):
 		eremov_form = ExistingBowlerForm()
 		eremov_form.fields['bowler'].queryset = current
 		
-		return render(request, 'teams/manage/update_roster.html', {'team': team, 'rosterset' : rosterset, 'new_formset' : new_formset, 'eadd_form' : eadd_form, 'eremov_form' : eremov_form})		
+		return render(request, 'teams/manage/update_roster.html', {'league': league, 'team': team, 'rosterset' : rosterset, 'new_formset' : new_formset, 'eadd_form' : eadd_form, 'eremov_form' : eremov_form})		
 	
