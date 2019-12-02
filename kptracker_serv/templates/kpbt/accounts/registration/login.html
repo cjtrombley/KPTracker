@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-md-12">
         <header>
-            <h1 class="mainhead font-weight-bolder text-center text-uppercase">Kingpin</h1>
+            <h1 class="mainhead font-weight-bolder text-center text-uppercase mt-5">Kingpin</h1>
         </header>
             <div class="card-login text-white bg-trans" id="login">
         <img src="{% static 'images/icons/bowling.svg' %}" alt="Pins with bowling ball" width="200" height="200" class="mx-auto d-block login-icon login-bowl-ball">
@@ -46,7 +46,7 @@
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p class="login-para"><a href="{% url 'password_reset' %}" class="link-login">Forgot password&#63;</a></p>
+<p class="login-para"><a href="{% url 'password_reset' %}" class="link-login"><span class="mr-2"><i class="fas fa-lock"></i></span>Forgot password&#63;</a></p>
 <p class="login-para"><a href="{% url 'register' %}" class="link-login">Register&#33;</a></p>
          <div class="card-footer"><footer><span class="text-center">&copy; 2019 Kingpin</span></footer></div>
         </div>

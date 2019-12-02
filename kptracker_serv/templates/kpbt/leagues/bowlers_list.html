@@ -15,21 +15,23 @@
 </table>
 </div>  
     
-<div class="pagination text-white">
-    <span class="step-links">
-    {% if bowlers.has_previous %}
-        <a href="?page=1">&laquo; first </a>
-        <a href="?page= {{ bowlers.previous_page_number }}"> previous </a>
-    {% endif %}
-    
+<div class="text-white mb-2">
+
     <span class="current">
         Page {{ bowlers.number }} of {{ bowlers.paginator.num_pages }}
     </span>
     
-    
-    {% if bowlers.has_next %}
-        <a href="?page= {{ bowlers.next_page_number }}">next</a>
-    <a href="?page= {{ bowlers.paginator.num_pages }}">last &raquo;</a>
-    {% endif %}
-    </span>
 </div>
+
+
+  <ul class="pagination justify-content-center">
+    {% if bowlers.has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+    <li class="page-item"><a class="page-link" href="?page= {{ bowlers.previous_page_number }}">Previous</a></li>
+    {% endif %}  
+      
+    {% if bowlers.has_next %} 
+    <li class="page-item"><a class="page-link" href="?page= {{ bowlers.next_page_number }}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="?page= {{ bowlers.paginator.num_pages }}">Last</a></li>
+    {% endif %}
+  </ul>

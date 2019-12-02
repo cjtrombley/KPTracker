@@ -1,5 +1,6 @@
 {% extends "base.html" %} {% load static %} 
 {% block content %}
+<!-- https://www.youtube.com/watch?v=MoX36izzEWY -->
  <body>
     
     <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content" aria-label="Skip to main content">Skip to main content</a>
@@ -145,11 +146,15 @@
          
               <p id="kpmission" class="text-white text-uppercase"><span class="underline">B</span>owling to perfection...</p>
               <p class="speech d-block mx-auto">Kingpin is a user-friendly app that allows for easy bowling center and league management. Kingpin will allow users to connect with bowling centers to view the leagues that they are within to see stats and recent scores. Bowling Centers can upload data, select league secretaries and maintain league quality.</p>
-              <figure>
-              <img src="{% static 'images/Kingpin-character.png' %}" alt="Kingpin character" class="mx-auto d-block img-fluid">
-               <figcaption class="text-center text-white">-KP</figcaption>      
-              </figure>      
+                <figure>
+                 <img src="{% static 'images/Kingpin-character.png' %}" alt="Kingpin character" class="mx-auto d-block img-fluid">
+                 <figcaption class="text-center text-white">-KP</figcaption>      
+                </figure>      
               </div>
+              
+              <div class="col-md-6"><p class="speech-2 d-block mx-auto">Check your weekly standings, team rosters, and all bowling data! Champion your game!</p></div>
+              <div class="col-md-6"><p class="speech-2 d-block mx-auto">Free and easy-to-use bowling tracker! Roll with the Pros!!! <br> KPBT awaits you...</p></div>
+              
               </div>
               </div>
         {% endblock %}
@@ -171,11 +176,11 @@
     
   {% load static %}
   <!-- jQuery -->    
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Popper.js-->    
   <script src="{% static 'js/Popper.js' %}"></script>
-   <!-- Bootstrap minified JS -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <!-- Bootstrap minified JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <!-- app.js -->    
   <script src="{% static 'js/app.js' %}"></script>
   <!-- Google Maps -->
