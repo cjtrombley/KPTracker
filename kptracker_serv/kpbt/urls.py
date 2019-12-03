@@ -25,7 +25,7 @@ league_patterns = [
 urlpatterns=[
 	
 	#Path that maps to site root
-	path('', views.IndexView.as_view(), name="index"),
+	path('', views.index, name="index"),
 	path('about', views.AboutView.as_view(), name="about"),
 	
 	#Paths that map to bowling center functions

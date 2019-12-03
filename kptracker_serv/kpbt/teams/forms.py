@@ -24,7 +24,7 @@ class UpdateRosterForm(forms.Form):
 	last_name = forms.CharField(max_length=32)
 	hand = forms.ChoiceField(choices= (('R', 'Right'), ('L', 'Left')))
 	designation = forms.ChoiceField(choices=(('A', 'Adult'), ('J', 'Junior'), ('S', 'Senior')))
-	gender = forms.ChoiceField(choices= (('M', 'Male'), ('W', 'Female')))
+	gender = forms.ChoiceField(choices= (('M', 'Male'), ('F', 'Female')))
 	average = forms.IntegerField(min_value=0, max_value=300)
 	
 	def clean(self):

@@ -185,8 +185,11 @@ def view_league_bowler(request, center_name="", league_name="", bowler_id=""):
 	num_weeks = ["Week " + str(n) for n in range(1, league.current_week+week_padding)]
 	
 	for game in game_history:
-		series_data.append(game.scratch_score)
+		series_average = int(game.scratch_score / 3)
+		series_data.append(series_average)
 		averages_data.append(game.applied_average)
+		
+		game.series_average = series_average
 	
 	return render(request, 'leagues/view_bowler.html', {'league' : league, 'bowler' : l_bowler, 'profile' : profile, 'game_history' : game_history, 'num_weeks' : num_weeks, 'series_data' : series_data, 'averages_data' : averages_data})
 	
