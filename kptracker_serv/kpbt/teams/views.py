@@ -8,21 +8,6 @@ from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import BowlerProfile
 from num2words import num2words
 
-'''
-def create_team(request, center_name="", league_name="", team_number=""):
-	if request.method == 'POST':
-		team_form = CreateTeamForm(request.POST)
-		if team_form.is_valid():
-			team_form.save()
-			return redirect('index')
-		
-		
-	else:
-		team_form = CreateTeamForm()
-	return render(request, 'teams/manage/create_team.html', {'form' : team_form})
-'''
-
-
 
 def view_team(request, center_name= "", league_name="", team_name=""):
 	if center_name:
@@ -59,12 +44,7 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 		print(teams)
 		return render(request, 'teams/team_home.html', {'teams' : teams})
 	
-
-#def manage_team(request, center_name="", league_name="", team_name=""):
-	#team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-	#return render(request, 'teams/manage/manage_team.html.', {'team' : team})
-
-		
+	
 def update_team(request, center_name="", league_name="", team_name=""):
 	team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
 	

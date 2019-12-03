@@ -47,17 +47,9 @@ class BowlerProfile(models.Model):
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
 	
-	
-	#date_of_birth = models.DateField(default=datetime.date(1900, 1, 1), blank=True)
-	
-	
 	hand = models.CharField(max_length=1, choices=HAND, blank=True)
 	designation = models.CharField(max_length=1, choices=DESIGNATION, blank=True)
 	gender = models.CharField(max_length=1, choices=GENDER, blank=True)
-	
-	
-	#is_sanctioned = models.BooleanField(default=False, blank=False)
-	#last_date_sanctioned = models.DateField(default=datetime.date(1900,1,1), blank=True)
 	
 	is_linked = models.BooleanField(default=False)
 		
@@ -69,3 +61,17 @@ class BowlerProfile(models.Model):
 		
 	def get_name(self):
 		return self.first_name + ' ' + self.last_name
+		
+		
+class Links(models.Model):
+	TYPES = (
+		('C', 'Bowling Center'),
+		('L', 'League'),
+		('T', 'Team'),
+		('B', 'Bowler'),
+	)
+	
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	type = models.CharField(max_length=1, choices=TYPES)
+	type_id = models.PositiveSmallIntegerField()
+		

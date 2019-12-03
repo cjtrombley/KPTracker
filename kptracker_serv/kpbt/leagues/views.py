@@ -17,7 +17,24 @@ from django.core.paginator import Paginator
 import math, json
 
 
+def auth_test(request, league=""):
+	if request.user.is_superuser:
+		return True
+	elif league.secretary == request.user:
+		return True
+	else:
+		return False
+
+
 def create_league(request, center_name=""):
+	center = get_object_or_404(BowlingCenter, name=center_name)
+	print(center.manager)
+	print(request.user)
+	print(request.user == center.manager or request.user.is_superuser)
+	if not(request.user.is_superuser or request.user == center.manager):
+		print('false')
+		return redirect('center-home')
+	
 	if request.method == 'POST':
 		center = get_object_or_404(BowlingCenter, name=center_name)
 		
@@ -61,7 +78,11 @@ def create_league(request, center_name=""):
 
 
 def update_league(request, center_name="", league_name=""):
+	
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+	
 	schedule = league.schedule
 	rules = league.leaguerules
 	
@@ -150,15 +171,43 @@ def view_schedule(request, center_name="", league_name=""):
 	return render(request, 'leagues/view_schedule.html', {'league' : league, 'schedule' : weekly_schedule })
 
 
-			
+def view_league_bowler(request, center_name="", league_name="", bowler_id=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	l_bowler = get_object_or_404(LeagueBowler, id=bowler_id)
+	profile = get_object_or_404(BowlerProfile, id=l_bowler.bowler.id)
+	
+	game_history = Series.objects.filter(bowler=profile, league=league)
+	
+	series_data = []
+	averages_data = []
+	
+	week_padding = 5
+	num_weeks = ["Week " + str(n) for n in range(1, league.current_week+week_padding)]
+	
+	for game in game_history:
+		series_average = int(game.scratch_score / 3)
+		series_data.append(series_average)
+		averages_data.append(game.applied_average)
+		
+		game.series_average = series_average
+	
+	return render(request, 'leagues/view_bowler.html', {'league' : league, 'bowler' : l_bowler, 'profile' : profile, 'game_history' : game_history, 'num_weeks' : num_weeks, 'series_data' : series_data, 'averages_data' : averages_data})
+	
 
 def view_weekly_tasks(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+
+	
 	return render(request, 'leagues/weekly/weekly_tasks.html', {'league' : league})
 
 
 def export_rosters(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+	
 	rules = league.leaguerules
 	week_number = league.week_pointer
 	rules = league.leaguerules
@@ -205,10 +254,12 @@ def export_rosters(request, center_name="", league_name=""):
 		
 	else:	
 		return render(request, 'leagues/weekly/export_rosters.html', {'league': league, 'rosters' : team_roster_dict})
-		
+
 
 def finalize_week(request, center_name="", league_name=""):
 	league= get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
 	
 	if request.method == "POST":
 		league.score_week(league.current_week)
@@ -221,6 +272,9 @@ def finalize_week(request, center_name="", league_name=""):
 
 def import_scores(request, center_name="", league_name=""):
 	league = get_object_or_404(League, name=league_name, bowling_center__name=center_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+	
 	week_number = league.week_pointer
 	
 	if request.method == 'POST':
@@ -253,6 +307,9 @@ def import_scores(request, center_name="", league_name=""):
 
 def edit_scores(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+	
 	center = get_object_or_404(BowlingCenter, name=center_name)
 
 	EditScoreFormSet = formset_factory(EditScoresForm, extra=0)
@@ -306,12 +363,17 @@ def edit_scores(request, center_name="", league_name=""):
 
 def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+	
 	teams = Team.objects.filter(league=league)
 	return render(request, 'leagues/manage/manage_league.html', {'league' : league, 'teams' : teams})
-		
-		
+	
+	
 def manage_league_secretary(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
+	if not request.user.is_superuser:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
 	
 	if request.method == 'POST':
 		
@@ -336,10 +398,12 @@ def manage_league_secretary(request, center_name="", league_name=""):
 	else:
 		form = UpdateLeagueSecretaryForm()
 		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })
-		
-		
+
+	
 def move_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
 	
 	if request.method == 'POST':
 		form = MoveLeagueForm(request.POST)
@@ -355,7 +419,9 @@ def move_league(request, center_name="", league_name=""):
 	
 def set_week(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+		
 	if request.method == "POST":
 		form = SetWeekForm(request.POST)
 		if form.is_valid():
@@ -371,6 +437,9 @@ def set_week(request, center_name="", league_name=""):
 	
 def update_weekly_pairings(request, center_name="", league_name="", week=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+		
 	if week:
 		week_number = week
 	else:
@@ -412,7 +481,9 @@ def update_weekly_pairings(request, center_name="", league_name="", week=""):
 	
 def restart_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
-	
+	if auth_test(request, league) != True:
+		return redirect('view-center-league-by-name', league.bowling_center.name, league.name)
+		
 	if request.method == 'POST':
 		form = RestartLeagueForm(request.POST)
 		if form.is_valid():

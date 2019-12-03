@@ -25,7 +25,7 @@ league_patterns = [
 urlpatterns=[
 	
 	#Path that maps to site root
-	path('', views.IndexView.as_view(), name="index"),
+	path('', views.index, name="index"),
 	path('about', views.AboutView.as_view(), name="about"),
 	
 	#Paths that map to bowling center functions
@@ -45,13 +45,6 @@ urlpatterns=[
 	#Paths that map to game functions
 	path('games/', include('kpbt.games.urls')),
 
-	
-	
-	
-	
-	
-	
-	
 	
 	#kpbt/<center_name>/ paths
 	path('<str:center_name>', center_views.view_center_home, name='view-center-by-name'),

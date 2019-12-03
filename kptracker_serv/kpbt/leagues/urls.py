@@ -9,8 +9,7 @@ league_management_paterns = [
 	path('move-league', views.move_league, name='move-league'),
 	path('update-league', views.update_league, name='update-league'),
 	path('set-week', views.set_week, name='set-week'),
-	path('restart-league', views.restart_league, name='restart-league'),
-	
+	path('restart-league', views.restart_league, name='restart-league'),	
 ]
 
 weekly_patterns = [
@@ -22,7 +21,6 @@ weekly_patterns = [
 	path('view-scores/<str:week_number>', series_views.view_scores, name='league-view-scores-by-week'),
 	path('edit-scores', views.edit_scores, name='edit-weekly-scores'),
 	path('finalize-week', views.finalize_week, name='finalize-week'),
-	
 ]
 
 team_patterns = [
@@ -38,17 +36,13 @@ series_patterns = [
 
 
 urlpatterns = [
-	#path('scores/', include(series_patterns)),
-
 	path('', views.view_league, name='league-home'),
 	path('create-league', views.create_league, name='create-league'),
 	path('view-league/', views.view_league, name='view-league-home'),
+	path('<int:bowler_id>', views.view_league_bowler, name='view-league-bowler'),
 	path('view-schedule', views.view_schedule, name='view-center-league-schedule'),
-	#path('view-league/<str:league_name>', views.view_league, name='view-league-by-name'),
-	#path('<str:league_name>', views.view_league, name='view-league-by-name'),
 	path('weekly/', include(weekly_patterns)),
 	path('manage/', include(league_management_paterns)),
 	path('', include(team_patterns)),
 	path('scores/', include(series_patterns)),
 ]
-

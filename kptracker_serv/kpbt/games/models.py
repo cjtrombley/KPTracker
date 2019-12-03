@@ -1,17 +1,14 @@
 from django.db import models
 from kpbt.accounts.models import BowlerProfile
 from kpbt.teams.models import Team
-#from kpbt.leagues.models import League
 
 from num2words import num2words
-
 
 class Series(models.Model):
 	bowler = models.ForeignKey(BowlerProfile, on_delete=models.SET_NULL, null=True)
 	team = models.ForeignKey('Team', on_delete=models.SET_NULL, null=True)
 	league = models.ForeignKey('League', on_delete=models.SET_NULL, null=True)
 
-	
 	series_date = models.DateField(default='1900-01-01')
 	week_number = models.PositiveSmallIntegerField(default=0)
 	pair_number = models.PositiveSmallIntegerField(default=0)
@@ -22,10 +19,9 @@ class Series(models.Model):
 	game_three_score = models.CharField(max_length=4, blank=True)
 	scratch_score = models.IntegerField(default=0)
 	handicap_score = models.IntegerField(default=0)
-	#weekly_points_won = models.PositiveSmallIntegerField(default=0)
-	#weekly_points_lost = models.PositiveSmallIntegerField(default=0)
-	
-	
+
+	def __str__(self):
+		return self.bowler.get_name() + ', ' + str(self.applied_average) + ', ' + str(self.applied_handicap) + ', ' + str(self.game_one_score) + ', ' + str(self.game_two_score) + ', ' + str(self.game_three_score)
 	
 	def get_bowler_name(self):
 		return self.bowler.get_name()
@@ -75,7 +71,6 @@ class Series(models.Model):
 		for game in team_series:
 			gamefield = 'game_' + num2words(game_number) +'_score'
 			handicap_score += int(getattr(game, gamefield)) + int(game.applied_handicap)
-			#handicap_score += getattr(team_series, gamefield)  + team_series.applied_handicap
 		
 		return handicap_score
 			

@@ -14,9 +14,7 @@ class CreateCenterAddressForm(forms.ModelForm):
 		
 		
 class UpdateCenterForm(forms.ModelForm):
-	#center_name = forms.CharField(max_length=32)
-	#num_lanes = forms.IntegerField(min_value=2, label='Number of lanes')
-	
+
 	class Meta:
 		model = BowlingCenter
 		exclude = ['manager']
@@ -47,10 +45,3 @@ class DeleteLeagueForm(forms.Form):
 				raise forms.ValidationError(
 					"Please enter DELETE to confirm league deletion."
 				)
-	
-"""		
-class CenterSelectForm(forms.modelForm):
-	class Meta:
-		model = BowlingCenter
-		fields = ('name')
-"""
