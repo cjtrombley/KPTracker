@@ -7,4 +7,5 @@ urlpatterns = [
 	path('update-profile/<str:username>', views.kpbt_user_update_profile, name='update-profile-by-username'),
 	#path('profile/', views.view_profile, name='view-profile-home'),
 	path('profile/<str:username>', views.view_kpbt_user_bowler_profile, name='view-profile-by-username'),
+	path('ajax/link_user', views.link_user, name='ajax-link-user'),
 ]

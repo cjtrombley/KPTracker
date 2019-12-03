@@ -150,7 +150,25 @@ def view_schedule(request, center_name="", league_name=""):
 	return render(request, 'leagues/view_schedule.html', {'league' : league, 'schedule' : weekly_schedule })
 
 
-			
+def view_league_bowler(request, center_name="", league_name="", bowler_id=""):
+	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
+	l_bowler = get_object_or_404(LeagueBowler, id=bowler_id)
+	profile = get_object_or_404(BowlerProfile, id=l_bowler.bowler.id)
+	
+	game_history = Series.objects.filter(bowler=profile, league=league)
+	
+	series_data = []
+	averages_data = []
+	
+	week_padding = 5
+	num_weeks = ["Week " + str(n) for n in range(1, league.current_week+week_padding)]
+	
+	for game in game_history:
+		series_data.append(game.scratch_score)
+		averages_data.append(game.applied_average)
+	
+	return render(request, 'leagues/view_bowler.html', {'league' : league, 'bowler' : l_bowler, 'profile' : profile, 'game_history' : game_history, 'num_weeks' : num_weeks, 'series_data' : series_data, 'averages_data' : averages_data})
+	
 
 def view_weekly_tasks(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
@@ -205,7 +223,7 @@ def export_rosters(request, center_name="", league_name=""):
 		
 	else:	
 		return render(request, 'leagues/weekly/export_rosters.html', {'league': league, 'rosters' : team_roster_dict})
-		
+
 
 def finalize_week(request, center_name="", league_name=""):
 	league= get_object_or_404(League, bowling_center__name=center_name, name=league_name)
@@ -308,8 +326,8 @@ def manage_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	teams = Team.objects.filter(league=league)
 	return render(request, 'leagues/manage/manage_league.html', {'league' : league, 'teams' : teams})
-		
-		
+	
+	
 def manage_league_secretary(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name = center_name, name=league_name)
 	
@@ -336,8 +354,8 @@ def manage_league_secretary(request, center_name="", league_name=""):
 	else:
 		form = UpdateLeagueSecretaryForm()
 		return render(request, 'leagues/manage/update_league_secretary.html', {'form': form })
-		
-		
+
+	
 def move_league(request, center_name="", league_name=""):
 	league = get_object_or_404(League, bowling_center__name=center_name, name=league_name)
 	

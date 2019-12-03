@@ -69,3 +69,17 @@ class BowlerProfile(models.Model):
 		
 	def get_name(self):
 		return self.first_name + ' ' + self.last_name
+		
+		
+class Links(models.Model):
+	TYPES = (
+		('C', 'Bowling Center'),
+		('L', 'League'),
+		('T', 'Team'),
+		('B', 'Bowler'),
+	)
+	
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	type = models.CharField(max_length=1, choices=TYPES)
+	type_id = models.PositiveSmallIntegerField()
+		

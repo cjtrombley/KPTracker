@@ -1,7 +1,9 @@
 {% extends "base.html" %} {% load static %} 
 {% block content %}
  <body>
-    
+  <!--- Jquery-->   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
     <a href="#mainContent" class="skip-link sr-only sr-only-focusable underline" title="Skip to main content" aria-label="Skip to main content">Skip to main content</a>
     <nav class="navbar navbar-expand-md nav-bg mb-4 navbar-light" aria-label="Navigation">
   <a class="navbar-brand" href="{% url 'index' %}" aria-label="Kingpin Bowling Tracker">
@@ -11,7 +13,6 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      
       
     <ul class="navbar-nav nav">
       <li class="nav-item">
@@ -168,10 +169,7 @@
       </div>
       </div>
       </footer>
-    
-  {% load static %}
-  <!-- jQuery -->    
-  
+
   <!-- Popper.js-->    
   <script src="{% static 'js/Popper.js' %}"></script>
    <!-- Bootstrap minified JS -->

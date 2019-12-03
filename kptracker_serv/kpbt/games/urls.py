@@ -9,5 +9,6 @@ urlpatterns = [
 	
 	#path('create-game', views.create_game, name='create-game'),
 	#path('<str:username>', views.view_games_by_bowler, name='view-games-by-bowler'),
+	#path('view-stats/', views.stats_chart_data, name='player-stats-data-chart'),
 ]
 

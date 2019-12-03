@@ -6,6 +6,7 @@ from kpbt.accounts.forms import RegisterForm, CreateUserBowlerProfileForm, Updat
 from kpbt.accounts.models import UserProfile, BowlerProfile
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 
 
@@ -52,7 +53,6 @@ def kpbt_user_create_profile(request, username=""):
 		bowler_profile_form = CreateUserBowlerProfileForm()
 	return render(request, 'accounts/create_profile.html', {'profile_form' : bowler_profile_form})
 	
-	
 @login_required
 def kpbt_user_update_profile(request, username=""):
 	if request.method == 'POST':
@@ -66,56 +66,6 @@ def kpbt_user_update_profile(request, username=""):
 		bowler_profile_form = UpdateUserBowlerProfileForm(instance = user.bowlerprofile)
 	return render(request, 'accounts/update_profile.html', {'profile_form' : bowler_profile_form })
 	
-	
-	
-	'''
-	except ObjectDoesNotExist: #User does not have associated UserProfile
-	
-		if request.method == 'POST':
-			profile_form = CreateProfileForm(request.POST)
-			
-			if profile_form.is_valid():
-				userprofile = UserProfile.objects.create(email = profile_form.cleaned_data['email'])
-				bowlerprofile = profile_form.save(commit=False)
-				
-				request.user.userprofile = userprofile
-				request.user.bowlerprofile = bowlerprofile
-				
-				request.user.userprofile.save()
-				request.user.bowlerprofile.save()
-
-		else:
-			new_profile_form = CreateProfileForm()
-		return render(request, 'accounts/create_profile.html', {'profile_form' : new_profile_form})
-
-	'''
-	'''
-	try:
-		has_profile = request.user.userprofile
-	except ObjectDoesNotExist:
-		if request.method == 'POST':
-		
-			userprofile_form = CreateUserProfileForm(request.POST)
-			bowlerprofile_form = CreateBowlerProfileForm(request.POST)
-			if userprofile_form.is_valid() and bowlerprofile_form.is_valid():
-				up = userprofile_form.save(commit=False)
-				bp = bowlerprofile_form.save(commit=False)
-			
-				request.user.userprofile = up
-				request.user.bowlerprofile = bp
-			
-				request.user.userprofile.save()
-				request.user.bowlerprofile.save()
-			
-				return redirect('view-profile-by-username', identifier=request.user.username)
-		else:
-			userprofile_form = CreateUserProfileForm()
-			bowlerprofile_form = CreateBowlerProfileForm()
-		return render(request, 'accounts/create_profile.html', {
-		'userprofile': userprofile_form, 'bowlerprofile': bowlerprofile_form})
-	else:
-		return redirect('view-profile-home')
-'''
 
 @login_required			
 def view_kpbt_user_bowler_profile(request, username= ""):
@@ -128,23 +78,12 @@ def view_kpbt_user_bowler_profile(request, username= ""):
 			#bp_form = UpdateUserBowlerProfileForm(instance=bp)
 			bp = get_object_or_404(BowlerProfile, user__username=username)
 		return render(request, 'accounts/view_profile.html', {'bp' : bp})
-	'''
-	try:
-		if identifier:
-			user = User.objects.get(username = identifier)
-			userprofile = UserProfile.objects.get(user__username=identifier)
-			bowlerprofile = BowlerProfile.objects.get(user__username=identifier)
-		else:
-			userprofile = UserProfile.objects.get(pk=request.user.userprofile.id)
-			bowlerprofile = BowlerProfile.objects.get(pk=request.user.bowlerprofile.id)
-	except ObjectDoesNotExist:
-		return redirect('create-profile')
-	else:
-		#up_form = CreateUserProfileForm(instance=userprofile)
-		bp_form = CreateProfileForm(instance=bowlerprofile)
-	return render(
-		request, 'accounts/view_profile.html', {
-		'up_form': up_form,
-		'bp_form': bp_form,
-	})	
-'''
+		
+def link_user(request):
+	if request.method == 'POST' and request.is_ajax():
+		print('Is ajax!')
+		print(request.POST)
+		data = {'key' : 'value'}
+		
+		return JsonResponse(data)
+	

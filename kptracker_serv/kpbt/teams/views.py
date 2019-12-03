@@ -8,21 +8,6 @@ from kpbt.centers.models import BowlingCenter
 from kpbt.accounts.models import BowlerProfile
 from num2words import num2words
 
-'''
-def create_team(request, center_name="", league_name="", team_number=""):
-	if request.method == 'POST':
-		team_form = CreateTeamForm(request.POST)
-		if team_form.is_valid():
-			team_form.save()
-			return redirect('index')
-		
-		
-	else:
-		team_form = CreateTeamForm()
-	return render(request, 'teams/manage/create_team.html', {'form' : team_form})
-'''
-
-
 
 def view_team(request, center_name= "", league_name="", team_name=""):
 	if center_name:

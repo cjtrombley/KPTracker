@@ -25,7 +25,8 @@ class Series(models.Model):
 	#weekly_points_won = models.PositiveSmallIntegerField(default=0)
 	#weekly_points_lost = models.PositiveSmallIntegerField(default=0)
 	
-	
+	def __str__(self):
+		return self.bowler.get_name() + ', ' + str(self.applied_average) + ', ' + str(self.applied_handicap) + ', ' + str(self.game_one_score) + ', ' + str(self.game_two_score) + ', ' + str(self.game_three_score)
 	
 	def get_bowler_name(self):
 		return self.bowler.get_name()
