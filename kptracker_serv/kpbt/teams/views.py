@@ -44,12 +44,7 @@ def view_team(request, center_name= "", league_name="", team_name=""):
 		print(teams)
 		return render(request, 'teams/team_home.html', {'teams' : teams})
 	
-
-#def manage_team(request, center_name="", league_name="", team_name=""):
-	#team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
-	#return render(request, 'teams/manage/manage_team.html.', {'team' : team})
-
-		
+	
 def update_team(request, center_name="", league_name="", team_name=""):
 	team = get_object_or_404(Team, league__bowling_center__name=center_name, league__name=league_name, name=team_name)
 	

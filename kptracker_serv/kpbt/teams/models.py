@@ -53,38 +53,17 @@ class Team(models.Model):
 	def create_team(league, number):
 		new_team = Team(league=league, number=number,
 			name='Team' + num2words(number))
-		#new_team.save(commit=False)
-		
-		#new_team.league = league
-		#new_team.number = number
-		#new_team.name = 'Team' + num2words(new_team.number)
-		
-	
-		'''
-		roster_size = league.leaguerules.playing_strength
-		for _ in range(roster_size):
-			empty_bowler = BowlerProfile().save(commit=False)
-			team_roster = TeamRoster(team=new_team, bowler= empty_bowler)
-			team_roster.save(commit=False)
-			new_team.save()
-		'''	
 		return new_team
-	
-	#def create_roster_record(team, bowler):
-	#	empty_bowler = BowlerProfile()
-	#	roster_record = TeamRoster(team=team, bowler= empty_bowler)
-		
-	#	return roster_record
 		
 	def __str__(self):
 		return self.name
+		
 		
 class TeamRoster(models.Model):
 	bowler = models.ForeignKey('BowlerProfile', on_delete=models.CASCADE, related_name='roster_record')
 	team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='roster_record')
 	games_with_team = models.PositiveSmallIntegerField(default=0)
 	
-	#is_substitute = models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
 	lineup_position = models.PositiveSmallIntegerField(default=0)
 	

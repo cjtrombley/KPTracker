@@ -12,7 +12,7 @@ class CreateTeamForm(forms.ModelForm):
 		fields = ('league', 'number', 'name')
 		
 		
-class TeamRosterForm(forms.ModelForm): #extends BowlerProfile?
+class TeamRosterForm(forms.ModelForm):
 	class Meta:
 		model = BowlerProfile
 		fields = ('__all__')
@@ -59,8 +59,6 @@ class DeleteRosterForm(forms.ModelForm):
 		fields = ('bowler',)
 
 class ExistingBowlerForm(forms.ModelForm):
-	
-	#bowler = forms.ChoiceField()
 	
 	class Meta:
 		model = LeagueBowler

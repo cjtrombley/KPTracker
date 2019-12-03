@@ -16,9 +16,6 @@ urlpatterns =[
 	path('create', views.create_bowling_center, name='create-bowling-center'),
 	path('center-management/', include(center_management_patterns)),
 
-	
-	#path('<str:center_name>', views.view_center_home, name='view-center-by-name'),
 	path('manage/', include(center_management_patterns)),
-	
 ]
 	

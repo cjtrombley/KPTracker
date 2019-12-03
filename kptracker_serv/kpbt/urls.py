@@ -46,13 +46,6 @@ urlpatterns=[
 	path('games/', include('kpbt.games.urls')),
 
 	
-	
-	
-	
-	
-	
-	
-	
 	#kpbt/<center_name>/ paths
 	path('<str:center_name>', center_views.view_center_home, name='view-center-by-name'),
 	path('<str:center_name>/', include('kpbt.centers.urls')),

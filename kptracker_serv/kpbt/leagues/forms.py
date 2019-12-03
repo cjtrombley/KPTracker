@@ -8,11 +8,7 @@ from kpbt.centers.models import BowlingCenter
 class LeagueCreationForm(forms.ModelForm):
 	
 	league_name = forms.CharField(max_length=32, widget= forms.TextInput(attrs={'placeholder':'League name', 'class':'text-center', 'aria-label':'League Name'}))
-	#bowling_center = ModelChoiceField(queryset=BowlingCenter
-	
 	num_teams = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Number of teams', 'class':'text-center', 'aria-label':'Number of Teams'}))
-	#designation = forms.ChoiceField(widget = forms.RadioSelect())
-    
 	playing_strength = forms.IntegerField(widget = forms.NumberInput(attrs={'placeholder':'Playing strength', 'class':'text-center', 'aria-label':'Playing Strength'}))
 	max_roster_size = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Maximum roster size', 'class':'text-center', 'aria-label':'Max Roster Size'}))
 	entering_average = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder':'Entering average'}))
@@ -28,7 +24,6 @@ class LeagueCreationForm(forms.ModelForm):
 		fields = ('league_name', 'num_teams', 'designation', 'gender', 
 			'playing_strength', 'max_roster_size', 'is_handicap', 'handicap_scratch', 'handicap_percentage',
 			'bye_team_point_threshold', 'absentee_score', 'game_point_value', 'series_point_value')
-	
 	
 	
 class UpdateLeagueRulesForm(forms.ModelForm):

@@ -110,11 +110,10 @@ $(document).ready(function() {
                         url : "{% url 'ajax-link-user' %}",
                         data : { 'csrfmiddlewaretoken' : '{{ csrf_token }}',
                                 'type' : 'bowler',
+                                'lb_id' : '{{ bowler.id }}',
                                 'username' : '{{ request.user.username }}',
-                               
                                },
                                
-        
                         success : function (response) {
                             $.alert('Success!')
                             console.log(response)

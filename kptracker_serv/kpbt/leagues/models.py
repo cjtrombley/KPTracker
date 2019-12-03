@@ -414,9 +414,6 @@ class LeagueBowler(models.Model):
 		return self.bowler.get_name()
 	
 	
-		
-	
-	
 	def update(self, series):
 		series_scratch_score = 0
 		series_handicap_score = 0

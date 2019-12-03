@@ -51,12 +51,7 @@ def view_center_home(request, center_name=""):
 		league_c = BowlingCenter.objects.annotate(num_leagues=Count('leagues'))
 		return render(request, 'centers/center_home.html', {'centers' : centers, 'leagues' : league_c})
 		
-		#try:
-		#	center = BowlingCenter.objects.get(name=identifier)
-		#except:
-		#	ObjectDoesNotExist
 		
-
 def center_management_home(request, center_name=""):
 	if center_name:
 		center = get_object_or_404(BowlingCenter, name=center_name)
@@ -64,6 +59,7 @@ def center_management_home(request, center_name=""):
 	else:
 		center = get_object_or_404(BowlingCenter, name=request.user.center_managed.name)
 		return render(request, 'centers/manage/manage_center.html', {'center' : center })
+	
 	
 def update_center(request, center_name=""):
 	center = get_object_or_404(BowlingCenter, name=center_name)
@@ -107,10 +103,10 @@ def update_manager(request, center_name =""):
 		update_manager_form = UpdateManagerForm()
 	return render(request, 'centers/manage/update_manager.html', {'center' : center, 'form' : update_manager_form})
 
+
 def center_locations(request):
     return render(request, 'centers/center_locations.html')
 
-	
 	
 def manage_leagues(request, center_name=""):
 	center = get_object_or_404(BowlingCenter, name=center_name)
@@ -132,17 +128,3 @@ def delete_league(request, center_name="", league_name=""):
 	else:
 		form = DeleteLeagueForm()
 	return render(request, 'centers/manage/delete_league.html', {'league' : league, 'center' : center, 'form' : form})
-	
-	
-"""	
-@permission_required('kpbt.view_bowlingcenter')
-
-def view_center_home(request, identifier=""):
-	try:
-		center = request.user.center_managed
-		manager = request.user
-		return render(request, 'centers/view_center.html', {'center' : center, 'manager' : manager})
-	except ObjectDoesNotExist:
-		return render(request, 'centers/create_center.html', {'form' : BowlingCenterForm()})
-"""		
-	
