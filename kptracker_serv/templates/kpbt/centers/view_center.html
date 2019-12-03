@@ -12,7 +12,7 @@
         <thead class="text-center">
 		<tr>
 			<td class="table-danger">Center Name:</td>
-             <td class="table-danger"># Lanes:</td>
+             <td class="table-danger"># of Lanes:</td>
             <td class="table-danger"> Address</td>
             <td class="table-danger"> City</td>
             <td class="table-danger"> State</td>
@@ -35,16 +35,16 @@
         
     <table class="table table-striped table-bordered table-hvoer font-weight-bolder">
         <thead class="table-danger">
-            <th>League Name</th> <th> Bowls On</th> <th> Current Week</th> <th> # Teams</th> <th> Designation</th> <th> Secretary</th>
+            <th>League Name</th> <th> Bowls On</th> <th> Current Week</th> <th> # of Teams</th> <th> Designation</th> <th> Secretary</th>
         </thead>
         
         <tbody class="table-info font-weight-bolder">
         
             {% for league in leagues %}
             <tr>
-                <td><a href="{% url 'view-center-league-by-name' center.name league.name %}"> {{ league.name }}</a></td> <td>{{ league.schedule.get_day_of_week_display }} at {{ league.schedule.start_time }} </td> <td> {{ league.current_week }} </td> <td> {{ league.leaguerules.num_teams }} </td> <td> {{ league.leaguerules.get_designation_display }}</td> 
+                <td><a href="{% url 'view-center-league-by-name' center.name league.name %}" class="table-txt-lnk-style"> {{ league.name }}</a></td> <td class="table-txt-lnk-style">{{ league.schedule.get_day_of_week_display }} at {{ league.schedule.start_time }} </td> <td class="table-txt-lnk-style"> {{ league.current_week }} </td> <td class="table-txt-lnk-style"> {{ league.leaguerules.num_teams }} </td> <td class="table-txt-lnk-style"> {{ league.leaguerules.get_designation_display }}</td> 
                 {% if league.secretary %}
-                <td><a href="{% url 'view-profile-by-username' league.secretary.username %}"> {{ league.secretary.bowlerprofile.get_name }} </a></td>
+                <td><a href="{% url 'view-profile-by-username' league.secretary.username %}" class="table-txt-lnk-style"> {{ league.secretary.bowlerprofile.get_name }} </a></td>
                 {% endif %}
             </tr>
             {% endfor %}
