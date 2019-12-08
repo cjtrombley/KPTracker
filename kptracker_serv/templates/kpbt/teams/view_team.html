@@ -68,7 +68,7 @@
 
     {% if team.league.secretary.username == request.user.username or request.user.is_superuser %}
     
-    <a href="{% url 'manage-team' team.league.bowling_center.name team.league.name team.name %}" class="btn btn-secondary mt-3 mb-3">Manage Roster</a>
+    <a href="{% url 'manage-team' team.league.bowling_center.name team.league.name team.name %}" class="btn btn-secondary mt-3 mb-3">Manage Team</a>
     {% endif %}
     {% endif %}
     

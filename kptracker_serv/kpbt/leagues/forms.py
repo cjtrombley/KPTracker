@@ -82,8 +82,8 @@ class SetWeekForm(forms.Form):
 				)
 
 class WeeklyPairingsForm(forms.Form):
-	team_one = forms.IntegerField()
-	team_two= forms.IntegerField()
+	team_one = forms.IntegerField(widget=forms.NumberInput(attrs={'aria-label':'Enter a team # from 1 to 10'}))
+	team_two= forms.IntegerField(widget=forms.NumberInput(attrs={'aria-label':'Enter a team # from 1 to 10'}))
 	
 	def clean(self):
 		cleaned_data = super().clean()

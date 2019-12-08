@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% load static %}
 
 {% block title %}<title>Kingpin Bowling Tracker - Bowling Center Locations</title>{% endblock %}
 
@@ -14,5 +14,10 @@
         </div>    
         </div>
         </div>
-        </div>    
+        </div>
+  <!-- Google Maps -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaRw18zPOLk-b3WAzaEWWNtmT0-OGsJBw&callback=initMap"
+  type="text/javascript"></script>
+  <!-- map.js -->     
+  <script src="{% static 'js/map.js' %}"></script>
 {% endblock %}

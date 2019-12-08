@@ -11,7 +11,6 @@ body {
     padding: 0;
     font-size: 1.25rem;
     line-height: 1.5;
-    line-height: 1.5;
     background: url("../images/bowling_ball_down_lane-bg.jpg") 25% 25%;
     background-size: cover;
 }
@@ -83,7 +82,7 @@ header, section, footer, aside, nav, main, article, figure {
    display:block;
    width:0px;
    height:2px;
-   background: crimson;
+   background: #DC143C; /* crimson */
    transition: 0.2s;
 }
 
@@ -92,20 +91,12 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .navbar-dark .navbar-nav .active > .nav-link, .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .show > .nav-link,.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
-    color: crimson;
+    color: #DC143C; /* crimson */
 }
-
 
 .dropdown-item:active {
-    color: cornflowerblue;
+    color: #6495ED; /* cornflowerblue */
 }
-
-/*
-.nav-link:focus, .dropdown-item:focus { 
-    background:#fec400;
-}
-*/
-
 
 .dropdown-item {
     background-color: #DCDCDC; /* shade of gainsboro */
@@ -116,7 +107,7 @@ header, section, footer, aside, nav, main, article, figure {
 }
 
 .fa-user {
-    color: midnightblue; /* Indigo */
+    color: #191970; /* midnightblue */
 }
 
 .fa-sign-in-alt {
@@ -133,6 +124,18 @@ header, section, footer, aside, nav, main, article, figure {
 
 .fa-arrow-left {
     color: #ffc107;
+}
+
+.fa-crown {
+    color: #FFD700;
+}
+
+.fa-trophy {
+  color: #DAA520; /* goldenrod */
+}
+
+.fa-user-circle {
+  color: #696969; /* dimgray */
 }
 
 *:focus {
@@ -158,7 +161,7 @@ min-height: 100%;
 	padding: 0 10px;
 	background: #f0f0f0;
 	color: #8c8b8b;
-	font-size: 25px;
+	font-size: 1.57rem;
 }
 
 .mainhead {
@@ -180,11 +183,11 @@ min-height: 100%;
 }
 
 .table-txt-lnk-style {
-    color: midnightblue;
+    color: #191970; /* midnightblue */
 }
 
 .link-style {
-    color: ghostwhite;
+    color: #F8F8FF; /* ghostwhite */
 }
 
 .link-style:hover {
@@ -194,7 +197,7 @@ min-height: 100%;
 #kpmission {
     font-size: 2rem;
     color: ghostwhite;
-    text-shadow: 3px 3px tomato;
+    text-shadow: 3px 3px #FF6347;
 }
 
 #kpmission::first-letter {
@@ -208,33 +211,33 @@ min-height: 100%;
   height: 300px;
   text-align: center;
   line-height: 60px;
-  background-color: antiquewhite;
-  border: 8px solid darkcyan;
+  background-color: #FAEBD7;
+  border: 8px solid #008B8B;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
-  -webkit-box-shadow: 2px 2px 4px lightslategray;
-  -moz-box-shadow: 2px 2px 4px lightslategray
-  box-shadow: 2px 2px 4px lightslategray;
-  color: darkblue;
+  -webkit-box-shadow: 2px 2px 4px #778899;
+  -moz-box-shadow: 2px 2px 4px #778899;
+  box-shadow: 2px 2px 4px #778899;
+  color: #00008B;
   margin: 10px;
 }
 
 .speech-2 {
   position: relative;
-  width: 310px;
-  height: 150px;
+  width: 345px;
+  height: 185px;
   text-align: center;
   line-height: 40px;
-  background-color: antiquewhite;
-  border: 8px solid darkcyan;
+  background-color: #FAEBD7;
+  border: 8px solid #008B8B;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
-  -webkit-box-shadow: 2px 2px 4px lightslategray;
-  -moz-box-shadow: 2px 2px 4px lightslategray
-  box-shadow: 2px 2px 4px lightslategray;
-  color: darkblue;
+  -webkit-box-shadow: 2px 2px 4px #778899;
+  -moz-box-shadow: 2px 2px 4px #778899;
+  box-shadow: 2px 2px 4px #778899;
+  color: #00008B;
   margin: 10px;
 }
 
@@ -246,7 +249,7 @@ min-height: 100%;
   left: 285px;    
   top: 295px;
   border: 18px solid;
-  border-color: darkcyan transparent transparent darkcyan;
+  border-color: #008B8B transparent transparent #008B8B;
 }
 
 .card-login {
@@ -431,7 +434,7 @@ p a:hover {
 }
 
 .search_input{
-    color: white;
+    color: #fff;
     border: 0;
     outline: 0;
     background: none;
@@ -449,7 +452,7 @@ p a:hover {
 }
 
 .searchbar:hover > .search_icon {
-    background: white;
+    background: #fff;
     color: #e74c3c;
 }
 
@@ -486,11 +489,11 @@ p a:hover {
 }
 
 .link-login, .label-bg {
-    color: sandybrown;
+    color: #F4A460;
 }
 
 .link-login:hover {
-    color: navajowhite;
+    color: #FFDEAD;
 }
 
 .text-bluegrey {
@@ -498,7 +501,7 @@ p a:hover {
 }
 
 .text-dodgerblue {
-    color: lightblue !important;
+    color: #ADD8E6 !important;
 }
 
 label {
@@ -508,7 +511,7 @@ label {
 }
 
 #about-head {
-    text-shadow: 2px 2px tomato;
+    text-shadow: 2px 2px #ff6347; /* tomato */
 }
 
 .text-Special {
@@ -519,11 +522,11 @@ label {
     border-radius: 50%;
     width: 57px;
     height: 57px;
-    background: lightcyan;
+    background: #E0FFFF;
 }
 
 .dropDown-link {
-    color: midnightblue;
+    color: #191970;
 }
 
 .breadcrumb {
@@ -537,7 +540,11 @@ label {
 }
 
 .breadcrumb .active {
-    color: greenyellow;
+    color: #ADFF2F;
+}
+
+.text-lt-blue {
+  color: lightblue;
 }
 
 .form-head {
@@ -603,10 +610,14 @@ animation-delay: 0.9s;
    width: 300px;
 }
     
+.fa-sign-in-alt, .fa-bowling-ball, .fa-user-circle {
+       font-size: 1.8rem; 
+}
+    
 .speech-2 {
   position: relative;
-  width: 310px;
-  height: 150px;
+  width: 345px;
+  height: 185px;
   text-align: center;
   line-height: 40px;
   background-color: antiquewhite;
@@ -628,11 +639,11 @@ animation-delay: 0.9s;
 @media only screen and (min-width: 768px) and (max-width: 992px) { /* Tablets, Laptops */
     
     .nav-link {
-    font-size: 1rem;
+    font-size: 0.86rem;
    }
     
-    .fa-sign-in-alt, .fa-bowling-ball {
-       font-size: 2.0rem; 
+    .fa-sign-in-alt, .fa-bowling-ball, .fa-user-circle {
+       font-size: 1.6rem; 
     }
     
     .logo {
@@ -687,8 +698,8 @@ p + ul {
     
 .speech-2 {
   position: relative;
-  width: 310px;
-  height: 150px;
+  width: 290px;
+  height: 130px;
   text-align: center;
   line-height: 40px;
   background-color: antiquewhite;
@@ -707,6 +718,28 @@ p + ul {
     display: flex; 
     justify-content: center;
 }    
+    
+}
+
+@media only screen and (min-width: 600px) and (max-width: 800px) {
+    
+.speech-2 {
+  position: relative;
+  width: 345px;
+  height: 185px;
+  text-align: center;
+  line-height: 40px;
+  background-color: antiquewhite;
+  border: 8px solid darkcyan;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: 2px 2px 4px lightslategray;
+  -moz-box-shadow: 2px 2px 4px lightslategray
+  box-shadow: 2px 2px 4px lightslategray;
+  color: darkblue;
+  margin: 10px;
+} 
     
 }
 
@@ -783,8 +816,8 @@ p + ul {
     
 .speech-2 {
   position: relative;
-  width: 215px;
-  height: 170px;
+  width: 235px;
+  height: 190px;
   text-align: center;
   line-height: 30px;
   background-color: antiquewhite;

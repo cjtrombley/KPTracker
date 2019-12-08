@@ -20,3 +20,6 @@ class IndexView(TemplateView):
 class AboutView(TemplateView):
 	
 	template_name = 'about.html'
+    
+class FAQsView(TemplateView):
+    template_name = 'faqs.html'

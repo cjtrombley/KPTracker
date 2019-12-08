@@ -8,7 +8,7 @@
     <tbody class="table-info">
     {% for bowler in bowlers %} 
         <tr class="text-center font-weight-bolder table-txt-lnk-style">
-            <td><a href="{% url 'view-league-bowler' league.bowling_center.name league.name bowler.id %}">{{bowler.bowler.first_name}} {{bowler.bowler.last_name}} </a></td><td>{{bowler.league_average}}</td><td>{{bowler.games_bowled}}</td><td>{{bowler.league_high_scratch_game}}</td><td>{{bowler.league_high_handicap_game}}</td><td>{{bowler.league_high_scratch_series}}</td><td>{{bowler.league_high_handicap_series}}</td><td>{{bowler.league_total_scratch}}</td><td>{{bowler.league_total_handicap}}</td>
+            <td><a href="{% url 'view-league-bowler' league.bowling_center.name league.name bowler.id %}" class="table-txt-lnk-style">{{bowler.bowler.first_name}} {{bowler.bowler.last_name}} </a></td><td>{{bowler.league_average}}</td><td>{{bowler.games_bowled}}</td><td>{{bowler.league_high_scratch_game}}</td><td>{{bowler.league_high_handicap_game}}</td><td>{{bowler.league_high_scratch_series}}</td><td>{{bowler.league_high_handicap_series}}</td><td>{{bowler.league_total_scratch}}</td><td>{{bowler.league_total_handicap}}</td>
         </tr>
     {% endfor %}
     </tbody>

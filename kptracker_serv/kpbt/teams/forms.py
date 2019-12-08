@@ -20,8 +20,8 @@ class TeamRosterForm(forms.ModelForm):
 	
 class UpdateRosterForm(forms.Form):
 	id = forms.IntegerField(widget=forms.HiddenInput)
-	first_name = forms.CharField(max_length=32)
-	last_name = forms.CharField(max_length=32)
+	first_name = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'aria-label':'First Name'}))
+	last_name = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'aria-label':'Last Name'}))
 	hand = forms.ChoiceField(choices= (('R', 'Right'), ('L', 'Left')))
 	designation = forms.ChoiceField(choices=(('A', 'Adult'), ('J', 'Junior'), ('S', 'Senior')))
 	gender = forms.ChoiceField(choices= (('M', 'Male'), ('F', 'Female')))
@@ -31,8 +31,8 @@ class UpdateRosterForm(forms.Form):
 		cleaned_data = super().clean()
 		
 class NewRosterForm(forms.Form):
-	first_name = forms.CharField(max_length=32)
-	last_name = forms.CharField(max_length=32)
+	first_name = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'aria-label':'First Name'}))
+	last_name = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'aria-label':'Last Name'}))
 	hand = forms.ChoiceField(choices= (('R', 'Right'), ('L', 'Left')))
 	designation = forms.ChoiceField(choices=(('A', 'Adult'), ('J', 'Junior'), ('S', 'Senior')))
 	gender = forms.ChoiceField(choices= (('M', 'Male'), ('W', 'Female')))
